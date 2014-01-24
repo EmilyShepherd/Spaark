@@ -1,0 +1,62 @@
+@template spaark
+@title About Spaark
+
+<? use \Spaark\Core\Config\Config; ?>
+
+Copyright (C) 2013 Alexander Shepherd
+<br />
+
+<a href="mailto:Alexander.Shepherd@Gmail.com">Alexander.Shepherd@Gmail.com</a>
+<br />
+
+<a href="http://www.sweeb.net/">www.sweeb.net</a>
+<br />
+
+<br /><br />
+
+<table style="width: 100%; text-align: left;" border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td><b>Licence</b></td>
+    <td><a href="/licence.spaark">Licence</a></td>
+  </tr>
+
+  <tr>
+    <td><b>Version</b></td>
+    <td>spaark/<?=VERSION?></td>
+  </tr>
+  
+  <tr>
+    <td><b>PHP</b></td>
+    <td>php/<?=PHP_VERSION?></td>
+  </tr>
+  
+  <tr>
+    <td><b>Server</b></td>
+    <td><?=$_SERVER['SERVER_SOFTWARE']?></td>
+  </tr>
+  
+  <tr>
+    <td><b>Site</b></td>
+    <td><?=Config::APP()?></td>
+  </tr>
+  
+  <tr>
+    <td><b>Admin</b></td>
+    <td><a href="mailto:<?=Config::ADMIN()?>"><?=Config::ADMIN()?></a></td>
+  </tr>
+  
+  <tr>
+    <td><b>Caching</b></td>
+    <td><?=config::NO_CACHE() ? 'Disabled' : 'Enabled'?></td>
+  </tr>
+  
+  <tr>
+    <td><b>Using APC</b></td>
+    <td><?=USE_APC ? 'Yes' : 'No'?></td>
+  </tr>
+  
+  <tr>
+    <td><b>Using 304 Response Codes</b></td>
+    <td><?=config::DISABLE_304() ? 'No' : 'Yes'?></td>
+  </tr>
+</table>

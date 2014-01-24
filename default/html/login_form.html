@@ -1,0 +1,29 @@
+@title Login
+@auth  none
+
+<div style="width: 400px; border: 1px solid black; margin: 100px auto; text-align: center;">
+  <h1>Login</h1>
+  <p>You are required to login before you can continue</p>
+  
+  <form action="/Framework/HTTPLogin/login" style="text-align: left; padding: 0 32px;">
+    <input type="hidden" name="returnTo" value="{returnTo}" />
+    
+    <div style="display: inline-block; width: 130px; font-weight: bold;">
+      Username:
+    </div>
+    <input type="text" name="username" />
+    
+    <br>
+    
+    <div style="display: inline-block; width: 130px; font-weight: bold;">
+      Password:
+    </div>
+    <input type="password" name="password" />
+    
+    <br><br>
+    
+    <input type="submit" value="Log In" style="float: right;" />
+    
+    <br><br>
+  </form>
+</div>

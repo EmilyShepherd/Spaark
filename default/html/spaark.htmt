@@ -1,0 +1,20 @@
+@template none
+@css spaark
+
+<div style="margin: 0 auto; width: 618px; font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; text-align: center;">
+  <img src="/logo.spaark" alt="Spaark" style="width: 310px;" />
+  
+  <div style="margin-top: -46px; border: 8px ridge orange; padding: 10px;">
+    <a href="/" style="float: right;">Site Home</a>
+    <br />
+    <h1>@{title}</h1>
+    
+    <div style="text-align: left;">
+      {content}
+    </div>
+  </div>
+  
+  <div style="text-align: right;">
+    <small><fragment:signature /></small>
+  </div>
+</div>

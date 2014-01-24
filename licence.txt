@@ -1,0 +1,97 @@
+
+                             ==============
+                             |   Spaark   |                             
+                             ==============
+
+Copyright (C) 2013 Alexander Shepherd
+Alexander.Shepherd@Gmail.com
+www.sweeb.net
+
+
+1. Terms
+---------
+
+  1.a. This licence concerns the use of Spaark.
+
+  1.b. Spaark is copyright (C) 2013 Alexander Shepherd, this licence
+    will refer to him under the alias "SWEEB".
+    
+  1.c. This licence grants a web developer ("The Developer") use of
+    Spaark.
+
+
+2. Licence
+-----------
+
+  2.a. Use of Spaark
+    SWEEB grants the Developer use of Spaark for a single web site.
+    
+  2.b. Backup
+    The Developer may copy Spaark has s/he sees fit, as long as it is
+    for backup purposes.
+
+
+3. Limitations
+---------------
+
+  3.a. Modification
+    3.a.i. The Developer may not remove / modify the licence or
+    copyright information displayed by Spaark.
+    
+    3.a.ii. The Developer may not remove / modify the way Spaark handles
+    .spaark pages:
+      + Do not add any .spaark handlers
+      + Do not replace spaark.htmt, spaark_licence.html, spaark_about.html
+    
+  3.b. Distribution
+    The Developer may not distribute Spaark to any third parties,
+    including but not limited to free distribution, selling copies and
+    rental of Spaark.
+    
+  3.c. Reverse Engineering and Decompression
+    The Developer may not try to decompress Spaark
+
+
+4. Copyright
+-------------
+
+  This software is copyright (C) Alexander Shepherd 2013.
+  All rights not expressly granted in this licence are reserved.
+
+
+5. Third Party Software
+------------------------
+
+  Any third party libraries used within Spaark are included within
+  spaark/class/lib/, and include their licence and copyright
+  information. The summaries are included below:
+  
+    Mobile Detect
+      Copyright (c) <2011-2013> <Serban Ghita> <serbanghita@gmail.com>
+      MIT License - spaark/licence/Mobile_Detect.txt
+      http://code.google.com/p/php-mobile-detect/wiki/Mobile_Detect
+      
+
+5. Disclaimer
+--------------
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  IN NO EVENT SHALL SWEEB BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+
+
+6. Beta Release
+----------------
+
+  This edition of Spaark has been released for the purpose of running a
+  web built by SWEEB. This copy may appear to have other features,
+  however if these are not used by the site, it is likely they have not
+  been fully tested and may not function correctly. If you intend to
+  extend the web site, and wish to use some of these features, please
+  consult with SWEEB.
+
+  info@sweeb.net

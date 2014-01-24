@@ -1,0 +1,12 @@
+/* TEAM */
+    Web Master: {dev}
+
+/* SPECIAL THANKS */
+    Spaark Developer: Alexander Shepherd
+    Email: alexander.shepherd@gmail.com
+    Site: http://www.sweeb.net/
+
+/* SITE */
+    Doctype: HTML5
+    Framework: Spaark
+    Language: PHP

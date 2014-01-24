@@ -1,0 +1,15 @@
+#
+# Spaark
+#
+# Copyright (C) 2012 Alexander Shepherd
+# Alexander.Shepherd@Gmail.com
+#
+
+
+#
+# Deny public access to the Spaark folder
+#
+# The Spaark folder is designed such that it doesn't need to be in the
+# public root, this is useful if you put it in a lib folder.
+#
+Deny from all

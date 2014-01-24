@@ -1,0 +1,21 @@
+@default CLASS box
+
+<div class="@{class}">
+  <div class="top">
+    <div class="tl">&nbsp;</div>
+    <div class="tmiddle">&nbsp;</div>
+    <div class="tr">&nbsp;</div>
+  </div>
+  <div class="middle">
+    <div class="tl">&nbsp;</div>
+    <div class="content">
+      {content}
+    </div>
+    <div class="tr">&nbsp;</div>
+  </div>
+  <div class="bottom">
+    <div class="bl">&nbsp;</div>
+    <div class="bmiddle">&nbsp;</div>
+    <div class="br">&nbsp;</div>
+  </div>
+</div>

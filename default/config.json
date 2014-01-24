@@ -1,0 +1,46 @@
+//
+// Default config For Spaark Apps
+//
+{
+    //
+    // App Settings
+    //
+    "app"              :
+    {
+        "namespace" : "\\Spaark\\Core\\",
+        "admin"     : "Unknown <>",
+        "timezone"  : "Europe/London",
+        "name"      : "Untitled Application"
+    },
+    
+    "controller.path"  : "controller/",
+    "model.path"       : "model/",
+    "html.path"        : "html/",
+    "css.path"         : "css/",
+    "js.path"          : "js/",
+    "config.path"      : "config/",
+    "image.path"       : "images/",
+    "cache"            :
+    {
+        "path"    : "cache/",
+        "enabled" : true
+    },
+    
+    "login.controller" : "\\Spaark\\Controller\\HTTPLogin\\form",
+
+    "configPath"       : "config/",
+
+    "defaultSource"    : "Sources\\database\\MySQLi",
+    
+    //
+    // Database
+    //
+    "database"         :
+    {
+        "host"     : "localhost",
+        "username" : "root",
+        "password" : "password",
+        "database" : "db"
+    },
+
+}
