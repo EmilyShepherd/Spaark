@@ -20,6 +20,11 @@ class Config extends Master
 
         return $obj;
     }
+
+    public static function getConf($var)
+    {
+        return static::getMaster()->app[$var];
+    }
     
     public function __fromModel($model)
     {

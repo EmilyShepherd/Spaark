@@ -1,6 +1,6 @@
 <?php namespace Spaark\Core;
 
-use \Spaark\Core\Config\Config;
+use \Spaark\Core\Model\Config;
 
 // {{{ Exceptions
 
@@ -56,12 +56,18 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
      */
     public static function init()
     {
-        $ns = strtolower(trim(Config::NAME_SPACE(), '\\'));
-
         self::$starts['spaark'] = SPAARK_PATH;
-        self::$starts[$ns]      = ROOT;
         
         spl_autoload_register('Spaark\Core\ClassLoader::autoload');
+    }
+
+    public static function appInit()
+    {
+        $ns                = strtolower(trim
+        (
+            Config::getConf('namespace'), '\\'
+        ));
+        self::$starts[$ns] = ROOT;
     }
     
     /**

@@ -10,7 +10,8 @@
         "namespace" : "\\Spaark\\Core\\",
         "admin"     : "Unknown <>",
         "timezone"  : "Europe/London",
-        "name"      : "Untitled Application"
+        "name"      : "Untitled Application",
+        "href_root" : "/"
     },
     
     "controller.path"  : "controller/",

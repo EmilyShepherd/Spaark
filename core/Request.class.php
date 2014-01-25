@@ -6,7 +6,7 @@
  * Alexander.Shepherd@Gmail.com
  */
 
-use Spaark\Core\Config\Config as OldConfig;
+//use Spaark\Core\Config\Config as OldConfig;
 use Spaark\Core\Model\Config;
 use Spaark\Core\Cache\Cache;
 use Spaark\Core\Cache\CacheMiss;
@@ -45,15 +45,15 @@ class Instance extends \Spaark\Core\Base\StaticClass
      */
     public static function start($site, $uri = NULL)
     {
+        ClassLoader :: init();
+        Config :: init($site);
+
+        // TODO: This should run before the Config is loaded really
         self   :: handleFragment();
         self   :: buildURI($uri);
         self   :: handleSlashes();
-
-        ClassLoader :: init();
-        OldConfig :: init($site);
-        Config :: init($site);
         
-        self   :: tryMobile();
+     // self   :: tryMobile();
         
         self   :: loadFromCache();
         self   :: init();
@@ -130,7 +130,7 @@ class Instance extends \Spaark\Core\Base\StaticClass
             . substr
               (
                   $uri,
-                  strlen(OldConfig::HREF_ROOT())
+                  strlen(Config::getConf('href_root'))
               );
 
         if ($pos !== false)
@@ -181,7 +181,7 @@ class Instance extends \Spaark\Core\Base\StaticClass
     
     private static function tryMobile()
     {
-        if (OldConfig::MOBILE())
+        if (Config::getConf('mobile'))
         {
             require_once FRAMEWORK . 'lib/Mobile_Detect.php';
             
@@ -218,7 +218,7 @@ class Instance extends \Spaark\Core\Base\StaticClass
     {
         ob_start();
 
-        if ($ts = OldConfig::TIMEZONE())
+        if ($ts = Config::getConf('timezone'))
         {
             date_default_timezone_set($ts);
         }
