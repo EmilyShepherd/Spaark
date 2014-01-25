@@ -186,7 +186,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         }
         
         //App Model Scope
-        $fullName = substr(Config::NAME_SPACE(), 1) . 'Model\\' . $name;
+        $fullName = substr(Config::getConf('namespace'), 1) . 'Model\\' . $name;
         if (self::_load($fullName))
         {
             return $fullName;

@@ -279,7 +279,7 @@ class Page extends \Spaark\Core\Cache\CacheEntry
         
         $this->setTTL($this->array['ttl']);
         $this->array['path'] =
-              Config::CACHE_PATH()
+              $this->config->config['cache']['path']
             . str_replace('/', '_', $this->builder->getName())
             . '.page';
         
