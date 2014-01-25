@@ -90,17 +90,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Entity
     {
         $path   = $this->name . $this->extension;
         
-        if (MOBILE)
-        {
-            $output = $this->_load(Config::MOBILE_HTML_PATH() . $path);
-            
-            if ($output)
-            {
-                return $output;
-            }
-        }
-        
-        if ($output = $this->_load(Config::HTML_PATH() . $path))
+        if ($output = $this->_load($this->config->config->app['htmlpath'] . $path))
         {
             return $output;
         }

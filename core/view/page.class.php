@@ -61,7 +61,7 @@ class Page extends \Spaark\Core\Cache\CacheEntry
         
         try
         {
-            $page = Cache::load(MOB . 'page:' . $name);
+            $page = Cache::load('page:' . $name);
             header('X-Spaark-Page-Cache: used');
         }
         catch (CacheMiss $cm)
@@ -165,20 +165,16 @@ class Page extends \Spaark\Core\Cache\CacheEntry
             . OutputType::getHeader('<!--', '-->', '<!--', '-->')
             . '<html lang="en">'
             .   '<head>'
-            .     (
-                      MOBILE
-                        ? '<meta '
-                        .     'name="viewport" '
-                        .     'content="'
-                        .         'width=device-width; '
-                        .         'initial-scale=1.0; '
-                        .         'maximum-scale=1.0; '
-                        .         'minimum-scale=1.0; '
-                        .         'user-scalable=0;'
-                        .      '" '
-                        . '/>'
-                        : ''
-                  )
+            .     '<meta '
+            .       'name="viewport" '
+            .       'content="'
+            .           'width=device-width; '
+            .           'initial-scale=1.0; '
+            .           'maximum-scale=1.0; '
+            .           'minimum-scale=1.0; '
+            .           'user-scalable=0;'
+            .       '" '
+            .     '/>'
             .     $this->runFile()
             .   '</body>'
             . '</html>';
@@ -285,7 +281,7 @@ class Page extends \Spaark\Core\Cache\CacheEntry
         $this->array['path'] =
               Config::CACHE_PATH()
             . str_replace('/', '_', $this->builder->getName())
-            . '.' . MOB . 'page';
+            . '.page';
         
         file_put_contents
         (
@@ -293,7 +289,7 @@ class Page extends \Spaark\Core\Cache\CacheEntry
             '<?php ' . $this->code
         );
         
-        Cache::save(MOB . 'page:' . $this->builder->getName(), $this);
+        Cache::save('page:' . $this->builder->getName(), $this);
     }
     
     /**

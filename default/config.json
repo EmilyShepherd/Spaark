@@ -11,7 +11,8 @@
         "admin"     : "Unknown <>",
         "timezone"  : "Europe/London",
         "name"      : "Untitled Application",
-        "href_root" : "/"
+        "href_root" : "/",
+        "htmlpath"  : "html/"
     },
     
     "controller.path"  : "controller/",
