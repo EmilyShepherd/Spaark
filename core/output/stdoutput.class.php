@@ -138,7 +138,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
     {
         Output::mime('text/plain');
 
-        if (file_exists(Config::APP_ROOT() . 'txt/humans.txt'))
+        if (file_exists($this->config->app['root'] . 'txt/humans.txt'))
         {
             echo file_get_contents
             (
@@ -167,7 +167,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
             echo str_replace
             (
                 '{dev}',
-                $this->config->config->app['admin'],
+                $this->config->app['admin'],
                 file_get_contents
                 (
                     SPAARK_PATH . 'default/txt/humans.txt'
@@ -209,7 +209,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
      */
     public function exception($e)
     {
-        Cache::ignoreBucket();
+        //Cache::ignoreBucket();
         
         Output::status(ERROR);
         

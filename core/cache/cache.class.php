@@ -21,7 +21,7 @@ define('IN_APC', 0);
 define('REQUESTS', 1);
 
 /// }}}
-
+debug_print_backtrace();exit;__halt_compiler();
 
         ////////////////////////////////////////////////////////
 

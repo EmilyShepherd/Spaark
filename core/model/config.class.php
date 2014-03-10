@@ -14,7 +14,8 @@ class Config extends Master
             \tree_merge_recursive
             (
                 $obj->json->parseFile(ROOT . $name, false),
-                $obj->json->parseFile(SPAARK_PATH . 'default/config')
+                $obj->json->parseFile(SPAARK_PATH . 'default/config'),
+                array('app' => array('root' => ROOT))
             )
         );
 

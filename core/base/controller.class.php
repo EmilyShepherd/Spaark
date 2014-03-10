@@ -35,12 +35,12 @@ abstract class Controller extends Object
      * doesn't need to go through the Router next time. The default is
      * 0 (indefinite cache)
      */
-    protected $routeCacheTTL = INDEFINITE;
+    protected $routeCacheTTL = -1;
     
     /**
      * Creates page / model / view objects for this class
      */
-    final public function __construct()
+    /*public function __construct()
     {
         $class = get_class($this);
         $model = substr
@@ -62,7 +62,7 @@ abstract class Controller extends Object
         {
             $this->view = new $view($this->page);
         }
-    }
+    }*/
     
     /**
      * Used by inheriting classes to indicate that it is only capable of

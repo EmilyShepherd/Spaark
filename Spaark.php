@@ -58,7 +58,7 @@ require_once SPAARK_PATH . 'core/cache/cachemiss.class.php';
 /**
  * Required to echo an Output
  */
-require_once SPAARK_PATH . 'core/Output.class.php';
+//require_once SPAARK_PATH . 'core/Output.class.php';
 
 /**
  * Required to because Config extends this

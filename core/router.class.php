@@ -9,7 +9,7 @@ use \Spaark\Core\Cache\CacheEntry;
 /**
  * Calculates the correct route for a given request
  */
-class Router
+class Router extends \Spaark\Core\Base\Controller
 {
     /**
      * The request
@@ -49,13 +49,13 @@ class Router
         
         try
         {
-            $this->runRoute(Cache::route()->route);
+            //$this->runRoute(Cache::route()->route);
         }
         catch (CacheMiss $cm) {}
         
         try
         {
-            if (!Config::IGNORE_ROUTE_TREE())
+            if (!$this->config->ignoreRouteTree && false)
             {
                 $this->traceRouteTree();
             }

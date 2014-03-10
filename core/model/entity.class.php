@@ -235,6 +235,7 @@ class Entity extends Model implements \Serializable
                 try
                 {
                     $func = $class . '::_from' . $id;
+
                     if ($obj = call_user_func_array($func, $args))
                     {
                         break;
@@ -271,7 +272,7 @@ class Entity extends Model implements \Serializable
             default:
                 throw new CannotCreateModelException
                 (
-                    $class, $id, $args[0]
+                    $class, $id, $val
                 );
         }
 

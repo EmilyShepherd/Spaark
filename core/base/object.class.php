@@ -96,7 +96,7 @@ abstract class Object
     
     public function __toString()
     {
-        return get_class($this) . '[' . spl_object_hash ($this) . ']';
+        return get_class($this) . '[' . spl_object_hash($this) . ']';
     }
 }
 

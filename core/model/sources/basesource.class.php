@@ -191,7 +191,7 @@ abstract class BaseSource extends Model implements iSource
      * @param string $where The attribute name
      * @param mixed  $value The attribute value
      */
-    public function fwhere($where, $value)
+    public function _fwhere($where, $value)
     {
         $this->where = $this->processWhere($where, $value);
     }

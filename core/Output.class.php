@@ -19,7 +19,7 @@ define('FOUND', 302);
  *
  * Sets headers, caches output and compresses using gzip where supported
  */
-class Output extends \Spaark\Core\Cache\CacheEntry
+class Output extends Model\Base\Entity
 {
     // {{{ static
     
@@ -104,6 +104,8 @@ class Output extends \Spaark\Core\Cache\CacheEntry
      */
     public static function __callStatic($name, $args)
     {
+        if (!self::$obj) self::$obj = new Output();
+
         self::$obj->$name = $args[0];
     }
     
@@ -157,8 +159,8 @@ class Output extends \Spaark\Core\Cache\CacheEntry
      */
     public function __construct()
     {
-        $this->array['mime']   = 'text/html';
-        $this->array['status'] = OK;
+        $this->attrs['mime']   = 'text/html';
+        $this->attrs['status'] = OK;
         
         parent::__construct();
     }
@@ -170,12 +172,12 @@ class Output extends \Spaark\Core\Cache\CacheEntry
     {
         $this->plain         = $data;
         
-        if ($this->array['status'] == OK)
+        if ($this->attrs['status'] == OK)
         {
-            $this->array['etag'] = md5($data);
+            $this->attrs['etag'] = md5($data);
             $this->path          =
-                  Config::CACHE_PATH()
-                . $this->array['etag'] . '.output';
+                  $this->config->cachePath
+                . $this->attrs['etag'] . '.output';
         }
     }
 
@@ -215,8 +217,8 @@ class Output extends \Spaark\Core\Cache\CacheEntry
         parent::unserialize($str);
 
         $this->path =
-              Config::CACHE_PATH()
-            . $this->array['etag'] . '.output';
+              $this->config->cachePath
+            . $this->attrs['etag'] . '.output';
     }
     
     /**
@@ -261,7 +263,7 @@ class Output extends \Spaark\Core\Cache\CacheEntry
     
     /**
      * Checks to see if the client sent a If-None-Match request header,
-     * and if it is equal to the etag entry in $this->array. If it is,
+     * and if it is equal to the etag entry in $this->attrs. If it is,
      * it will issue a 304 response, and return true.
      *
      * @return bool True if a 304 response was sent
@@ -270,11 +272,11 @@ class Output extends \Spaark\Core\Cache\CacheEntry
     {
         if
         (
-            $this->array['status'] == OK                           &&
-            isset($this->array['etag'])                            &&
-            !Config::DISABLE_304()                                 &&
+            $this->attrs['status'] == OK                           &&
+            isset($this->attrs['etag'])                            &&
+            !$this->config->disable304                             &&
             isset($_SERVER['HTTP_IF_NONE_MATCH'])                  &&
-            $_SERVER['HTTP_IF_NONE_MATCH'] == $this->array['etag']
+            $_SERVER['HTTP_IF_NONE_MATCH'] == $this->attrs['etag']
         )
         {
             //If the document hasn't changed, the links to resources
@@ -334,16 +336,16 @@ class Output extends \Spaark\Core\Cache\CacheEntry
         header
         (
               'HTTP/1.1 '
-            . $this->array['status'] . ' '
-            . self::$statuses[$this->array['status']]
+            . $this->attrs['status'] . ' '
+            . self::$statuses[$this->attrs['status']]
         );
-        header('Content-Type: ' . $this->array['mime']);
+        header('Content-Type: ' . $this->attrs['mime']);
         header('Content-Length: ' . strlen($content));
         header('X-Powered-By: spaark/' . VERSION . ' php/' . PHP_VERSION);
         
-        if (isset($this->array['etag']))
+        if (isset($this->attrs['etag']))
         {
-            header('Etag: '         . $this->array['etag']);
+            header('Etag: '         . $this->attrs['etag']);
         }
         
         $this->setCacheControl();
@@ -359,12 +361,12 @@ class Output extends \Spaark\Core\Cache\CacheEntry
      */
     private function setCacheControl()
     {
-        if (isset($this->array['maxage']) && $this->array['maxage'])
+        if (isset($this->attrs['maxage']) && $this->attrs['maxage'])
         {
             header
             (
                 'Cache-Control: '
-                . 'max-age=' . $this->array['maxage']
+                . 'max-age=' . $this->attrs['maxage']
             );
         }
     }

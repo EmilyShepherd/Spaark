@@ -227,7 +227,7 @@ class Instance extends \Spaark\Core\Base\StaticClass
         Error\Error :: init();
         Vars\Vars   :: init();
         register_shutdown_function('\Spaark\Core\Instance::shutdown');
-        Cache       :: init(self::$uri);
+    //  Cache       :: init(self::$uri);
     }
     
     /**

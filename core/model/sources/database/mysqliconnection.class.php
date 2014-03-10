@@ -43,10 +43,10 @@ class MySQLiConnection extends \Spaark\Core\Model\Base\Singleton
     {
         $this->mysqli = new \MySQLi
         (
-            Config::DATABASE_HOST(),
-            Config::DATABASE_USER(),
-            Config::DATABASE_PASS(),
-            Config::DATABASE_DB()
+            $this->config->host,
+            $this->config->username,
+            $this->config->password,
+            $this->config->database
         );
     }
 
@@ -70,6 +70,13 @@ class MySQLiConnection extends \Spaark\Core\Model\Base\Singleton
      */
     public function __get($var)
     {
-        return $this->mysqli->$var;
+        if ($this->mysqli)
+        {
+            return $this->mysqli->$var;
+        }
+        else
+        {
+            return parent::__get($var);
+        }
     }
 }
