@@ -177,7 +177,11 @@ class Entity extends Model implements \Serializable
         {
             if (isset($obj->attrs[$key]))
             {
-                self::$_cache[$class][$key][(string)$obj->$key] = $obj;
+                $value = is_array($obj->$key)
+                    ? serialize($obj->$key)
+                    : (string)$obj->$key;
+
+                self::$_cache[$class][$key][$value] = $obj;
             }
         }
     }

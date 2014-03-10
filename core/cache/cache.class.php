@@ -33,7 +33,7 @@ define('REQUESTS', 1);
  * critea. They are used for a common task. Typically to forfil a
  * request.
  */
-class Cache
+class Cache extends \Spaark\Core\Model\Base\Entity
 {
     private static $buckets  = array( );
     private static $requestBucket;
@@ -242,7 +242,7 @@ class Cache
             {
                 file_put_contents
                 (
-                      CONFIG::CACHE_PATH()
+                      $this->config->path
                     . str_replace('/', '_', $bucket) . '.cache',
                       serialize($objs)
                 );

@@ -55,7 +55,8 @@ class Instance extends \Spaark\Core\Base\StaticClass
         
      // self   :: tryMobile();
         
-        self   :: loadFromCache();
+     // self   :: loadFromCache();
+        ClassLoader :: appInit();
         self   :: init();
         self   :: loadFromRoute();
     }

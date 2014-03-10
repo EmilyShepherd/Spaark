@@ -38,7 +38,7 @@ define('CODE_INCLUDE', 2);
 /**
  * Stores and outputs a page.
  */
-class Page extends \Spaark\Core\Cache\CacheEntry
+class Page extends \Spaark\Core\Model\Base\Entity
 {
     // {{{ static
     
@@ -59,15 +59,15 @@ class Page extends \Spaark\Core\Cache\CacheEntry
         
         $name = trim($name, '/');
         
-        try
-        {
-            $page = Cache::load('page:' . $name);
-            header('X-Spaark-Page-Cache: used');
-        }
-        catch (CacheMiss $cm)
-        {
+     // try
+     // {
+     //     $page = Cache::load('page:' . $name);
+     //     header('X-Spaark-Page-Cache: used');
+     // }
+     // catch (CacheMiss $cm)
+     // {
             $page = new Page($name);
-        }
+     // }
         
         $page->run($varsIn);
     }
@@ -114,6 +114,8 @@ class Page extends \Spaark\Core\Cache\CacheEntry
      * PageBuilder, an instance of which will be stored here
      */
     private $builder;
+
+    private $array;
     
     /**
      * Uses a PageBuilder to create the output from the given file
@@ -128,7 +130,7 @@ class Page extends \Spaark\Core\Cache\CacheEntry
         $this->array['parents'] = $this->builder->getParents();
         $this->code             = $this->builder->getCode();
         
-        $this->cache();
+     // $this->cache();
     }
     
     /**
@@ -270,7 +272,7 @@ class Page extends \Spaark\Core\Cache\CacheEntry
     /**
      * Caches this Page for this request, if the page is set as cachable
      */
-    protected function cache()
+    protected function _cache()
     {
         if (!isset($this->array['ttl']) || $this->array['ttl'] == -1)
         {

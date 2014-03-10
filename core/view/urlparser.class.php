@@ -23,6 +23,8 @@ class URLParser
     */
     public static function parseURL($url)
     {
+        return $url;
+        
         if (strpos($url, '://') === false)
         {
             $url   = '/' . ltrim($url, '/');

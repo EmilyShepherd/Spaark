@@ -41,12 +41,15 @@ class Config extends Master
 
     private function loadConfig($name)
     {
-        $arr = $this->json->parseFile($this->config->configPath . $name, false);
+        $path = $this->config->configPath . $name;
+        $arr  = $this->json->parseFile($path, false);
 
         if (is_array($this->config->$name))
         {
             $arr = \tree_merge_recursive($arr, $this->config->$name);
         }
+
+        $arr['app'] = $this->config->app;
         
         $this->loadArray($arr);
     }

@@ -121,7 +121,9 @@ class Router extends \Spaark\Core\Base\Controller
      */
     private function tryDefault($method = 'home')
     {
-        $this->full_class = Config::NAME_SPACE() . 'Controller\Index';
+        $this->full_class =
+              $this->config->app['namespace']
+            . 'Controller\Index';
         
         if (class_exists($this->full_class))
         {
@@ -155,7 +157,7 @@ class Router extends \Spaark\Core\Base\Controller
             $this->includeAndTryClass();
         }
         
-        $this->full_class = Config::NAME_SPACE() . 'Controller\Index';
+        $this->full_class = $this->config->app['namespace'] . 'Controller\Index';
 
         //It failed the other tests, try to call the method in the
         //Default class / or the Default home
@@ -188,7 +190,7 @@ class Router extends \Spaark\Core\Base\Controller
     private function includeAndTryClass()
     {
         $this->full_class =
-              Config::NAME_SPACE() . 'Controller\\'
+              $this->config->app['namespace'] . 'Controller\\'
             . strtolower(str_replace('/', '\\', $this->path));
         $this->class      =
             strtolower(pathinfo($this->path, PATHINFO_BASENAME));

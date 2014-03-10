@@ -258,7 +258,7 @@ class PageBuilder extends Templateable
             . '<script>'
             .   's'
             .   '('
-            .       '\'' . Config::HREF_ROOT() . '\','
+            .       '\'' . $this->config->app['href_root'] . '\','
             .       '\'' . $templateStr        . '\','
             .       json_encode(array_reverse(array_values($this->response['js']))) . ','
             .       json_encode(array_values($this->response['css']))
