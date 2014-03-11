@@ -29,7 +29,7 @@ class Config extends Master
     
     public function __fromModel($model)
     {
-        $this->loadConfig($model::modelName());
+        $this->loadConfig(strtolower($model::modelName()));
     }
 
     public function __fromController($controller)
