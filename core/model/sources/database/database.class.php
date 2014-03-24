@@ -50,6 +50,8 @@ use \Spaark\Core\Model\Sources\BlackHole;
 
     class UnknownColumnException extends SQLException { }
 
+    class NoSuchTableException extends SQLException { }
+
     // }}}
 
         ////////////////////////////////////////////////////////

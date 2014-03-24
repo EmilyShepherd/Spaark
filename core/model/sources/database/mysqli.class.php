@@ -29,6 +29,13 @@ class MySQLi extends Database
     const UNIQUE_FLAG         = 65536;
 
     const BAD_FIELD_ERROR     = 1054;
+    const NO_SUCH_TABLE_ERROR = 1146;
+
+    private $exceptions = array
+    (
+        self::BAD_FIELD_ERROR     => 'UnknownColumnException',
+        self::NO_SUCH_TABLE_ERROR => 'NoSuchTableException'
+    );
 
     /**
      * The persistent MySQLiConnection (keep the same one for the whole
@@ -78,16 +85,21 @@ class MySQLi extends Database
         }
         elseif (!$ret)
         {
-            switch ($this->mysqli->errno)
+            if (isset($this->exceptions[$this->mysqli->errno]))
             {
-                case static::BAD_FIELD_ERROR:
-                    throw new UnknownColumnException
-                    (
-                        $this->mysqli->error
-                    );
+                $class =
+                     'Spaark\Core\Model\Sources\Database\\'
+                    . $this->exceptions[$this->mysqli->errno];
 
-                default:
-                    throw new SQLException($this->mysqli->error, $sql);
+                throw new $class($this->mysqli->error);
+            }
+            else
+            {
+                throw new SQLException
+                (
+                    $this->mysqli->errno . ': ' . $this->mysqli->error,
+                    $sql
+                );
             }
         }
         
