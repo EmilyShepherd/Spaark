@@ -439,7 +439,7 @@ abstract class Model extends \Spaark\Core\Base\Object
                 return $this->$var();
             }
         }
-        if ($this->reflect->hasPublicMethod('get' . $var))
+        elseif ($this->reflect->hasPublicMethod('get' . $var))
         {
             return $this->{'get' . $var}();
         }

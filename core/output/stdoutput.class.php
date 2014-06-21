@@ -212,13 +212,15 @@ class StdOutput extends \Spaark\Core\Base\Controller
         //Cache::ignoreBucket();
         
         Output::status(ERROR);
+
+        $err = new \Spaark\Core\Model\Reflection\Exception($e);
         
         Page::load
         (
             'error',
             array
             (
-                'error'     => $e, //print_r($e->getTrace(), true),
+                'error'     => $err,
                 'signature' => SIGNATURE
             )
         );

@@ -2,50 +2,22 @@
 @title Error
 
 <?
-$trace    = $error->getTrace();
-$spaark   = array_pop($trace);
 $first    = true;
-$split    = strrpos(get_class($error), '\\') + 1;
+$split    = strrpos($error->type, '\\') + 1;
 $skipping = false;
 ?>
 
-<?=substr(get_class($error), 0, $split)?>
-<h2 style="margin-top: 0;"><?=substr(get_class($error), $split)?></h2>
+<?=substr($error->type, 0, $split)?>
+<h2 style="margin-top: 0;"><?=substr($error->type, $split)?></h2>
 
-<b><?=nl2br($error->getMessage())?></b><br />
-<?=$error->getFile()?>:<?=$error->getLine()?>
+<b><?=nl2br($error->message)?></b><br />
+<?=$error->file?>:<?=$error->line?>
 
 <br />
 
 <h2>Stack Trace</h2>
 
-<?foreach ($trace as $i => $step) : extract($step)?>
-  <!--?if ($skipping)
-    {
-        if
-        (
-            isset($trace[$i + 1])          &&
-            isset($trace[$i + 1]['class']) &&
-            strpos($trace[$i + 1]['class'], 'Spaark') !== 0
-        )
-        {
-            $skipping = false;
-        }
-        else
-        {
-            continue;
-        }
-    }
-    elseif
-    (
-        isset($step['class']) &&
-        strpos($step['class'], 'Spaark') === 0
-    )
-    {
-        $skipping = true;
-    }
-  ?-->
-        
+<?foreach ($error as $i => $step): extract($step) ?>  
   <? if (!$first) : ?>
     <hr style="margin-bottom: 10px;" />
   <? else : $first = false; ?>
@@ -82,9 +54,3 @@ $skipping = false;
     {file}:{line}
   <? endif ?>
 <? endforeach ?>
-
-<hr style="margin-bottom: 10px;" />
-
-<b>\{Spaark}</b>
-<br />
-<?=$spaark['file']?>:<?=$spaark['line']?>
