@@ -133,7 +133,7 @@ abstract class Master extends Entity
 
         // Someone is trying to init() a class that doesn't need
         // initialising. In theory I could just quietly ignore this, but
-        // I'm gonna be a dick about it.
+        // I'm gonna be difficult about it.
         if (!is_callable($func))
         {
             throw new MissingInitMasterException(get_called_class());

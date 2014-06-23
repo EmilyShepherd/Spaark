@@ -1,10 +1,5 @@
-//
-// Default config For Spaark Apps
-//
+
 {
-    //
-    // App Settings
-    //
     "app"              :
     {
         "namespace" : "\\Spaark\\Core\\",
@@ -13,6 +8,13 @@
         "name"      : "Untitled Application",
         "href_root" : "/",
         "htmlpath"  : "html/"
+    },
+    
+    "htmlsegment"      :
+    {
+        "path"         : "",
+        "pagepath"     : "pages/",
+        "templatepath" : "templates/"
     },
     
     "controller.path"  : "controller/",
@@ -34,9 +36,6 @@
 
     "defaultSource"    : "Sources\\database\\MySQLi",
     
-    //
-    // Database
-    //
     "database"         :
     {
         "host"     : "localhost",

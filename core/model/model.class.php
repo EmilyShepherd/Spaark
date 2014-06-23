@@ -111,9 +111,13 @@ class CannotCreateCollectionException extends \Exception
  */
 abstract class Model extends \Spaark\Core\Base\Object
 {
-    const INPUT_TYPE = 'text';
+    const INPUT_TYPE     = 'text';
     
-    const FROM       = 'Model';
+    const FROM           = 'Model';
+    
+    const DB_HELPER      = 'Database\MySQLi';
+
+    const REFLECT_HELPER = 'Reflection\Model';
     
 // {{{ static
 
@@ -316,15 +320,6 @@ abstract class Model extends \Spaark\Core\Base\Object
      * The Model to auto-instantiate when $this->json is used
      */
     protected $jsonClass    = 'JSON';
-    
-    /**
-     * The Model to auto-instantiate when $this->db is used
-     */
-    protected $dbClass      = 'Database\MySQLi';
-    
-    protected $sessionClass = 'Session';
-
-    protected $reflectClass = 'Reflection\Model';
     
     /**
      * The value of this model (if applicable)

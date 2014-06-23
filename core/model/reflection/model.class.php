@@ -31,4 +31,20 @@ class Model extends \Spaark\Core\Model\Base\Model
             return NULL;
         }
     }
+    
+    public function getParentList($incThis = false)
+    {
+        $parents = $incThis
+            ? array($this->reflector->getName())
+            : array();
+        $class = $this->reflector;
+        
+        while ($parent = $class->getParentClass())
+        {
+            $parents[] = $parent->getName();
+            $class     = $parent;
+        }
+        
+        return $parents;
+    }
 }
