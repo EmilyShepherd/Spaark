@@ -187,7 +187,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
      */
     public function error404()
     {
-        Cache::ignoreBucket();
+        //Cache::ignoreBucket();
         Output::status(NOT_FOUND);
         
         //$this->page->fullPage();
