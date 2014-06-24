@@ -56,6 +56,8 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Entity
     protected $script = '';
     
     protected $static = true;
+    
+    const CONF = 'htmlpath';
      
     /**
      * Sets the name of this HTMLSegment and prepopulates the value of
@@ -88,14 +90,14 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Entity
      */
     protected function loadFromFile()
     {
-        $path   = $this->name . $this->extension;
+        $path = $this->config->path . $this->name . '.html';
         
-        if ($output = $this->_load($this->config->config->app['htmlpath'] . $path))
+        if ($output = $this->_load($path))
         {
             return $output;
         }
         
-        $output = $this->_load(SPAARK_PATH . 'default/html/' . $path);
+        $output = $this->_load(SPAARK_PATH . 'default/' . $path);
         if ($output)
         {
             return $output;

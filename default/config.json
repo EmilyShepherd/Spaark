@@ -10,12 +10,9 @@
         "htmlpath"  : "html/"
     },
     
-    "htmlsegment"      :
-    {
-        "path"         : "",
-        "pagepath"     : "pages/",
-        "templatepath" : "templates/"
-    },
+    "pagebuilder.path" : "pages/",
+    "htmlsegment.path" : "templates/",
+    
     
     "controller.path"  : "controller/",
     "model.path"       : "model/",
