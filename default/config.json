@@ -39,6 +39,6 @@
         "username" : "root",
         "password" : "password",
         "database" : "db"
-    },
+    }
 
 }
