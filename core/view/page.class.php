@@ -190,7 +190,7 @@ class Page extends \Spaark\Core\Model\Base\Entity
      */
     private function getJSONResponse()
     {
-        $count = count($this->parents);
+        $count = count($this->array['parents']);
         $found = false;
         $list  = '';
 
@@ -223,7 +223,7 @@ class Page extends \Spaark\Core\Model\Base\Entity
         if (!$found) $i = $count + 1;
 
         $element =
-            isset($this->parents[$i - 2])
+            isset($this->array['parents'][$i - 2])
               ? 'template_' . $this->array['parents'][$i - 2]
               : 'spaark_page';
 
