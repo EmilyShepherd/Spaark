@@ -160,6 +160,8 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Entity
        
         //Take out comments, because I don't like them
         $html = preg_replace('/<!--(.|\s)*?-->/', '', $html);
+        
+        $html = preg_replace('/<\?(?!php|=)\s?/', '<?php ', $html);
 
         $this->fixAttributes($html);
     
