@@ -198,7 +198,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
             array
             (
                 'url'       => Instance::getRequest(),
-                'signature' => Config::APP() . ' on ' . SIGNATURE
+                'signature' => $this->config->app['name'] . ' on ' . SIGNATURE
             )
         );
     }
