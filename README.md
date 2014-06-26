@@ -8,22 +8,22 @@ Spaark is a web application framework - it has code that runs on both the server
 File Structure
 --------------
 
-* [/_](./_) - Files that aren't for the main distro
+* [_/](./_) - Files that aren't for the main distro
   * [index.php](./_/index.php) - This file should be placed in a web server's web root,
     with all URLs mapping to it. It loads and starts Spaark
   * [test.php](./_/test.php) - A test script to check if:
     1. PHP is installed
     2. The correct version of PHP is installed
-* [/core](./core) - The main class files
-* [/default](./default) - Contains defaults for the framework:
+* [core/](./core) - The main class files
+* [default/](./default) - Contains defaults for the framework:
   * Default config
   * Default pages, css
   * The Spaark icon and logo
   * JavaScript for the client-side of the framework
-* [/licence/Mobile_Detect.txt](./licence/Mobile_Detect.txt) - Licence for Serban Ghita's Mobile Detect Class
-* [/Spaark.php](./Spaark.php) - Loads the core classes used by the framework, which are required before the autoloader can function
-* [/consts.php](./consts.php) - Constants regarding framework version and paths
-* [/README.md](./README.md) - This file!
+* [licence/Mobile_Detect.txt](./licence/Mobile_Detect.txt) - Licence for Serban Ghita's Mobile Detect Class
+* [Spaark.php](./Spaark.php) - Loads the core classes used by the framework, which are required before the autoloader can function
+* [consts.php](./consts.php) - Constants regarding framework version and paths
+* [README.md](./README.md) - This file!
 
 Licence (CC BY-NC-ND)
 ---------------------
