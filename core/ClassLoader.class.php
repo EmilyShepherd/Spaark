@@ -34,6 +34,18 @@ use \Spaark\Core\Model\Config;
             $this->file = '{Spaark}';
         }
     }
+    
+    class DeprecatedClassException extends \Exception
+    {
+        public function __construct($class)
+        {
+            parent::__construct
+            (
+                  $class . ', or one of its parents, has been marked '
+                . 'as deprecated'
+            );
+        }
+    }
 
     // }}}
 
@@ -220,9 +232,6 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         else
         {
             require_once($file);
-
-            $name =
-                substr($class, strrpos($class, '\\') + 1) . '_onload';
             
             if
             (
@@ -232,7 +241,15 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
             {
                 throw new NoClassInFileException($class);
             }
-            elseif (method_exists($class, $name))
+            elseif (defined($class . '::DEPRECATED'))
+            {
+                throw new DeprecatedClassException($class);
+            }
+            
+            $name =
+                substr($class, strrpos($class, '\\') + 1) . '_onload';
+            
+            if (method_exists($class, $name))
             {
                 $class::$name();
             }
