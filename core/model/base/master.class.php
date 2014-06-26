@@ -1,4 +1,4 @@
-<?php namespace Spaark\Core\Model;
+<?php namespace Spaark\Core\Model\Base;
 /**
  *
  */

@@ -9,6 +9,6 @@ class APC extends Cache
 
     protected function _read()
     {
-        $this->res = apc_fetch($this->where)
+        $this->res = apc_fetch($this->where);
     }
 }

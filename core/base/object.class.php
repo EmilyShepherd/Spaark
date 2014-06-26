@@ -95,7 +95,7 @@ abstract class Object
         
         if (class_exists($class))
         {
-            if (is_subclass_of($class, '\Spaark\Core\Model\Singleton'))
+            if (is_subclass_of($class, '\Spaark\Core\Model\Base\Singleton'))
             {
                 return $class::fromSingle();
             }

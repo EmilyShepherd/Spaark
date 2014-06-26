@@ -21,7 +21,7 @@
 /**
  * Parses JSON
  */
-class JSON extends Singleton
+class JSON extends Base\Singleton
 {
     /**
      * The parsed json, as an array

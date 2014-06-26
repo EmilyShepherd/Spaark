@@ -8,7 +8,7 @@ class CollectionPolicy extends Model
     {
         $this->data = $this->json->parse
         (
-            file_get_content(Config::APP_ROOT() . 'data/' . $policy . '.json'
+            file_get_content(Config::APP_ROOT() . 'data/' . $policy . '.json')
         );
     }
     
@@ -27,4 +27,3 @@ class CollectionPolicy extends Model
     }
 }
 
-?>

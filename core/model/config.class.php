@@ -3,7 +3,7 @@
  *
  */
 
-class Config extends Master
+class Config extends Base\Master
 {
     protected static function initMaster($name)
     {
