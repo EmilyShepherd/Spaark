@@ -6,6 +6,7 @@
  * Alexander.Shepherd@Gmail.com
  */
 
+use Spaark\Core\Instance;
 
 /**
  * This is an alias for Instance::start()
@@ -16,7 +17,7 @@
  */
 function Spaark($app = 'app', $uri = NULL)
 {
-    \Spaark\core\Instance::start($app, $uri);
+    Instance::start($app, $uri);
 }
 
 ?>
