@@ -6,6 +6,25 @@
  * Alexander.Shepherd@Gmail.com
  */
 
+// {{{ Exceptions
+    
+    /**
+     * This exception is thrown whenever a static class is instantiated 
+     */
+    class CannotInvokeStaticClassException extends \Exception
+    {
+        public function __construct($class)
+        {
+            parent::__construct
+            (
+                'Cannot instantiate static class: ' . $class
+            );
+        }
+    }
+    
+    // }}}
+    
+        ////////////////////////////////////////////////////////
 
 /**
  * Indicates that the class is static. This class does nothing except
@@ -14,17 +33,14 @@
 abstract class StaticClass
 {
     /**
-     * Throws a SystemException, as static classes cannot be
-     * instantiated.
+     * Throws a CannotInvokeStaticClassException, as static classes
+     * cannot be instantiated.
      *
-     * @throws SystemException Always
+     * @throws CannotInvokeStaticClassException Always
      */
-    public function __construct()
+    public final function __construct()
     {
-        throw new SystemException
-        (
-            'Attempted to instantiate a static class'
-        );
+        throw new CannotInvokeStaticClassException(get_called_class());
     }
 }
 
