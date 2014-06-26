@@ -1,3 +1,5 @@
+![Spaark](./default/images/logo.png)
+
 Spaark Framework
 ================
 
