@@ -46,7 +46,7 @@ class Config extends Base\Master
     private function loadConfig($name)
     {
         $reflect = $name::getHelper('reflect');
-        $parent  = $reflect ? $reflect->parent             : NULL;
+        $parent  = $reflect ? $reflect->parent : NULL;
         $upConf  = $parent
             ? $parent::getHelper('config')->attrs
             : array( );
