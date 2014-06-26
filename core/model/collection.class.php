@@ -13,7 +13,7 @@ use \Spaark\Core\Error\NoSuchMethodException;
 /**
  *
  */
-class Collection extends Model implements \Iterator, \Countable
+class Collection extends Base\Model implements \Iterator, \Countable
 {
     /**
      * Array of boxed objects in this collection

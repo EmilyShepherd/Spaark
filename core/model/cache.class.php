@@ -29,7 +29,7 @@ class CacheCorruptedException extends CacheMiss
 }
 
 
-class Cache extends Singleton
+class Cache extends Base\Singleton
 {
     public function cacheVal($key, $obj, $ttl = 0)
     {

@@ -10,7 +10,7 @@
 /**
  * Represents a path
  */
-class Path extends Model
+class Path extends Base\Model
 {
     /**
      * Takes a path, either as an array of parts or as a single string

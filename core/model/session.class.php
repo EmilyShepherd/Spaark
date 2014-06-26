@@ -6,7 +6,7 @@
 use \Spaark\Core\Error\NoSuchMethodException;
 
 
-class Session extends Singleton
+class Session extends Base\Singleton
 {
     public static function create()
     {

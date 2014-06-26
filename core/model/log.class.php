@@ -3,7 +3,7 @@
  *
  */
 
-class Log extends Entity
+class Log extends Base\Entity
 {
     const ERROR  = 'error';
     const WARN   = 'warn';
