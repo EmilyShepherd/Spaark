@@ -2,5 +2,5 @@
 
 class Model extends Base\Model
 {
-    const DEPRECIATED = true;
+    const DEPRECATED = true;
 }

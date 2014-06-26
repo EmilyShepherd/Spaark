@@ -5,6 +5,6 @@
 
 class Singleton extends Base\Singleton
 {
-    const DEPRECIATED = true;
+    const DEPRECATED = true;
 }
 

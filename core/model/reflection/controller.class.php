@@ -80,7 +80,7 @@
 /**
  * Reflects the controllers
  */
-class Controller extends \Spaark\Core\Model\Entity implements \Reflector
+class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
 {
 // {{{ static
     

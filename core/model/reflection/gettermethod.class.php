@@ -2,7 +2,7 @@
 
 use Spaark\Core\Model\CannotCreateModelException;
 
-class GetterMethod extends \Spaark\Core\Model\Entity
+class GetterMethod extends \Spaark\Core\Model\Base\Entity
 {
     private $reflect;
 

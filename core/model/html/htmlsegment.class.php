@@ -15,7 +15,7 @@ use \Spaark\Core\Error\NotFoundException;
 /**
  * Parses HTML documents / fragments to implement Spaark functionality
  */
-abstract class HTMLSegment extends \Spaark\Core\Model\Entity
+abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
 {
     /**
      * The response variables that this HTMLSegment defined at the top,

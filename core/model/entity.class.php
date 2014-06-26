@@ -2,5 +2,5 @@
 
 class Entity extends Base\Entity
 {
-    const DEPRECIATED = true;
+    const DEPRECATED = true;
 }
