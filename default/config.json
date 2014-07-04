@@ -10,8 +10,9 @@
         "htmlpath"  : "html/"
     },
     
-    "pagebuilder.path" : "pages/",
-    "htmlsegment.path" : "templates/",
+    "pagebuilder.path"  : "pages/",
+    "htmlsegment.path"  : "templates/",
+    "stdoutput.csspath" : "css/",
     
     
     "controller.path"  : "controller/",

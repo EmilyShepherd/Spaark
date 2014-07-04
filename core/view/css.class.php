@@ -139,7 +139,7 @@ class CSS extends OutputType
         $this->output = str_replace
         (
             '{HREF_ROOT}',
-            Config::HREF_ROOT(),
+            $this->config->app['href_root'],
             $this->output
         );
     }

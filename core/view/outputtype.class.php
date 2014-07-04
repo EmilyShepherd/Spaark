@@ -10,7 +10,7 @@
 /**
  * Represents an output format
  */
-abstract class OutputType
+abstract class OutputType extends \Spaark\Core\Model\Base\Model
 {
     /**
      * The raw input

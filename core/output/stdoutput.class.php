@@ -54,7 +54,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
         (
             file_get_contents
             (
-                Config::CSS_PATH() . trim(Instance::getRequest(), '/')
+                $this->config->csspath . trim(Instance::getRequest(), '/')
             )
         );
 
