@@ -84,13 +84,13 @@ class StdOutput extends \Spaark\Core\Base\Controller
      */
     public function image()
     {
-        $path = urldecode(Config::IMAGE_PATH() . Instance::getRequest());
+        $path = urldecode($this->config->imagepath . Instance::getRequest());
         if (!file_exists($path)) return;
         
         $ext = pathinfo(Instance::getRequest(), PATHINFO_EXTENSION);
 
         Output::mime('image/' . ($ext == 'jpg' ? 'jpeg' : $ext));
-        Output::ttl(INDEFINITE);
+        Output::ttl(-1);
 
         echo file_get_contents($path);
     }

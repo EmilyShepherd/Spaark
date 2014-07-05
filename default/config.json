@@ -13,6 +13,7 @@
     "pagebuilder.path"  : "pages/",
     "htmlsegment.path"  : "templates/",
     "stdoutput.csspath" : "css/",
+    "stdoutput.imagepath" : "images/",
     
     
     "controller.path"  : "controller/",
