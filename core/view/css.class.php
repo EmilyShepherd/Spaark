@@ -150,7 +150,7 @@ class CSS extends OutputType
         (
               '/(article|aside|command|details|dialog|summary|figure|'
             . 'figcaption|footer|header|mark|meter|nav|progress|'
-            . 'section)/', '.$1', $this->output
+            . 'section|main)/', '.$1', $this->output
         );
     }
 }

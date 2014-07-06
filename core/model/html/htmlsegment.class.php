@@ -257,7 +257,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
         (
               'article|aside|command|details|dialog|summary|figure|'
             . 'figcaption|footer|header|mark|meter|nav|progress|'
-            . 'section',
+            . 'section|main',
             'HTML5Handler',
             true
         );
