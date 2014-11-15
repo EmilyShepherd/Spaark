@@ -243,7 +243,7 @@ abstract class Model extends \Spaark\Core\Base\Object
     {
         $class = get_called_class();
         $cb    = array($class, '__' . $type . $id);
-        $throw = '\Spaark\Core\Model\\NoSuch' . $type . 'Exception';
+        $throw = '\Spaark\Core\Model\Base\NoSuch' . $type . 'Exception';
         
         if (method_exists($cb[0], $cb[1]))
         {
@@ -275,7 +275,7 @@ abstract class Model extends \Spaark\Core\Base\Object
         }
         
         //App Model Scope
-        $fullName = Config::NAME_SPACE() . 'Model\\' . $name;
+        $fullName = Config::getConf('namespace') . 'Model\\' . $name;
         if (class_exists($fullName))
         {
             return $fullName;

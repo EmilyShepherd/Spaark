@@ -43,6 +43,8 @@ class MySQLi extends Database
      */
     protected $mysqliClass = 'MySQLiConnection';
 
+    const MYSQLI_HELPER = 'MySQLiConnection';
+
     private $cols;
     
     /**

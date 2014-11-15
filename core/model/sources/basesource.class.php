@@ -1,7 +1,7 @@
 <?php namespace Spaark\Core\Model\Sources;
 
 use \Spaark\Core\Error\NoSuchMethodException;
-use \Spaark\Core\Model\Model;
+use \Spaark\Core\Model\Base\Model;
 
 
 abstract class BaseSource extends Model implements iSource
@@ -339,7 +339,7 @@ abstract class BaseSource extends Model implements iSource
     {
         $row = $this->_get($pos);
         $row = current($row); // TODO: stop ignoring other shit
-        $obj = Entity::getObj('id', $row['id']) ?: new $class();
+        $obj = $class::getObj('id', $row['id']) ?: new $class();
         
         $obj->loadArray($row);
 
