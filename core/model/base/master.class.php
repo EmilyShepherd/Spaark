@@ -186,7 +186,7 @@ abstract class Master extends Entity
      */
     protected static function build($class)
     {
-        return static::fromModel($class, NULL, STATIC_F + 1);
+        return NULL;
     }
 
     /**
