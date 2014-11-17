@@ -53,6 +53,7 @@ class CannotCreateModelException extends \Exception
     public function __construct($model, $from, $val)
     {
         $modelName = is_object($model) ? get_class($model) : $model;
+        $val       = is_array($val)    ? implode($val)     : $val;
         
         parent::__construct
         (
