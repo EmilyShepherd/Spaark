@@ -1,12 +1,13 @@
 <?php namespace Spaark\Core\Model\Reflection;
 
-class Model extends \Spaark\Core\Model\Base\Model
+class Model extends \Spaark\Core\Model\Base\Wrapper
 {
     private $reflector;
-
+    
     protected function __fromModel($model)
     {
         $this->reflector = new \ReflectionClass($model);
+        $this->object    = $this->reflector;
     }
 
     public function hasPublicMethod($method)

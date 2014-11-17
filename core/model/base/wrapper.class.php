@@ -5,7 +5,7 @@ class Wrapper extends Entity
     /**
      * The object to wrap
      */
-    private $object;
+    protected $object;
 
     /**
      * Routes all method calls to the MySQLi object
@@ -25,8 +25,10 @@ class Wrapper extends Entity
      * @param string $var The name of the variable to get
      * @return mixed The variable's value
      */
-    public function __get($var)
+    public function ___get($var)
     {
-        return $this->object->$var;
+        return $this->object
+            ? $this->object->$var
+            : NULL;
     }
 }
