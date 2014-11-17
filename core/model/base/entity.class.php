@@ -390,9 +390,23 @@ class Entity extends Model implements \Serializable
      */
     public function loadArray($array)
     {
-        $this->attrs = $array;
+        $this->attrs = array( );
         $this->dirty = false;
         $this->new   = false;
+
+        foreach ($array as $key => $value)
+        {
+            if (!$this->reflect->hasProperty($key))
+            {
+                $this->attrs[$key] = $value;
+            }
+            else
+            {
+                $prop = $this->reflect->getProperty($key);
+                $prop->setAccessible(true);
+                $prop->setValue($this, $value);
+            }
+        }
     }
     
     /**
