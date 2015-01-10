@@ -3,10 +3,35 @@
 use \Spaark\Core\Error\NoSuchMethodException;
 use \Spaark\Core\Model\Base\Model;
 
+// <editor-fold defaultstate="collapsed" desc="Exceptions">
+
+    class CannotSaveDataException extends \Exception
+    {
+        public function __construct()
+        {
+            parent::__construct('The given data is not acceptable');
+        }
+    }
+
+    class NoWhereSetException extends \Exception
+    {
+        public function __construct()
+        {
+            parent::__construct
+            (
+                  'You attempted to call update() without calling '
+                . 'where() first'
+            );
+        }
+    }
+
+// </editor-fold>
+
+        ////////////////////////////////////////////////////////
 
 abstract class BaseSource extends Model implements iSource
 {
-// {{{ Variables
+    // <editor-fold defaultstate="collapsed" desc="Variables">
 
     /**
      * Array of criterea for selection / deletion / update
@@ -74,11 +99,11 @@ abstract class BaseSource extends Model implements iSource
         return $this->res || $this->objs;
     }
 
-    // }}}
+    // </editor-fold>
 
         ////////////////////////////////////////////////////////
 
-// {{{ Abstract
+    // <editor-fold defaultstate="collapsed" desc="Abstract">
 
     /**
      * This should get the given data row / bundle.
@@ -103,11 +128,11 @@ abstract class BaseSource extends Model implements iSource
 
     abstract protected function _countRes();
 
-    // }}}
+    // </editor-fold>
 
         ////////////////////////////////////////////////////////
 
-// {{{ Object
+    // <editor-fold defaultstate="collapsed" desc="Methods">
 
     /**
      * Builds the Source
@@ -141,8 +166,9 @@ abstract class BaseSource extends Model implements iSource
         switch ($func)
         {
             case 'create':
+                return $this->_create($args[0]);
+
             case 'read':
-            case 'update':
             case 'delete':
             case 'count':
                 // Allow late passing of where() arguments
@@ -307,8 +333,6 @@ abstract class BaseSource extends Model implements iSource
             // 
             if (!$this->noCache || !is_object($obj))
             {
-                $class::cache($obj, 'id', $obj->id);
-
                 $this->objs[$pos] = $obj;
                 
                 // We are at the end of the resource. This means
@@ -339,9 +363,8 @@ abstract class BaseSource extends Model implements iSource
     {
         $row = $this->_get($pos);
         $row = current($row); // TODO: stop ignoring other shit
-        $obj = $class::getObj('id', $row['id']) ?: new $class();
-        
-        $obj->loadArray($row);
+        $obj = $class::instanceFromData($row, !$this->noCache);
+        $obj->setLoadedSource(get_class($this));
 
         return $obj;
     }
@@ -409,9 +432,56 @@ abstract class BaseSource extends Model implements iSource
         }
     }
 
+    public function update($arg0, $arg1 = NULL)
+    {
+        if ($arg1 === NULL)
+        {
+            $data = $arg0;
+        }
+        else
+        {
+            $this->where($arg0);
+            $data = $arg1;
+        }
+
+        $this->normalizeData($data);
+
+        if (!$data)
+        {
+            return 0;
+        }
+        if (!$this->where)
+        {
+            throw new NoWhereSetException();
+        }
+
+        return $this->_update($data);
+    }
+
+    private function normalizeData(&$data)
+    {
+        if (is_object($data))
+        {
+            if (is_callable(array($data, '__toArray')))
+            {
+                $data = $data->__toArray(true);
+            }
+            else
+            {
+                throw new CannotSaveDataException();
+            }
+        }
+        elseif (!is_array($data))
+        {
+            $data = (array)$data;
+        }
+    }
+    
+    // </editor-fold>
+
         ////////////////////////////////////////////////////////
 
-// {{{ Iterator
+    // <editor-fold defaultstate="collapsed" desc="Interator">
 
     /**
      * Rewinds back to the first element of the Iterator
@@ -466,11 +536,11 @@ abstract class BaseSource extends Model implements iSource
         $this->position++;
     }
 
-    // }}}
-
+    // </editor-fold>
+        
         ////////////////////////////////////////////////////////
 
-// {{{ ArrayAccess
+    // <editor-fold defaultstate="collapsed" desc="ArrayAccess">
 
     /**
      * Called to check if an offset exists
@@ -519,5 +589,5 @@ abstract class BaseSource extends Model implements iSource
         //
     }
 
-    // }}}
+    // </editor-fold>
 }

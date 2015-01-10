@@ -83,6 +83,30 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
 
 // {{{ object
 
+    protected function _create($data)
+    {
+        $values = array( );
+        $keys   = array( );
+
+        foreach ($data as $key => $value)
+        {
+            $keys[]   =
+                '`' . preg_replace('/[^A-Za-z0-9_]+/', '', $key) . '`';
+            $values[] =
+                $this->escape($value);
+        }
+
+        $this->execute
+        (
+              'INSERT INTO ' . $this->table
+            .     '(' . implode(',', $keys) . ') '
+            . 'VALUES '
+            .     '(' . implode(',', $values) . ')'
+        );
+
+        return $this->lastID();
+    }
+
     /**
      * Performs a read with the current options, setting the value to
      * $this->res
@@ -91,7 +115,10 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
     {
         try
         {
-            $this->res = $this->_execute('SELECT *');
+            $this->res = $this->executeWithConds
+            (
+                'SELECT * FROM ' . $this->table
+            );
 
             return $this->_countRes() ? $this : NULL;
         }
@@ -103,6 +130,29 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
         }
     }
 
+    protected function _update($data)
+    {
+        try
+        {
+            $set = array( );
+
+            foreach ($data as $key => $value)
+            {
+                $set[] = '`' . $key . '`=' . $this->escape($value);
+            }
+
+            $this->executeWithConds
+            (
+                  'UPDATE ' . $this->table . ' '
+                . 'SET ' . implode(',', $set)
+            );
+        }
+        catch (AlwaysFalseSQLException $e)
+        {
+            return 0;
+        }
+    }
+
     /**
      * Deletes entries matching the current options
      */
@@ -110,7 +160,10 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
     {
         try
         {
-            $this->success = $this->_execute('DELETE');
+            $this->success = $this->executeWithConds
+            (
+                'DELETE FROM ' . $this->table
+            );
         }
         catch (AlwaysFalseSQLException $e)
         {
@@ -128,7 +181,10 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
     {
         try
         {
-            $this->res = $this->_execute('SELECT COUNT(*) as c');
+            $this->res = $this->executeWithConds
+            (
+                'SELECT COUNT(*) as c FROM ' . $this->table
+            );
             $ret       = $this->_get(0);
             $this->res = NULL;
 
@@ -169,7 +225,37 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
      *     _count() / _read() / _delete()
      * @return The raw resource
      */
-    protected function _execute($start)
+    protected function _execute($start, $data = NULL)
+    {
+        $sql = $start . ' ' . implode(',', $this->model) . ' ';
+
+        if ($data)
+        {
+            $sql .= 'SET ';
+
+            foreach ($data as $key => $value)
+            {
+
+            }
+        }
+
+        return $this->execute($sql . $this->createSQLEnd());
+    }
+
+    protected function executeWithConds($sql)
+    {
+        return $this->execute($sql . $this->createSQLEnd());
+    }
+
+    /**
+     * @getter
+     */
+    protected function table()
+    {
+        return implode(',', $this->model);
+    }
+
+    protected function createSQLEnd()
     {
         $where = $this->whereToSQL();
 
@@ -178,9 +264,7 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
             throw new AlwaysFalseSQLException();
         }
 
-        $sql =
-              $start . ' FROM ' . implode(',', $this->model) . ' '
-            . 'WHERE ' . $where;
+        $sql = ' WHERE ' . $where;
 
         if ($this->group)
         {
@@ -201,7 +285,7 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
             $sql .= ' LIMIT ' . $this->start . ',' . $this->limit;
         }
 
-        return $this->execute($sql);
+        return $sql;
     }
 
     /**

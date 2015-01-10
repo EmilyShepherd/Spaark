@@ -70,6 +70,22 @@ use \Spaark\Core\Error\NoSuchMethodException;
 
     class InvalidFindByException extends NoSuchFindByException {}
 
+    class PropertyNotWritableException extends \Exception
+    {
+        public function __construct($property)
+        {
+            parent::__construct($property . ' is not writable');
+        }
+    }
+
+    class PropertyNotReadableException extends \Exception
+    {
+        public function __construct($property)
+        {
+            parent::__construct($property . ' is not readable');
+        }
+    }
+
     // }}}
 
         ////////////////////////////////////////////////////////
@@ -100,7 +116,7 @@ use \Spaark\Core\Error\NoSuchMethodException;
  *   Entity::fromId(9);
  * </code>
  */
-class Entity extends Model implements \Serializable
+class Entity extends Model
 {
 // {{{ static
     
@@ -341,6 +357,73 @@ class Entity extends Model implements \Serializable
             throw new NoSuchMethodException(get_called_class(), $name);
         }
     }
+
+    public static function instanceFromData($data, $cache = true)
+    {
+        $obj = static::findFromData($data);
+
+        if ($obj)
+        {
+            $cache = true;
+        }
+        else
+        {
+            $obj = static::blankInstance();
+        }
+
+        if ($cache)
+        {
+            static::recacheUsingData($obj, $data);
+        }
+
+        $obj->loadArray($data);
+
+        return $obj;
+    }
+
+    private static function findFromData($data)
+    {
+        $class = get_called_class();
+        
+        if (isset(static::$_cache[$class]))
+        {
+            foreach (static::$_cache[$class] as $key => $values)
+            {
+                if (isset($data[$key]) && isset($values[$data[$key]]))
+                {
+                    return $values[$data[$key]];
+                }
+            }
+        }
+    }
+
+    private static function recacheUsingData($obj, $data)
+    {
+        $class = get_class($obj);
+        
+        if (!isset(static::$_cache[$class]))
+        {
+            static::$_cache[$class] = array( );
+        }
+
+        foreach (static::$_cache[$class] as $key => &$values)
+        {
+            if (isset($data[$key]))
+            {
+                $value = $obj->propertyValue($key, false);
+
+                if (isset($values[$value]) && $values[$value] === $obj)
+                {
+                    unset($values[$value]);
+                }
+
+                if (isset($data[$key]))
+                {
+                    $values[$data[$key]] = $obj;
+                }
+            }
+        }
+    }
     
     // }}}
     
@@ -351,7 +434,9 @@ class Entity extends Model implements \Serializable
     /**
      * Array of the attribute names that came from a data source
      */
-    protected $attrs    = array( );
+    protected $attrs      = array( );
+
+    protected $properties = array( );
     
     /**
      * If true, changes have been made that require this entity to be
@@ -368,6 +453,29 @@ class Entity extends Model implements \Serializable
      * If true, this will attempt to save on destruction
      */
     protected $autoSave = false;
+
+    protected $loadedSource;
+
+    protected $id;
+
+    public function __construct()
+    {
+        foreach ($this->reflect->getProperties() as $prop)
+        {
+            $this->properties[$prop->getName()] =
+                $prop->getValue($this);
+        }
+    }
+
+    public function getLoadedSource()
+    {
+        return $this->loadedSource;
+    }
+
+    public function setLoadedSource($source)
+    {
+        $this->loadedSource = $source;
+    }
     
     /**
      * Sets the Entity's attributes based on the given array
@@ -396,6 +504,8 @@ class Entity extends Model implements \Serializable
 
         foreach ($array as $key => $value)
         {
+            $this->properties[$key] = $value;
+            
             if (!$this->reflect->hasProperty($key))
             {
                 $this->attrs[$key] = $value;
@@ -403,7 +513,6 @@ class Entity extends Model implements \Serializable
             else
             {
                 $prop = $this->reflect->getProperty($key);
-                $prop->setAccessible(true);
                 $prop->setValue($this, $value);
             }
         }
@@ -427,17 +536,29 @@ class Entity extends Model implements \Serializable
      */
     public function save()
     {
+        // If this was loaded from somewhere, save it back there.
+        // Otherwise, save it to the default location
+        $source =
+              ($this->loadedSource ? $this->loadedSource
+            : (static::$source     ? static::load(static::$source)
+            :                        NULL));
+
+        if (!$source) return false;
+
+        $source = new $source(get_called_class());
+        $data   = $this->__toArray(true);
+
         if ($this->new)
         {
-            $this->id  = $this->db->insert($this->attrs, true);
-            $this->new = false;
+            $this->id = $source->create($data);
         }
         else
         {
-            $this->db->update($this->id, $this->attrs);
+            $source->update($this->id, $data);
         }
         
-        $this->dirty = false;
+        $this->new        = false;
+        $this->properties = array_merge($this->properties, $data);
     }
     
     /**
@@ -448,6 +569,7 @@ class Entity extends Model implements \Serializable
         if (!$this->new)
         {
             $this->db->delete($this->id);
+            $this->new = true;
         }
     }
     
@@ -460,17 +582,37 @@ class Entity extends Model implements \Serializable
      */
     public function __get($var)
     {
-        if (isset($this->attrs[$var]))
+        if ($var !== 'reflect' && $value = $this->propertyValue($var))
         {
-            return $this->attrs[$var];
+            return $value;
         }
         else
         {
             return parent::__get($var);
         }
     }
+
+    private function propertyValue($var, $onlyReadable = true)
+    {
+        if (isset($this->attrs[$var]))
+        {
+            return $this->attrs[$var];
+        }
+        elseif ($this->reflect->hasProperty($var))
+        {
+            $prop = $this->reflect->getProperty($var);
+
+            if (!$onlyReadable || $prop->readable)
+            {
+                return $prop->getValue($this);
+            }
+            else
+            {
+                throw new PropertyNotReadableException($var);
+            }
+        }
+    }
     
-    // TODO: Less shit
     /**
      * Sets the value of an attribute
      *
@@ -480,14 +622,39 @@ class Entity extends Model implements \Serializable
     public function __set($var, $val)
     {
         $this->attrs[$var] = $val;
-        $this->dirty       = true;
+        
+        if (!isset($this->properties[$var]))
+        {
+            $this->properties[$var] = ($val === NULL ? TRUE : NULL);
+        }
+    }
+
+    public function __toArray($onlyDirty = false)
+    {
+        $array = array( );
+
+        foreach ($this->properties as $key => $original)
+        {
+            if ($this->reflect->hasProperty($key))
+            {
+                $prop  = $this->reflect->getProperty($key);
+                $value = $prop->getValue($this);
+
+                if (!$onlyDirty || $value != $original)
+                {
+                    $array[$key] = $value;
+                }
+            }
+        }
+
+        return $array;
     }
     
     /**
      * Serialises this entity
      *
      * @return string The serialised object
-     */
+     *
     public function serialize()
     {
         return serialize($this->attrs);
@@ -498,7 +665,7 @@ class Entity extends Model implements \Serializable
      * Unserialises this object
      *
      * @param string $str The serialised string
-     */
+     *
     public function unserialize($str)
     {
         $this->attrs = unserialize($str);
@@ -520,7 +687,8 @@ class Entity extends Model implements \Serializable
         
         return $obj;
     }
-    
+    */
+
     /**
      * If autoSave is enabled, this will save the object at destruct
      * time
