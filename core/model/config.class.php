@@ -7,8 +7,8 @@ class Config extends Base\Master
 {
     protected static function initMaster($name)
     {
-        $obj  = new static();
-        $json = static::getHelper('json');
+        $obj  = static::blankInstance();
+        $json = new JSON();
         
         $obj->loadArray
         (
@@ -45,6 +45,7 @@ class Config extends Base\Master
 
     private function loadConfig($name)
     {
+        $json    = new JSON();
         $reflect = $name::getHelper('reflect');
         $parent  = $reflect ? $reflect->parent : NULL;
         $upConf  = $parent
@@ -55,7 +56,7 @@ class Config extends Base\Master
         $path    = $this->config->configPath . $name;
         $arr     = \tree_merge_recursive
         (
-            $this->json->parseFile($path, false),
+            $json->parseFile($path, false),
             (array)$this->config->getValue($name),
             $upConf
         );

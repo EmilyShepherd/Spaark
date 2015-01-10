@@ -160,21 +160,13 @@ abstract class Model extends \Spaark\Core\Base\Object
     }
     
     /**
-     * Shortcut to create the model
-     *
-     * Useful for chaining pre PHP 5.4. Eg:
-     *   (new Model($value))->chain();   //Will work in 5.4+
-     *   Model::create($value)->chain(); //Will work in all versions
-     *
-     * Alternatively, the global with() method can be used:
-     *   \with(new Model($value))->chain(); //Will work in all versions
-     *
-     * @param mixed $val An arg for the the constructor
-     * @return static The created instance
+     * Creates an instance of the class, without calling the constructor
+     * @return object The created instance
      */
-    public static function create($val = NULL)
+    public static function blankInstance()
     {
-        return new static($val);
+        $ref = new \ReflectionClass(get_called_class());
+        return $ref->newInstanceWithoutConstructor();
     }
     
     /**
@@ -248,7 +240,7 @@ abstract class Model extends \Spaark\Core\Base\Object
         
         if (method_exists($cb[0], $cb[1]))
         {
-            $obj                 = new $class();
+            $obj                 = $class::blankInstance();
             $obj->{lcfirst($id)} = isset($args[0]) ? $args[0] : true;
             $cb[0]               = $obj;
 
