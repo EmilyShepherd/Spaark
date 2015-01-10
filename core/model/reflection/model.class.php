@@ -93,6 +93,23 @@ class Model extends Reflector
         return $parents;
     }
 
+    public function getProperties($any = false)
+    {
+        $props = array( );
+
+        foreach ($this->object->getProperties() as $prop)
+        {
+            $propObj = Property::fromRef(array($this, $prop));
+
+            if ($any || $propObj->isProperty)
+            {
+                $props[] = $propObj;
+            }
+        }
+
+        return $props;
+    }
+
     /**
      * Gets a property
      *

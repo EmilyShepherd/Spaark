@@ -197,6 +197,29 @@ class Reflector extends \Spaark\Core\Model\Base\Wrapper
     }
 
     /**
+     * Allows properties defined in $this->acceptedParams to be read
+     *
+     * Normally, a readonly property should define @readable, however
+     * this is not possible here, as this is the code that makes
+     * \@readable work!
+     *
+     * @param scalar $var The property to get
+     * @return mixed The value of the property if defined
+     * @see parent::__get()
+     */
+    public function __get($var)
+    {
+        if (in_array($var, array_keys($this->acceptedParams)))
+        {
+            return $this->$var;
+        }
+        else
+        {
+            return parent::__get($var);
+        }
+    }
+
+    /**
      * Sets the given property with the given value
      *
      * $this->$name = $value
@@ -222,11 +245,15 @@ class Reflector extends \Spaark\Core\Model\Base\Wrapper
     {
         $value = strtolower($value);
 
-        if ($value == 'true')
+        if ($value == '')
         {
             $this->$name = TRUE;
         }
-        elseif ($value == 'false')
+        elseif ($value === 'true')
+        {
+            $this->$name = TRUE;
+        }
+        elseif ($value === 'false')
         {
             $this->$name = FALSE;
         }

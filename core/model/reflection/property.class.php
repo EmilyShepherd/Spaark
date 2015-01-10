@@ -23,7 +23,8 @@ class Property extends Reflector
         'localkey'   => 'mixed',
         'foreignkey' => 'mixed',
         'linktable'  => 'mixed',
-        'readonly'   => 'bool',
+        'readable'   => 'bool',
+        'writeable'  => 'bool',
         'save'       => 'bool',
         'id'         => 'setKey',
         'type'       => 'setType'
@@ -35,9 +36,14 @@ class Property extends Reflector
     protected $save;
 
     /**
-     * Is this property read only?
+     * Is this property readable?
      */
-    protected $readonly;
+    protected $readable;
+
+    /**
+     * Is this property writable?
+     */
+    protected $writable;
 
     /**
      * What kind of property is this? Primary / Unique etc
@@ -158,5 +164,13 @@ class Property extends Reflector
     public function getValue($obj)
     {
         return $this->object->getValue($obj);
+    }
+
+    /**
+     * @getter
+     */
+    public function name()
+    {
+        return $this->object->getName();
     }
 }
