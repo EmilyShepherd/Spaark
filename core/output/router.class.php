@@ -10,7 +10,7 @@ use \Spaark\Core\Instance;
 use \Spaark\Core\Config\Config;
 use \Spaark\Core\Output;
 use \Spaark\Core\Model\Reflection\Controller;
-use \Spaark\Core\Model\CannotCreateModelException;
+use \Spaark\Core\Model\Base\CannotCreateModelException;
 use \Spaark\Core\Cache\Cache;
 use \Spaark\Core\Cache\CacheMiss;
 use \Spaark\Core\Cache\CacheEntry;
