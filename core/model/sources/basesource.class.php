@@ -432,6 +432,14 @@ abstract class BaseSource extends Model implements iSource
         }
     }
 
+    /**
+     * Performs an update with the given data
+     *
+     * @param array $data The data to update
+     *
+     * @param mixed $where The where clause to update on
+     * @param array $data  The data to use in the update
+     */
     public function update($arg0, $arg1 = NULL)
     {
         if ($arg1 === NULL)
@@ -458,6 +466,14 @@ abstract class BaseSource extends Model implements iSource
         return $this->_update($data);
     }
 
+    /**
+     * Normalises data used in the create / update functions
+     *
+     * These functions can either be given an array of data, or an
+     * object with a __toArray() method
+     *
+     * @param mixed &$data The data
+     */
     private function normalizeData(&$data)
     {
         if (is_object($data))

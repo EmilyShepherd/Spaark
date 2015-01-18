@@ -68,18 +68,37 @@ use \Spaark\Core\Error\NoSuchMethodException;
         }
     }
 
+    /**
+     * @deprecated
+     */
     class InvalidFindByException extends NoSuchFindByException {}
 
+    /**
+     * Thrown when trying to write to a property which is not writable
+     */
     class PropertyNotWritableException extends \Exception
     {
+        /**
+         * Constructs the exception
+         *
+         * @param string $property The name of the property
+         */
         public function __construct($property)
         {
             parent::__construct($property . ' is not writable');
         }
     }
 
+    /**
+     * Thrown when trying to read a property which is not readable
+     */
     class PropertyNotReadableException extends \Exception
     {
+        /**
+         * Constructs the exception
+         *
+         * @param string $property The name of the property
+         */
         public function __construct($property)
         {
             parent::__construct($property . ' is not readable');
@@ -300,6 +319,16 @@ class Entity extends Model
         return $obj;
     }
     
+    /**
+     * Attempts to return an iterable collection of objects
+     *
+     * @param string $name The findBy string to use
+     * @param array $args  The value to look for, in an array
+     * @param boolean $count Not used
+     * @return Iterable The list of objects
+     * @throws NoSuchFindByException if no findBy function / source is
+     *     set
+     */
     public static function findBy($name, $args, $count = false)
     {
         try
@@ -342,6 +371,16 @@ class Entity extends Model
         throw $nsfbe;
     }
     
+    /**
+     * Handles magic static functions - used for fromX() and findByX()
+     *
+     * @param string $name The called function
+     * @param array $args  The arguments used in the method call
+     * @return mixed The return from the findBy / from method
+     * @throws NoSuchMethodException if the method isn't a findBy / from
+     * @see self::from()
+     * @see self::findBy()
+     */
     public static function __callStatic($name, $args)
     {
         if (substr($name, 0, 4) == 'from')
@@ -358,6 +397,15 @@ class Entity extends Model
         }
     }
 
+    /**
+     * Returns an instance from the given data, either by finding it
+     * already cached, or by creating a new one
+     *
+     * @param array $data The data to create an object from
+     * @param boolean $cache If false, newly created instances won't be
+     *     cached
+     * @return static The loaded / new object
+     */
     public static function instanceFromData($data, $cache = true)
     {
         $obj = static::findFromData($data);
@@ -381,6 +429,14 @@ class Entity extends Model
         return $obj;
     }
 
+    /**
+     * Searches the cache for an object comparing the keys in the cache
+     * with the given data
+     *
+     * @param array $data The data to search for
+     * @return static The object, if found. NULL, otherwise
+     * @see self::instanceFromData()
+     */
     private static function findFromData($data)
     {
         $class = get_called_class();
@@ -397,6 +453,17 @@ class Entity extends Model
         }
     }
 
+    /**
+     * Recache the given object using the given data
+     *
+     * This will uncache the object from all the keys it is currently
+     * cached under, and recache them, using the data from the given
+     * array
+     *
+     * @param Entity $obj The object to recache
+     * @param array $data The data to recache by
+     * @see static::instanceFromData()
+     */
     private static function recacheUsingData($obj, $data)
     {
         $class = get_class($obj);
@@ -436,6 +503,14 @@ class Entity extends Model
      */
     protected $attrs      = array( );
 
+    /**
+     * Saves the state of the objects properties since the last save
+     * 
+     * This is used to check which properties are dirty and in need
+     * of saving when save() is called
+     *
+     * @see static::save()
+     */
     protected $properties = array( );
     
     /**
@@ -454,10 +529,25 @@ class Entity extends Model
      */
     protected $autoSave = false;
 
+    /**
+     * Records which source this object was loaded from
+     */
     protected $loadedSource;
 
+    /**
+     * ID
+     *
+     * @deprecated
+     */
     protected $id;
 
+    /**
+     * Constructs a blank copy of the entity by saving the state of each
+     * of its properties
+     *
+     * NB: The constructor is NOT called when the object is loaded via
+     * findBy or from, use the appropriate magic functions for that
+     */
     public function __construct()
     {
         foreach ($this->reflect->getProperties() as $prop)
@@ -467,11 +557,21 @@ class Entity extends Model
         }
     }
 
+    /**
+     * Returns the loaded source
+     *
+     * @return string The name of the loaded source
+     */
     public function getLoadedSource()
     {
         return $this->loadedSource;
     }
 
+    /**
+     * Sets the loaded source
+     *
+     * @param string $source The name of the loaded source
+     */
     public function setLoadedSource($source)
     {
         $this->loadedSource = $source;
@@ -530,7 +630,6 @@ class Entity extends Model
         return \iget($this->attrs, $var);
     }
     
-    // TODO: Better data source stuff
     /**
      * Saves this to a data source
      */
@@ -592,6 +691,16 @@ class Entity extends Model
         }
     }
 
+    /**
+     * Returns the value of the given property
+     *
+     * @param string $var The name of the property to read
+     * @param boolean $onlyReadable If true, only readable properties
+     *     can be accessed
+     * @return mixed The value of the property
+     * @throws PropertyNotReadableException If trying to read a not-
+     *     readable property with $onlyReadable set to true
+     */
     private function propertyValue($var, $onlyReadable = true)
     {
         if (isset($this->attrs[$var]))
@@ -629,6 +738,13 @@ class Entity extends Model
         }
     }
 
+    /**
+     * Returns the object as an array
+     *
+     * @param boolean $onlyDirty If true, only dirty properties will be
+     *     returned in the array
+     * @return array The array of the object's properties
+     */
     public function __toArray($onlyDirty = false)
     {
         $array = array( );
@@ -649,45 +765,6 @@ class Entity extends Model
 
         return $array;
     }
-    
-    /**
-     * Serialises this entity
-     *
-     * @return string The serialised object
-     *
-    public function serialize()
-    {
-        return serialize($this->attrs);
-    }
-    
-    // TODO: Broken
-    /**
-     * Unserialises this object
-     *
-     * @param string $str The serialised string
-     *
-    public function unserialize($str)
-    {
-        $this->attrs = unserialize($str);
-        
-        if
-        (
-            (isset($this->attrs['id'])) &&
-            ($obj = static::getObj('id', $this->attrs['id']))
-        )
-        {
-            $obj->attrs = $this->attrs;
-        }
-        else
-        {
-            $obj = $this;
-        }
-        
-        static::cache($obj);
-        
-        return $obj;
-    }
-    */
 
     /**
      * If autoSave is enabled, this will save the object at destruct
