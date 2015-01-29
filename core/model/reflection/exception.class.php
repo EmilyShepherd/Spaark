@@ -2,8 +2,8 @@
 /**
  * Spaark
  *
- * Copyright (C) 2012 Alexander Shepherd
- * Alexander.Shepherd@Gmail.com
+ * Copyright (C) 2012 Emily Shepherd
+ * emily@emilyshepherd.me
  */
 
 class Exception extends Model implements \IteratorAggregate

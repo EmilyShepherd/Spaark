@@ -2,8 +2,8 @@
 /**
  * Spaark
  *
- * Copyright (C) 2012 Alexander Shepherd
- * Alexander.Shepherd@Gmail.com
+ * Copyright (C) 2012 Emily Shepherd
+ * emily@emilyshepherd.me
  */
 
 
@@ -66,8 +66,8 @@ abstract class OutputType extends \Spaark\Core\Model\Base\Model
                       '***************************************',
                       '           Powered By Spaark           ',
                       '                                       ',
-                      ' Copyright (C) 2012 Alexander Shepherd ',
-                      '     Alexander.Shepherd@gmail.com      ',
+                      ' Copyright (C) 2012 Emily Shepherd ',
+                      '     emily@emilyshepherd.me      ',
                       '             www.sweeb.net             ',
                       '***************************************'
                   )

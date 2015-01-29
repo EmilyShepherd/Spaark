@@ -2,8 +2,8 @@
 /**
  * Spaark
  *
- * Copyright (C) 2012 Alexander Shepherd
- * Alexander.Shepherd@Gmail.com
+ * Copyright (C) 2012 Emily Shepherd
+ * emily@emilyshepherd.me
  *
  * This file defines Spaark's environment variables and includes the
  * core files that Spaark requires to operate.
@@ -12,7 +12,7 @@
  * the cache and sending them. Spaark will automatically load the rest
  * of itself if no cached Output exists.
  *
- * @author Alexander Shepherd
+ * @author Emily Shepherd
  * @package Spaark
  * @subpackage core
  *

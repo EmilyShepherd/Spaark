@@ -3,7 +3,7 @@
 
 /* SPECIAL THANKS */
     Spaark Developer: Emily Shepherd
-    Email: alexander.shepherd@gmail.com
+    Email: emily@emilyshepherd.me
     Site: http://www.sweeb.net/
 
 /* SITE */
