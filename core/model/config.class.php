@@ -8,7 +8,7 @@ class Config extends Base\Master
     protected static function initMaster($name)
     {
         $obj  = static::blankInstance();
-        $json = new JSON();
+        $json = new Encoding\JSON();
         
         $obj->loadArray
         (
@@ -45,7 +45,7 @@ class Config extends Base\Master
 
     private function loadConfig($name)
     {
-        $json    = new JSON();
+        $json    = new Encoding\JSON();
         $reflect = $name::getHelper('reflect');
         $parent  = $reflect ? $reflect->parent : NULL;
         $upConf  = $parent

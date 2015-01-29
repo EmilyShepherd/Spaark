@@ -1,9 +1,9 @@
-<?php namespace Spaark\Core\Model;
+<?php namespace Spaark\Core\Model\Encoding;
 /**
  * Spaark
  *
- * Copyright (C) 2012 Alexander Shepherd
- * Alexander.Shepherd@Gmail.com
+ * Copyright (C) 2012 Emily Shepherd
+ * emily@emilyshepherd.me
  */
 
 
@@ -21,7 +21,7 @@
 /**
  * Parses JSON
  */
-class JSON 
+class JSON extends Encoding
 {
     /**
      * The parsed json, as an array
@@ -37,6 +37,16 @@ class JSON
     private $clever;
     
     private $array;
+
+    public function decode($data)
+    {
+        return json_decode($data);
+    }
+
+    public function encode($data)
+    {
+        return json_encode($data);
+    }
     
     /**
      * Parses the gievn data and returns the array representing it
