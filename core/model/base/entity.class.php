@@ -721,6 +721,65 @@ class Entity extends Model
             }
         }
     }
+
+    private function setProperty($var, $val, $onlyWritable = true)
+    {
+        if ($this->reflect->hasProperty($var))
+        {
+            $prop = $this->reflect->getProperty($var);
+
+            if (!$onlyWritable || $prop->writable)
+            {
+                switch ($prop->type)
+                {
+                    case 'int':
+                        $val = (int)$val;
+                        break;
+
+                    case 'float':
+                        $val = (float)$val;
+                        break;
+
+                    case 'string':
+                        $val = (string)$val;
+                        break;
+
+                    case 'boolean':
+                        $val = (boolean)$val;
+                        break;
+
+                    case 'array':
+                        $val = new \ArrayObject((array)$val);
+
+                    case NULL:
+                        break;
+
+                    default:
+                        if ($class = static::load($prop->type))
+                        {
+                            if (is_a($class, '\Spaark\Core\Model\Base\Model'))
+                            {
+                                
+                            }
+                        }
+                }
+                $prop->setValue($this, $val);
+            }
+            else
+            {
+                throw new PropertyNotWritableException($var);
+            }
+        }
+        else
+        {
+            $this->attrs[$var] = $val;
+        
+            if (!isset($this->properties[$var]))
+            {
+                $this->properties[$var] = ($val === NULL ? TRUE : NULL);
+            }
+        }
+    }
     
     /**
      * Sets the value of an attribute
@@ -730,12 +789,7 @@ class Entity extends Model
      */
     public function __set($var, $val)
     {
-        $this->attrs[$var] = $val;
-        
-        if (!isset($this->properties[$var]))
-        {
-            $this->properties[$var] = ($val === NULL ? TRUE : NULL);
-        }
+        $this->setProperty($var, $val);
     }
 
     /**

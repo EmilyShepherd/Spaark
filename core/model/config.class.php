@@ -8,7 +8,7 @@ class Config extends Base\Master
     protected static function initMaster($name)
     {
         $obj  = static::blankInstance();
-        $json = new Encoding\JSON();
+        $json = Encoding\JSON::blankInstance();
         
         $obj->loadArray
         (

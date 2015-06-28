@@ -12,6 +12,16 @@ class Model extends Reflector
      * @depricated Use $this->object instead
      */
     private $reflector;
+
+    /**
+     * This has to be a property as Model::call() sets self->model. This
+     * is normally handled automatically by invoking the reflector, but
+     * that is not possible in this case as this *is* the reflector that
+     * would be instanciated - this would start an infinate loop
+     *
+     * @see Model::call()
+     */
+    protected $model;
     
     /**
      * Creates the Model Reflector from the given model class name

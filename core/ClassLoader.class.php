@@ -57,6 +57,8 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
      * Mapping of namespaces starts to file paths
      */
     private static $starts = array( );
+
+    private static $models = array( );
     
     /**
      * Used when loading classes to prevent infinate loops
@@ -69,6 +71,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
     public static function init()
     {
         self::$starts['spaark'] = SPAARK_PATH;
+        self::$models[]         = 'Spaark\Core\Model\\';
         
         spl_autoload_register('Spaark\Core\ClassLoader::autoload');
     }
@@ -80,6 +83,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
             Config::getConf('namespace'), '\\'
         ));
         self::$starts[$ns] = ROOT;
+        self::$models[]    = $ns . '\Model\\';
     }
     
     /**
@@ -115,6 +119,8 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
      */
     private static function _load($class, $tryModel = true)
     {
+        if (self::exists($class)) return true;
+
         $class = ltrim($class, '\\');
         $parts = explode('\\', $class);
         $first = strtolower($parts[0]);
@@ -137,7 +143,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         
         if (self::getFile($path, $class))
         {
-            return true;
+            return $class;
         }
         elseif ($tryModel && !self::$triedModel)
         {
@@ -147,7 +153,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
             {
                 class_alias($model, $class);
                 
-                return true;
+                return $model;
             }
         }
 
@@ -196,19 +202,15 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
                 return $fullName;
             }
         }
-        
-        //App Model Scope
-        $fullName = substr(Config::getConf('namespace'), 1) . 'Model\\' . $name;
-        if (self::_load($fullName))
+
+        foreach (self::$models as $model)
         {
-            return $fullName;
-        }
-        
-        //Spaark Model Scope
-        $fullName = 'Spaark\\Core\\Model\\' . $name;
-        if (self::_load($fullName))
-        {
-            return $fullName;
+            //Spaark Model Scope
+            $fullName = $model . $name;
+            if (self::_load($fullName))
+            {
+                return $fullName;
+            }
         }
 
         return false;
@@ -233,11 +235,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         {
             require_once($file);
             
-            if
-            (
-                !class_exists($class, false) &&
-                !interface_exists($class, false)
-            )
+            if (!self::exists($class))
             {
                 throw new NoClassInFileException($class);
             }
@@ -256,6 +254,13 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
             
             return true;
         }
+    }
+
+    public static function exists($class)
+    {
+        return
+            class_exists($class, false) ||
+            interface_exists($class, false);
     }
     
     /*
