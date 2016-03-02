@@ -53,8 +53,6 @@ class Instance extends \Spaark\Core\Base\StaticClass
         self   :: buildURI($uri);
         self   :: handleSlashes();
         
-     // self   :: tryMobile();
-        
      // self   :: loadFromCache();
         ClassLoader :: appInit();
         self   :: init();
@@ -177,24 +175,6 @@ class Instance extends \Spaark\Core\Base\StaticClass
                 $uri .= $_SERVER['QUERY_STRING'];
             }
             return $uri;
-        }
-    }
-    
-    private static function tryMobile()
-    {
-        if (Config::getConf('mobile'))
-        {
-            require_once FRAMEWORK . 'lib/Mobile_Detect.php';
-            
-            $mob = new Mobile_Detect();
-            
-            define('MOBILE', $mob->isMobile());
-            define('MOB', MOBILE ? 'mobile_' : '');
-        }
-        else
-        {
-            define('MOBILE', false);
-            define('MOB', '');
         }
     }
     

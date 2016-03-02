@@ -20,7 +20,6 @@ File Structure
   * Default pages, css
   * The Spaark icon and logo
   * JavaScript for the client-side of the framework
-* [licence/Mobile_Detect.txt](./licence/Mobile_Detect.txt) - Licence for Serban Ghita's Mobile Detect Class
 * [Spaark.php](./Spaark.php) - Loads the core classes used by the framework, which are required before the autoloader can function
 * [consts.php](./consts.php) - Constants regarding framework version and paths
 * [README.md](./README.md) - This file!
