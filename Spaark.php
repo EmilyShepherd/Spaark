@@ -35,11 +35,6 @@ require_once SPAARK_PATH . 'core/base/StaticClass.class.php';
 require_once SPAARK_PATH . 'core/base/ValueHolder.class.php';
 
 /**
- * Required to load cached Outputs
- */
-//require_once SPAARK_PATH . 'core/cache/cache.class.php';
-
-/**
  * Required because CacheEntry implements Cacheable
  */
 require_once SPAARK_PATH . 'core/cache/cacheable.interface.php';
@@ -54,11 +49,6 @@ require_once SPAARK_PATH . 'core/cache/cacheentry.class.php';
  * Thrown when the requested cache doesn't exist
  */
 require_once SPAARK_PATH . 'core/cache/cachemiss.class.php';
-
-/**
- * Required to echo an Output
- */
-//require_once SPAARK_PATH . 'core/Output.class.php';
 
 /**
  * Required to because Config extends this
