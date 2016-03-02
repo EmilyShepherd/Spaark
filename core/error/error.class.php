@@ -97,8 +97,7 @@ final class Error extends \Spaark\Core\Base\StaticClass
             (
                 'message'   => $error['message'],
                 'file'      => $error['file'],
-                'line'      => $error['line'],
-                'signature' => SIGNATURE
+                'line'      => $error['line']
             )
         );
         
