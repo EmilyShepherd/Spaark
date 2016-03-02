@@ -24,7 +24,5 @@ define('ROOT', dirname($_SERVER['SCRIPT_FILENAME']) . DS);
  */
 define('SPAARK_PATH', dirname(__FILE__) . DS);
 
-define('USE_APC', function_exists('apc_fetch'));
-
 
 ?>

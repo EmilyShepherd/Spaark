@@ -110,7 +110,7 @@ class Cache extends \Spaark\Core\Model\Base\Entity
         
         //Try the APC cache
         $apc_name = Config::CACHE_ID() . ':' . $bucket . '/' . $cache;
-        if (USE_APC && apc_exists($apc_name))
+        if (apc_exists($apc_name))
         {
             return
                 self::$buckets[$bucket][$cache] = apc_fetch($apc_name);
@@ -131,7 +131,7 @@ class Cache extends \Spaark\Core\Model\Base\Entity
     public static function deleteItem($bucket, $cache)
     {
         $apc_name = Config::CACHE_ID() . ':' . $bucket . '/' . $cache;
-        if (USE_APC && apc_exists($apc_name))
+        if (apc_exists($apc_name))
         {
             apc_delete($apc_name);
         }
@@ -223,7 +223,7 @@ class Cache extends \Spaark\Core\Model\Base\Entity
                 
                 if (!$obj->valid())
                 {
-                    if (USE_APC) apc_delete($apcname . $cache);
+                    apc_delete($apcname . $cache);
                     
                     continue;
                 }
@@ -232,7 +232,7 @@ class Cache extends \Spaark\Core\Model\Base\Entity
                 
                 if ($obj->dirty())
                 {
-                    if (USE_APC) apc_store($apcname . $cache, $obj);
+                    apc_store($apcname . $cache, $obj);
                     
                     $save = true;
                 }
