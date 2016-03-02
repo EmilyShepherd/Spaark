@@ -197,8 +197,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
             '404',
             array
             (
-                'url'       => Instance::getRequest(),
-                'signature' => $this->config->app['name'] . ' on ' . SIGNATURE
+                'url'       => Instance::getRequest()
             )
         );
     }
@@ -220,8 +219,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
             'error',
             array
             (
-                'error'     => $err,
-                'signature' => SIGNATURE
+                'error'     => $err
             )
         );
     }
