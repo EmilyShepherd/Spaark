@@ -23,6 +23,3 @@ define('ROOT', dirname($_SERVER['SCRIPT_FILENAME']) . DS);
  * The path to the Spaark library
  */
 define('SPAARK_PATH', dirname(__FILE__) . DS);
-
-
-?>
