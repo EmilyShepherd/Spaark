@@ -15,7 +15,7 @@ use Spaark\Core\Cache\CacheMiss;
  * Handles a request, either by using its cached Output, or by running
  * it through the Router
  */
-class Instance extends \Spaark\Core\Base\StaticClass
+class Instance
 {
     /**
      * This is the URI we are handling, minus the HREF_ROOT of the site.
@@ -26,6 +26,12 @@ class Instance extends \Spaark\Core\Base\StaticClass
      * The Router object for this Request
      */
     private static $router;
+
+    public static function bootstrap($site, $uri = NULL)
+    {
+        ClassLoader :: init();
+        $n = new Instance($site, $uri);
+    }
     
     /**
      * Sets up Spaark's environment and attempts to handle the request.
@@ -43,9 +49,8 @@ class Instance extends \Spaark\Core\Base\StaticClass
      * @param string $uri The request URI
      * @see Instance:handleFragment()
      */
-    public static function start($site, $uri = NULL)
+    public function __construct($site, $uri = NULL)
     {
-        ClassLoader :: init();
         Config :: init($site);
 
         // TODO: This should run before the Config is loaded really

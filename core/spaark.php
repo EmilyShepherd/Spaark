@@ -17,7 +17,7 @@ use Spaark\Core\Instance;
  */
 function Spaark($app = 'app', $uri = NULL)
 {
-    Instance::start($app, $uri);
+    Instance::bootstrap($app, $uri);
 }
 
 ?>
