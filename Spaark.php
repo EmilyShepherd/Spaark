@@ -61,7 +61,7 @@ require_once SPAARK_PATH . 'core/config/ConfigReader.class.php';
  * Required to handle a request, either from cached output or by
  * building it
  */
-require_once SPAARK_PATH . 'core/Request.class.php';
+require_once SPAARK_PATH . 'core/instance.class.php';
 
 /**
  * PHP replacement / extension functions
