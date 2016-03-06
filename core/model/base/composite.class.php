@@ -6,8 +6,8 @@
  * and open the template in the editor.
  */
 
-use Spaark\Core\Util\DataConverter\RelationalConverter;
-use Spaark\Core\Util\DataConverter\DimensionalConverter;
+use Spaark\Core\Util\DataMapper\RelationalConverter;
+use Spaark\Core\Util\DataMapper\DimensionalConverter;
 
 /**
  * Description of composite
