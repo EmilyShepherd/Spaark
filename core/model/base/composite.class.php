@@ -155,7 +155,7 @@ abstract class Composite extends Model
      * @throws PropertyNotReadableException If trying to read a not-
      *     readable property with $onlyReadable set to true
      */
-    protected function propertyValue($var, $onlyReadable = true)
+    public function propertyValue($var, $onlyReadable = true, $init = true)
     {
         if (isset($this->attrs[$var]))
         {
@@ -167,7 +167,7 @@ abstract class Composite extends Model
 
             if (!$onlyReadable || $var === 'id' || $prop->readable)
             {
-                return $this->initialiseProperty($prop);
+                return $this->initialiseProperty($prop, $init);
             }
             else
             {
@@ -176,11 +176,11 @@ abstract class Composite extends Model
         }
     }
     
-    private function initialiseProperty($prop)
+    private function initialiseProperty($prop, $init = true)
     {
         $value = $prop->getValue($this);
         
-        if ($value === NULL && $prop->writable)
+        if ($init && $value === NULL && $prop->writable)
         {
             if ($prop->type->isArray)
             {
