@@ -121,19 +121,15 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
     {
         if (self::exists($class)) return true;
 
-        $class = ltrim($class, '\\');
-        $parts = explode('\\', $class);
-        $first = strtolower($parts[0]);
-        
+        $class  = ltrim($class, '\\');
+        $parts  = explode('\\', $class);
+        $first  = strtolower($parts[0]);
+
         if (isset(self::$starts[$first]))
         {
-            $_parts = $parts;
-            
-            unset($_parts[0]);
-            
             $path =
                   self::$starts[$first]
-                . strtolower(implode(DS, $_parts)) . '.class.php';
+                . strtolower(implode(DS, array_slice($parts, 1))) . '.class.php';
         }
         else
         {
@@ -145,7 +141,16 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         {
             return $class;
         }
-        elseif ($tryModel && !self::$triedModel)
+        
+        $newClass = implode('\\', array_slice($parts, 0, -1));
+        $newPath  = dirname($path) . '.class.php';
+
+        if (self::getFile($newPath, $newClass) && self::exists($class))
+        {
+            return $class;
+        }
+        
+        if ($tryModel && !self::$triedModel)
         {
             $model = $parts[count($parts) - 1];
             
