@@ -24,10 +24,11 @@ class Property extends Reflector
         'foreignkey' => 'mixed',
         'linktable'  => 'mixed',
         'readable'   => 'bool',
-        'writeable'  => 'bool',
+        'writable'   => 'bool',
         'save'       => 'bool',
         'id'         => 'setKey',
-        'type'       => 'setType'
+        'type'       => 'setType',
+        'standalone' => 'bool'
     );
 
     /**
@@ -89,6 +90,8 @@ class Property extends Reflector
      * 
      */
     protected $direction;
+    
+    protected $standalone;
 
     /**
      * Parses the doctype and infers the foreign and local keys if they
@@ -99,22 +102,14 @@ class Property extends Reflector
     public function parse()
     {
         parent::parse();
-
+        
         $this->object->setAccessible(true);
-
-        if (!$this->foreignkey && !$this->localkey)
+        
+        if (!$this->type) return;
+        
+        if ($this->standalone === NULL)
         {
-            $this->localkey   = $this->object->getName() . '_id';
-            $this->foreignkey = 'id';
-        }
-        elseif (!$this->localkey)
-        {
-            $parts          = explode('_', $this->foreignkey);
-            $this->localkey = $parts[1];
-        }
-        elseif (!$this->foreignkey)
-        {
-            throw new \Exception('Unable to determin foreignkey');
+            $this->standalone = $this->type->isStandalone;
         }
     }
 
@@ -142,15 +137,26 @@ class Property extends Reflector
      */
     protected function setType($name, $value)
     {
+        $key = NULL;
+        
         if (!preg_match('/^array\((.*?)\)$/', $value, $match))
         {
-            $this->type = $value;
+            $type = $value;
+            $many = false;
         }
         else
         {
-            $this->many = true;
-            $this->type = $match[1];
+            $type = $match[1];
+            $many = true;
         }
+        
+        if (preg_match('/^(.*?)\:(.*?)$/', $type, $match))
+        {
+            $type = $match[1];
+            $key  = $match[2];
+        }
+        
+        $this->type = new Type($type, $many, $key);
     }
 
     /**

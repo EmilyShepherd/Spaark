@@ -8,7 +8,6 @@
 
 use \Spaark\Core\Error\NoSuchMethodException;
 use \Spaark\Core\Config\Config;
-use \Spaark\Core\Base\Controller;
 
 
         ////////////////////////////////////////////////////////
@@ -165,8 +164,11 @@ abstract class Model extends \Spaark\Core\Base\Object
      */
     public static function blankInstance()
     {
-        $ref = new \ReflectionClass(get_called_class());
-        return $ref->newInstanceWithoutConstructor();
+        $reflect      = static::getHelper('reflect');
+        $obj          = $reflect->newInstanceWithoutConstructor();
+        //$obj->reflect = $reflect;
+        
+        return $obj;
     }
     
     /**
@@ -256,6 +258,8 @@ abstract class Model extends \Spaark\Core\Base\Object
     
     public static function load($name, $localScope = NULL)
     {
+        return \Spaark\Core\ClassLoader::loadModel($name, $localScope);
+        
         //Local Scope
         if ($localScope)
         {

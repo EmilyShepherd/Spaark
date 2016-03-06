@@ -6,7 +6,6 @@
  * emily@emilyshepherd.me
  */
 
-use \Spaark\Core\Model\Database\SQLException;
 use \Spaark\Core\Error\NoSuchMethodException;
 
 // {{{ Constants
@@ -115,17 +114,17 @@ use \Spaark\Core\Error\NoSuchMethodException;
  * memory
  *
  * Eg:
- * <code>
+ * <code><pre>
  *   //Query data source for id 4, create object, cache and return
  *   Entity::fromId(4);
  *
  *   //Notice that a cached object with id=4 already exists, so return
  *   //that instead of querying data source
  *   Entity::fromId(4);
- * </code>
+ * </pre></code>
  *
  * It will also cache accross keys:
- * <code>
+ * <code><pre>
  *   //Query data source for id 4, create object, cache and return
  *   Entity::fromEmail('email@example.com');
  *   //returns Entity{id: 9, email: 'email@example.com', name: 'Joe'}
@@ -133,18 +132,18 @@ use \Spaark\Core\Error\NoSuchMethodException;
  *   //Even though the above Entity was created from the email key, the
  *   //cache will check its id and return that anyway
  *   Entity::fromId(9);
- * </code>
+ * </pre></code>
  */
-class Entity extends Model
+class Entity extends Composite
 {
-// {{{ static
-    
     /**
      * The cache of constructed objects
      */
     public static $_cache = array( );
 
     protected static $source;
+    
+    private static $visited = array( );
     
     // TODO: Cache is broken
     /**
@@ -492,32 +491,12 @@ class Entity extends Model
         }
     }
     
-    // }}}
-    
-        ////////////////////////////////////////////////////////
-    
-// {{{ object
-    
     /**
-     * Array of the attribute names that came from a data source
-     */
-    protected $attrs      = array( );
-
-    /**
-     * Saves the state of the objects properties since the last save
-     * 
-     * This is used to check which properties are dirty and in need
-     * of saving when save() is called
+     * ID
      *
-     * @see static::save()
+     * @type int
      */
-    protected $properties = array( );
-    
-    /**
-     * If true, changes have been made that require this entity to be
-     * resaved
-     */
-    protected $dirty    = false;
+    protected $id;
     
     /**
      * If true, this is a new object
@@ -533,102 +512,12 @@ class Entity extends Model
      * Records which source this object was loaded from
      */
     protected $loadedSource;
-
-    /**
-     * ID
-     *
-     * @deprecated
-     */
-    protected $id;
-
-    /**
-     * Constructs a blank copy of the entity by saving the state of each
-     * of its properties
-     *
-     * NB: The constructor is NOT called when the object is loaded via
-     * findBy or from, use the appropriate magic functions for that
-     */
-    public function __construct()
-    {
-        foreach ($this->reflect->getProperties() as $prop)
-        {
-            $this->properties[$prop->getName()] =
-                $prop->getValue($this);
-        }
-    }
-
-    /**
-     * Returns the loaded source
-     *
-     * @return string The name of the loaded source
-     */
-    public function getLoadedSource()
-    {
-        return $this->loadedSource;
-    }
-
-    /**
-     * Sets the loaded source
-     *
-     * @param string $source The name of the loaded source
-     */
-    public function setLoadedSource($source)
-    {
-        $this->loadedSource = $source;
-    }
     
     /**
-     * Sets the Entity's attributes based on the given array
      *
-     * Please use loadArray instead
-     *
-     * @see loadArray()
-     * @param array $array The attributes to use
-     * @deprecated
+     * @readable
      */
-    public function __fromArray($array)
-    {
-        $this->loadArray($array);
-    }
-
-    /**
-     * Sets the Entity's attributes based on the given array
-     *
-     * @param array $array The attributes to use
-     */
-    public function loadArray($array)
-    {
-        $this->attrs = array( );
-        $this->dirty = false;
-        $this->new   = false;
-
-        foreach ($array as $key => $value)
-        {
-            $this->properties[$key] = $value;
-            
-            if (!$this->reflect->hasProperty($key))
-            {
-                $this->attrs[$key] = $value;
-            }
-            else
-            {
-                $prop = $this->reflect->getProperty($key);
-                $prop->setValue($this, $value);
-            }
-        }
-    }
-    
-    /**
-     * Gets a value
-     *
-     * @param string $var The variable name
-     * @return mixed The value of that variables. NULL if it doesn't
-     *     exist
-     */
-    public function getValue($var)
-    {
-        return \iget($this->attrs, $var);
-    }
+    protected $dataMapper;
     
     /**
      * Saves this to a data source
@@ -645,7 +534,7 @@ class Entity extends Model
         if (!$source) return false;
 
         $source = new $source(get_called_class());
-        $data   = $this->__toArray(true);
+        $data   = $this->__toArray($source::CAN_SAVE_DIRTY, $source::RELATIONAL);
 
         if ($this->new)
         {
@@ -673,154 +562,6 @@ class Entity extends Model
     }
     
     /**
-     * Gets an attribute
-     *
-     * @param string $var The attribute name
-     * @return mixed The attribute value if it exists, otherwise it
-     *     attempts to load it as a class
-     */
-    public function __get($var)
-    {
-        if ($var !== 'reflect' && $value = $this->propertyValue($var))
-        {
-            return $value;
-        }
-        else
-        {
-            return parent::__get($var);
-        }
-    }
-
-    /**
-     * Returns the value of the given property
-     *
-     * @param string $var The name of the property to read
-     * @param boolean $onlyReadable If true, only readable properties
-     *     can be accessed
-     * @return mixed The value of the property
-     * @throws PropertyNotReadableException If trying to read a not-
-     *     readable property with $onlyReadable set to true
-     */
-    private function propertyValue($var, $onlyReadable = true)
-    {
-        if (isset($this->attrs[$var]))
-        {
-            return $this->attrs[$var];
-        }
-        elseif ($this->reflect->hasProperty($var))
-        {
-            $prop = $this->reflect->getProperty($var);
-
-            if (!$onlyReadable || $prop->readable)
-            {
-                return $prop->getValue($this);
-            }
-            else
-            {
-                throw new PropertyNotReadableException($var);
-            }
-        }
-    }
-
-    private function setProperty($var, $val, $onlyWritable = true)
-    {
-        if ($this->reflect->hasProperty($var))
-        {
-            $prop = $this->reflect->getProperty($var);
-
-            if (!$onlyWritable || $prop->writable)
-            {
-                switch ($prop->type)
-                {
-                    case 'int':
-                        $val = (int)$val;
-                        break;
-
-                    case 'float':
-                        $val = (float)$val;
-                        break;
-
-                    case 'string':
-                        $val = (string)$val;
-                        break;
-
-                    case 'boolean':
-                        $val = (boolean)$val;
-                        break;
-
-                    case 'array':
-                        $val = new \ArrayObject((array)$val);
-
-                    case NULL:
-                        break;
-
-                    default:
-                        if ($class = static::load($prop->type))
-                        {
-                            if (is_a($class, '\Spaark\Core\Model\Base\Model'))
-                            {
-                                
-                            }
-                        }
-                }
-                $prop->setValue($this, $val);
-            }
-            else
-            {
-                throw new PropertyNotWritableException($var);
-            }
-        }
-        else
-        {
-            $this->attrs[$var] = $val;
-        
-            if (!isset($this->properties[$var]))
-            {
-                $this->properties[$var] = ($val === NULL ? TRUE : NULL);
-            }
-        }
-    }
-    
-    /**
-     * Sets the value of an attribute
-     *
-     * @param string $var The attribute name
-     * @param mixed  $val The value to set
-     */
-    public function __set($var, $val)
-    {
-        $this->setProperty($var, $val);
-    }
-
-    /**
-     * Returns the object as an array
-     *
-     * @param boolean $onlyDirty If true, only dirty properties will be
-     *     returned in the array
-     * @return array The array of the object's properties
-     */
-    public function __toArray($onlyDirty = false)
-    {
-        $array = array( );
-
-        foreach ($this->properties as $key => $original)
-        {
-            if ($this->reflect->hasProperty($key))
-            {
-                $prop  = $this->reflect->getProperty($key);
-                $value = $prop->getValue($this);
-
-                if (!$onlyDirty || $value != $original)
-                {
-                    $array[$key] = $value;
-                }
-            }
-        }
-
-        return $array;
-    }
-
-    /**
      * If autoSave is enabled, this will save the object at destruct
      * time
      */
@@ -840,8 +581,4 @@ class Entity extends Model
     {
         $this->autoSave = false;
     }
-    
-    // }}}
 }
-    
-    

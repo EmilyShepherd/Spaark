@@ -84,6 +84,7 @@ require_once SPAARK_PATH . 'core/spaark.php';
 require_once SPAARK_PATH . 'core/error/nosuchmethodexception.class.php';
 require_once SPAARK_PATH . 'core/base/object.class.php';
 require_once SPAARK_PATH . 'core/model/base/model.class.php';
+require_once SPAARK_PATH . 'core/model/base/composite.class.php';
 require_once SPAARK_PATH . 'core/model/base/entity.class.php';
 require_once SPAARK_PATH . 'core/model/base/master.class.php';
 require_once SPAARK_PATH . 'core/model/config.class.php';
