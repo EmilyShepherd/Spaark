@@ -8,6 +8,7 @@
 
 use Spaark\Core\Util\DataMapper\RelationalConverter;
 use Spaark\Core\Util\DataMapper\DimensionalConverter;
+use Spaark\Core\Error\NoSuchMethodException;
 
 /**
  * Description of composite
