@@ -28,7 +28,8 @@ class Property extends Reflector
         'save'       => 'bool',
         'id'         => 'setKey',
         'type'       => 'setType',
-        'standalone' => 'bool'
+        'standalone' => 'bool',
+        'key'        => 'bool'
     );
 
     /**

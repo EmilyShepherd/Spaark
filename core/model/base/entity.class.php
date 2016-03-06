@@ -155,39 +155,12 @@ class Entity extends Composite
      */
     public static function getObj($key, $val)
     {
+        //var_dump(static::$_cache);
         $class = get_called_class();
         
-        //If this class name has no entry, make one
-        if (!isset(self::$_cache[$class]))
+        if (isset(static::$_cache[$class]))
         {
-            self::$_cache[$class] = array
-            (
-                'id' => array( )
-            );
-
-            return NULL;
-        }
-        
-        //If this class doesn't have this key type, make one and index
-        //everything against it
-        if (!isset(self::$_cache[$class][$key]) && false)
-        {
-            self::$_cache[$class][$key] = array( );
-            
-            foreach (self::$_cache[$class]['id'] as $obj)
-            {
-                if (isset($obj->attrs[$key]))
-                {
-                    self::$_cache[$class][$key][(string)$obj->$key] = $obj;
-                }
-            }
-        }
-        
-        //If this class has an entry in its key cache for the given
-        //value, return it
-        if (isset(self::$_cache[$class][$key][$val]))
-        {
-            return self::$_cache[$class][$key][$val];
+            return static::$_cache[$class]->searchFor($key, $val);
         }
     }
     
@@ -198,25 +171,18 @@ class Entity extends Composite
      * @param string $id    The key to cache it under
      * @param scalar $val   The value to cache it under
      */
-    public static function cache(Entity $obj, $id = null, $val = null)
+    public static function cache(Entity $obj)
     {
         $class = get_called_class();
         
-        if ($id)
+        if (strpos($class, 'Spaark\Core\Model\Reflection') !== 0)
         {
-            self::$_cache[$class][$id][$val] = $obj;
-        }
-        
-        foreach (array_keys(self::$_cache[$class]) as $key)
-        {
-            if (isset($obj->attrs[$key]))
+            if (!isset(static::$_cache[$class]))
             {
-                $value = is_array($obj->$key)
-                    ? serialize($obj->$key)
-                    : (string)$obj->$key;
-
-                self::$_cache[$class][$key][$value] = $obj;
+                static::$_cache[$class] = new Entity\EntityCache($class);
             }
+
+            static::$_cache[$class]->cache($obj);
         }
     }
     
@@ -370,6 +336,15 @@ class Entity extends Composite
         throw $nsfbe;
     }
     
+    public static function newSource()
+    {
+        $class  = get_called_class();
+        $config = static::getHelper('config');
+        $source = static::load($config->source);
+        
+        return new $source($source);
+    }
+    
     /**
      * Handles magic static functions - used for fromX() and findByX()
      *
@@ -407,23 +382,11 @@ class Entity extends Composite
      */
     public static function instanceFromData($data, $cache = true)
     {
-        $obj = static::findFromData($data);
-
-        if ($obj)
-        {
-            $cache = true;
-        }
-        else
-        {
-            $obj = static::blankInstance();
-        }
-
-        if ($cache)
-        {
-            static::recacheUsingData($obj, $data);
-        }
+        $obj = static::findFromData($data) ?: static::blankInstance();
 
         $obj->loadArray($data);
+        
+        static::cache($obj);
 
         return $obj;
     }
@@ -442,64 +405,38 @@ class Entity extends Composite
         
         if (isset(static::$_cache[$class]))
         {
-            foreach (static::$_cache[$class] as $key => $values)
+            foreach ($data as $key => $value)
             {
-                if (isset($data[$key]) && isset($values[$data[$key]]))
+                if ($obj = static::$_cache[$class]->searchFor($key, $value))
                 {
-                    return $values[$data[$key]];
+                    return $obj;
                 }
             }
         }
     }
-
-    /**
-     * Recache the given object using the given data
-     *
-     * This will uncache the object from all the keys it is currently
-     * cached under, and recache them, using the data from the given
-     * array
-     *
-     * @param Entity $obj The object to recache
-     * @param array $data The data to recache by
-     * @see static::instanceFromData()
-     */
-    private static function recacheUsingData($obj, $data)
+    
+    public static function flush()
     {
-        $class = get_class($obj);
         
-        if (!isset(static::$_cache[$class]))
-        {
-            static::$_cache[$class] = array( );
-        }
-
-        foreach (static::$_cache[$class] as $key => &$values)
-        {
-            if (isset($data[$key]))
-            {
-                $value = $obj->propertyValue($key, false);
-
-                if (isset($values[$value]) && $values[$value] === $obj)
-                {
-                    unset($values[$value]);
-                }
-
-                if (isset($data[$key]))
-                {
-                    $values[$data[$key]] = $obj;
-                }
-            }
-        }
+    }
+    
+    public static function getInstance($id)
+    {
+        return static::instanceFromData(array('id' => $id), true);
     }
     
     /**
      * ID
      *
      * @type int
+     * @readable
      */
     protected $id;
     
     /**
      * If true, this is a new object
+     * 
+     * @readable
      */
     protected $new      = true;
     
@@ -514,12 +451,6 @@ class Entity extends Composite
     protected $loadedSource;
     
     /**
-     *
-     * @readable
-     */
-    protected $dataMapper;
-    
-    /**
      * Saves this to a data source
      */
     public function save()
@@ -532,10 +463,10 @@ class Entity extends Composite
             :                        NULL));
 
         if (!$source) return false;
-
+        
         $source = new $source(get_called_class());
         $data   = $this->__toArray($source::CAN_SAVE_DIRTY, $source::RELATIONAL);
-
+        
         if ($this->new)
         {
             $this->id = $source->create($data);
@@ -580,5 +511,10 @@ class Entity extends Composite
     public function discard()
     {
         $this->autoSave = false;
+    }
+    
+    public function close()
+    {
+        
     }
 }

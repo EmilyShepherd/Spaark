@@ -146,7 +146,9 @@ abstract class Master extends Entity
             throw new InvalidInitMasterException(get_called_class());
         }
         
-        static::cache($obj, 'model', get_class($obj));
+        $obj->model = get_class($obj);
+        
+        static::cache($obj);
         
         return $obj;
     }
@@ -207,4 +209,12 @@ abstract class Master extends Entity
     {
         return static::fromModel(get_called_class());
     }
+    
+    /**
+     *
+     * @var type 
+     * @type string
+     * @key
+     */
+    public $model;
 }
