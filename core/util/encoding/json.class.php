@@ -1,4 +1,4 @@
-<?php namespace Spaark\Core\Model\Encoding;
+<?php namespace Spaark\Core\Util\Encoding;
 /**
  * Spaark
  *
@@ -37,6 +37,16 @@ class JSON extends Encoding
     private $clever;
     
     private $array;
+    
+    public static function blankInstance()
+    {
+        return new static(NULL);
+    }
+    
+    public function __construct()
+    {
+        //
+    }
 
     public function decode($data)
     {
@@ -100,7 +110,7 @@ class JSON extends Encoding
         return $this->i == strlen($this->data);
     }
     
-    private function nextChar()
+    public function nextChar()
     {
         $char = $this->data{$this->i++};
         
@@ -433,6 +443,19 @@ class JSON extends Encoding
             throw new \Exception($file);
         }
     }
+
+    public function read($bytes)
+    {
+        
+    }
+
+  public function seek($pos) {
+    
+  }
+
+    public function next(){}
+    public function peek(){}
+
 }
 
 // }}}

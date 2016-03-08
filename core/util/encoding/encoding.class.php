@@ -1,9 +1,9 @@
-<?php namespace Spaark\Core\Model\Encoding;
+<?php namespace Spaark\Core\Util\Encoding;
 
 /**
  * Represents a class that can do encoding
  */
-abstract class Encoding extends \Spaark\Core\Model\Base\Entity
+abstract class Encoding implements \Spaark\Core\Util\Stream\Stream
 {
     /**
      * Encodes the given data
@@ -20,4 +20,16 @@ abstract class Encoding extends \Spaark\Core\Model\Base\Entity
      * @return array The decoded data
      */
     abstract public function decode($data);
+    
+    protected $stream;
+    
+    public function __construct(\Spaark\Core\Util\Stream\Stream $stream)
+    {
+        $this->steam = $stream;
+    }
+    
+    public function close()
+    {
+        $this->stream->close();
+    }
 }

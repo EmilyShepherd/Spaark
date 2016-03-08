@@ -3,12 +3,14 @@
  *
  */
 
+use Spaark\Core\Util\Encoding\JSON;
+
 class Config extends Base\Master
 {
     protected static function initMaster($name)
     {
         $obj  = static::blankInstance();
-        $json = Encoding\JSON::blankInstance();
+        $json = JSON::blankInstance();
         
         $obj->loadArray
         (
@@ -45,7 +47,7 @@ class Config extends Base\Master
 
     private function loadConfig($name)
     {
-        $json    = new Encoding\JSON();
+        $json    = new JSON();
         $reflect = $name::getHelper('reflect');
         $parent  = $reflect ? $reflect->parent : NULL;
         $upConf  = $parent
