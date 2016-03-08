@@ -27,9 +27,10 @@ class Property extends Reflector
         'writable'   => 'bool',
         'save'       => 'bool',
         'id'         => 'setKey',
-        'type'       => 'setType',
+        'var'        => 'setType',
         'standalone' => 'bool',
-        'key'        => 'bool'
+        'key'        => 'bool',
+        'standalone' => 'bool'
     );
 
     /**
@@ -161,7 +162,7 @@ class Property extends Reflector
     }
 
     /**
-     * @getter save
+     * @getter
      */
     public function isProperty()
     {

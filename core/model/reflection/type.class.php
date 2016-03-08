@@ -1,17 +1,22 @@
 <?php namespace Spaark\Core\Model\Reflection;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Spaark Framework
+ *
+ * @author Emily Shepherd <emily@emilyshepherd.me>
+ * @copyright 2012-2015 Emily Shepherd
  */
+defined('SPAARK_PATH') OR die('No direct access');
+
+
+use Spaark\Core\Model\Base\Composite;
+
 
 /**
  * Description of type
  *
  * @author Emily Shepherd
  */
-class Type extends Reflector
+class Type extends Composite
 {
     protected $acceptedParams = array
     (
