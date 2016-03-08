@@ -16,8 +16,8 @@
         PHP Test Failed <br />
         
       <!--<?php ob_end_clean(); echo "--\x3E"; ?>
-        <?php if (PHP_VERSION_ID < 50300) : ?>
-          Wrong PHP Version (I require PHP &gt;= 5.3)
+        <?php if (PHP_VERSION_ID < 50400) : ?>
+          Wrong PHP Version (I require PHP &gt;= 5.4)
         <?php else: ?>
           All good!
         <?php endif ?>
