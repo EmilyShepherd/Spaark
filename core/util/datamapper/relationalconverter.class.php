@@ -22,9 +22,9 @@ class RelationalConverter extends BaseMapper
     
     protected $id;
     
-    public function __construct($onlyDirty, Composite $object)
+    public function save($object)
     {
-        parent::__construct($onlyDirty, $object);
+        parent::save($object);
         
         $this->id = $object->id ?: new IdRef($object);
     }
@@ -34,15 +34,6 @@ class RelationalConverter extends BaseMapper
         return
             $this->obj->reflect->hasProperty($key) &&
             parent::canProcess($key, $original);
-    }
-    
-    protected function makeNewConverter($value)
-    {
-        $converter             = parent::makeNewConverter($value);
-        $converter->subTables  = &$this->subTables;
-        $converter->deletedIds = &$this->deletedIds;
-        
-        return $converter;
     }
     
     protected function set($key, $value)
