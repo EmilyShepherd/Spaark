@@ -1,4 +1,25 @@
 <?php
+/**
+ * Spaark
+ *
+ * Copyright (C) 2012 Emily Shepherd
+ * emily@emilyshepherd.me
+ *
+ * This file defines Spaark's environment variables and includes the
+ * core files that Spaark requires to operate.
+ *
+ * Please note: Spaark's core is only capable of loading Output's from
+ * the cache and sending them. Spaark will automatically load the rest
+ * of itself if no cached Output exists.
+ *
+ * @author Emily Shepherd
+ * @package Spaark
+ * @subpackage core
+ *
+ * @compile-links
+ */
+
+
 
 /**
  * The version of this release of Spaark.
@@ -20,26 +41,6 @@ define('ROOT', dirname($_SERVER['SCRIPT_FILENAME']) . DS);
  * The path to the Spaark library
  */
 define('SPAARK_PATH', dirname(__FILE__) . DS);
-/**
- * Spaark
- *
- * Copyright (C) 2012 Emily Shepherd
- * emily@emilyshepherd.me
- *
- * This file defines Spaark's environment variables and includes the
- * core files that Spaark requires to operate.
- *
- * Please note: Spaark's core is only capable of loading Output's from
- * the cache and sending them. Spaark will automatically load the rest
- * of itself if no cached Output exists.
- *
- * @author Emily Shepherd
- * @package Spaark
- * @subpackage core
- *
- * @compile-links
- */
-
 
 /**
  * Instance extends this because it is Static
