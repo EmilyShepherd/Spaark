@@ -5,7 +5,7 @@ define('GET',    1);
 define('COOKIE', 2);
 define('SERVER', 3);
 
-class Vars extends \Spaark\Core\Base\StaticClass
+class Vars
 {
     protected static $initialized = false;
 

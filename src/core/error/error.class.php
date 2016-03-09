@@ -10,7 +10,7 @@
 /**
  * Handles PHP errors
  */
-final class Error extends \Spaark\Core\Base\StaticClass
+final class Error
 {
     /**
      * Sets the handlers

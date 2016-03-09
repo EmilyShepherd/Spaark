@@ -51,7 +51,7 @@ use \Spaark\Core\Model\Config;
 
         ////////////////////////////////////////////////////////
 
-class ClassLoader extends \Spaark\Core\Base\StaticClass
+class ClassLoader
 {
     /**
      * Mapping of namespaces starts to file paths

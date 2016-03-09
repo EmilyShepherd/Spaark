@@ -41,13 +41,6 @@ define('ROOT', dirname($_SERVER['SCRIPT_FILENAME']));
 define('SPAARK_PATH', __DIR__);
 
 /**
- * Instance extends this because it is Static
- *
- * StaticClass just adds a constructor that throws an error
- */
-require_once SPAARK_PATH . '/core/base/StaticClass.class.php';
-
-/**
  * Required because CacheEntry extends ValueHolder
  */
 require_once SPAARK_PATH . '/core/base/ValueHolder.class.php';
