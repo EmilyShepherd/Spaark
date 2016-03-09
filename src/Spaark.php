@@ -1,4 +1,25 @@
 <?php
+
+/**
+ * The version of this release of Spaark.
+ *
+ * Set to "dev" for the versionless development code.
+ */
+define('VERSION', 'dev');
+
+define('DS', DIRECTORY_SEPARATOR);
+
+/**
+ * The folder Spaark is running from
+ *
+ * This is the folder the initial file is located in
+ */
+define('ROOT', dirname($_SERVER['SCRIPT_FILENAME']) . DS);
+
+/**
+ * The path to the Spaark library
+ */
+define('SPAARK_PATH', dirname(__FILE__) . DS);
 /**
  * Spaark
  *
@@ -19,8 +40,6 @@
  * @compile-links
  */
 
-
-require_once dirname(__FILE__) . '/consts.php';
 
 /**
  * Instance extends this because it is Static
