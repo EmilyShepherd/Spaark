@@ -22,43 +22,43 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
      * in the form {@}var. They are for things like title / css scripts
      */
     protected $response = array( );
-    
+
     /**
      * The HTML output of this HTMLSegment
      */
     protected $html   = '';
-    
+
     /**
      * The variables that should be used in this HTMLSegment,
      * placeholders formated like {{key}} will be replace with that
      * key's value in this array
      */
     protected $varsIn = array( );
-    
+
     protected $statics = array( );
-    
+
     /**
      * The name of this HTMLSegment, used to load the file and name
      * forms
      */
     protected $name;
-    
+
     /**
      * The file extension used for this HTMLSegment
      */
     protected $extension = '.html';
-    
+
     /**
      * The inline script used in this HTMLSegment, this is removed
      * from the HTML and sent separately for AJAX requests, or appended
      * to the bottom for non-AJAX requests
      */
     protected $script = '';
-    
+
     protected $static = true;
-    
+
     const CONF = 'htmlpath';
-     
+
     /**
      * Sets the name of this HTMLSegment and prepopulates the value of
      * $path with Config::HTML_PATH. You may change this value before
@@ -70,7 +70,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
     {
         return $this->name = trim($name, '/');
     }
-    
+
     /**
      * Returns the name of this HTMLSegment
      *
@@ -80,7 +80,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
     {
         return $this->name;
     }
-    
+
     /**
      * Loads the rawHTML of the the file located at:
      * $path . $name . $extension.
@@ -91,21 +91,21 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
     protected function loadFromFile()
     {
         $path = $this->config->path . $this->name . '.html';
-        
+
         if ($output = $this->_load($path))
         {
             return $output;
         }
-        
+
         $output = $this->_load(SPAARK_PATH . 'default/' . $path);
         if ($output)
         {
             return $output;
         }
-        
+
         throw new NotFoundException($path);
     }
-    
+
     /**
      * Used by load() to load a file. Loads the content of the given
      * path and returns the rawHTML
@@ -119,11 +119,11 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
         {
             return false;
         }
-        
+
         //Load the file
         return file_get_contents($path);
     }
-    
+
     /**
      * This method calls the worker methods to parse the HTMLSegment.
      * The output is put into the $output array.
@@ -157,25 +157,25 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
         $conf = new ConfigReader($html, FILE_HEAD, false);
         $html = $conf->getData();
         $this->response = $conf->getArray();
-       
+
         //Take out comments, because I don't like them
         $html = preg_replace('/<!--(.|\s)*?-->/', '', $html);
-        
+
         $html = preg_replace('/<\?(?!php|=)\s?/', '<?php ', $html);
 
         $this->fixAttributes($html);
-    
+
         //Change html non-closing tags to XML ones "<br>" -> "<br />"
         $this->convertTags($html);
-       
+
         //XML parse the document
         $this->XMLParse($html);
     }
-    
+
     /**
      * Converts non-XML-compliant attribute "flags" into acceptable
      * syntax.
-     * 
+     *
      * Eg. '<input disabled/>' becomes '<input disabled="disabled"/>'
      *
      * @param string $html The html to fix
@@ -202,7 +202,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
         }
         while ($last != $html);
     }
-    
+
     /**
      * Converts non-XML-compliant HTML tags into acceptable XML
      * alternatives. E.g. "<br>" becomes "<br />".
@@ -240,13 +240,13 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
               $html
         );
     }
-    
+
     private function XMLParse($html)
     {
         $xml = new XMLParser($html);
-        
+
         $xml->setNS('\Spaark\Core\Model\HTML\Handlers');
-        
+
         $xml->setHandler('a',        'AHandler');
         $xml->setHandler('img',      'ImgHandler');
         $xml->setHandler('script',   'ScriptHandler');
@@ -261,12 +261,12 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
             'HTML5Handler',
             true
         );
-        
+
         $xml->name       = $this->name . $this->extension;
         $xml->validators = array( );
-        
+
         $html = $xml->parse();
-        
+
         $this->response['validators'] = $xml->validators;
         $this->html   = URLParser::compressWhitespace
         (
@@ -294,7 +294,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
               ? $this->response['js'] . $xml->js
               : $xml->js;
     }
-    
+
     protected function replaceVars($html)
     {
         return preg_replace_callback
@@ -304,11 +304,11 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
             $html
         );
     }
-    
+
     protected function replaceVarsCB($matches)
     {
         $name = $matches[3];
-        
+
         if ($matches[1] == '\\')
         {
             return substr($matches[0], 1);
@@ -319,9 +319,9 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
                 isset($this->response[$name])
                   ? $this->response[$name]
                   : '';
-            
+
             $this->response['statics'][$name] = $val;
-            
+
             return
                   '<span id="spaark_' . $name . '">'
                 .   $val
@@ -330,9 +330,9 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
         else
         {
             $this->static = false;
-            
+
             $parts = explode('.', $name);
-            
+
             if (in_array($parts[0], array('SERVER', 'REMOTE', 'HTTP')))
             {
                 $name = '_SERVER[\'' . $parts[0] . '_' . $parts[1] . '\']';
@@ -348,7 +348,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
                 . '?>';
         }
     }
-    
+
     protected function array_join($arr1, $arr2)
     {
         foreach ($arr2 as $index => $value)
@@ -362,10 +362,10 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
                 $arr1[$index] = $this->array_join($arr1[$index], $value);
             }
         }
-        
+
         return $arr1;
     }
-	
+
     public function isStatic()
     {
         return $this->static;

@@ -19,7 +19,7 @@ abstract class ElementHandler
      * The parent XMLDocument
      */
     protected $handler;
-    
+
     /**
      * Constructor
      *
@@ -29,7 +29,7 @@ abstract class ElementHandler
     {
         $this->handler = $handler;
     }
-    
+
     /**
      * This method is called by the XMLParser when the element this
      * handles is found
@@ -40,7 +40,7 @@ abstract class ElementHandler
      * @return mixed A replacement string if required, true otherwise
      */
     abstract public function parse($tag, $attrs, $content);
-    
+
     /**
      * Writes out the element, as correct HTML
      *
@@ -54,14 +54,14 @@ abstract class ElementHandler
     protected function build($tag, $attrs, $attrArr, $content)
     {
         $newAttrs = '';
-        
+
         foreach ($attrArr as $key => $value)
         {
             $newAttrs .= $key . '="' . $value . '" ';
         }
-        
+
         $attrs = trim($newAttrs . $attrs);
-        
+
         return
               '<' . $tag . ($attrs ? ' ' . $attrs : '')
             . (
@@ -71,7 +71,7 @@ abstract class ElementHandler
                   . '</' . $tag . '>'
               );
     }
-    
+
     /**
      * Attempts to find the given attribute in an attribute string
      *
@@ -102,7 +102,7 @@ abstract class ElementHandler
                       substr($string, 0, $offset)
                     . substr($string, $offset + strlen($attrs[0][0]));
             }
-            
+
             return $attrs[2][0];
         }
         else
@@ -110,7 +110,7 @@ abstract class ElementHandler
             return '';
         }
     }
-    
+
     protected function getAllAttrs($string)
     {
         preg_match_all
@@ -119,9 +119,9 @@ abstract class ElementHandler
             $string,
             $attrs
         );
-        
+
         $ret = array( );
-        
+
         if (isset($attrs[0]))
         {
             foreach ($attrs[0] as $i => $val)
@@ -129,7 +129,7 @@ abstract class ElementHandler
                 $ret[$attrs[1][$i]] = $attrs[3][$i];
             }
         }
-        
+
         return $ret;
     }
 }

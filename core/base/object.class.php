@@ -20,24 +20,24 @@ abstract class Object
         ),
         'source' => 'Sources\database\MySQLi'
     );
-    
+
     protected static $helperObjs = array( );
-    
+
     protected $objects = array( );
-    
+
     protected $sessionClass = 'Session';
-    
+
     protected $configClass = 'Config';
-    
+
     protected $cacheClass = 'Cache';
-    
+
     protected $userClass = 'Auth\User';
-    
+
     const SESSION_HELPER = 'Session';
     const CONFIG_HELPER  = 'Config';
     const CACHE_HELPER   = 'Cache';
     const USER_HELPER    = 'Auth\User';
-    
+
     /**
      * Handles the mgaic getting of variables
      *
@@ -52,12 +52,12 @@ abstract class Object
     public static function getHelper($var)
     {
         $objs = &self::$helperObjs[get_called_class()];
-        
+
         if (!isset($objs))
         {
             $objs = array();
         }
-        
+
         if (isset($objs[$var]))
         {
             return $objs[$var];
@@ -67,7 +67,7 @@ abstract class Object
             return $objs[$var] = static::buildHelper($var);
         }
     }
-    
+
     private static function buildHelper($var)
     {
         // Tries to load model's in the calling Object's namespace
@@ -92,7 +92,7 @@ abstract class Object
                 $class = ClassLoader::loadModel($class, $context);
             }
         }
-        
+
         if (class_exists($class))
         {
             if (is_subclass_of($class, '\Spaark\Core\Model\Base\Singleton'))
@@ -106,12 +106,12 @@ abstract class Object
             }
         }
     }
-    
+
     public function __get($var)
     {
        return static::getHelper($var);
     }
-    
+
     public function __toString()
     {
         return get_class($this) . '[' . spl_object_hash($this) . ']';

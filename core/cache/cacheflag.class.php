@@ -16,7 +16,7 @@ class CacheFlag implements Cacheable, serializable
      * The value of this flag
      */
     private $value;
-    
+
     /**
      * Stores the given value in $this->value for this CacheFlag
      *
@@ -26,7 +26,7 @@ class CacheFlag implements Cacheable, serializable
     {
         $this->value = $value;
     }
-    
+
     /**
      * Returns $this->value
      *
@@ -36,7 +36,7 @@ class CacheFlag implements Cacheable, serializable
     {
         return $this->value;
     }
-    
+
     /**
      * Returns true
      */
@@ -44,7 +44,7 @@ class CacheFlag implements Cacheable, serializable
     {
         return true;
     }
-    
+
     /**
      * Returns $this->value to be used as the serialized string for this
      * CacheFlag
@@ -55,7 +55,7 @@ class CacheFlag implements Cacheable, serializable
     {
         return $this->value;
     }
-    
+
     /**
      * Populates $this->value with the given string
      *

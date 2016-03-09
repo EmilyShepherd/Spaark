@@ -14,10 +14,10 @@
 interface Stream
 {
     public function read($bytes);
-    
+
     public function next();
 
     public function peek();
-    
+
     public function seek($pos);
 }

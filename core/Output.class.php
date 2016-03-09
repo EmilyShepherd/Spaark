@@ -5,7 +5,7 @@
  * Copyright (C) 2012 Emily Shepherd
  * emily@emilyshepherd.me
  */
- 
+
 use \Spaark\Core\Config\Config;
 
 define('OK', 200);
@@ -22,24 +22,24 @@ define('FOUND', 302);
 class Output extends Model\Base\Entity
 {
     // {{{ static
-    
+
     /**
      * The Output object that Spaark is using
      */
     private static $obj;
-    
+
     /**
      * If an output has been sent, this is true
      */
     private static $sent = false;
-    
+
     private static $statuses = array
     (
         OK        => 'OK',
         NOT_FOUND => 'Not Found',
         ERROR     => 'Internal Server Error'
     );
-    
+
     /**
      * Try to load the output buffer into the Output object
      *
@@ -68,7 +68,7 @@ class Output extends Model\Base\Entity
         self::$obj->loadData($contents);
         return true;
     }
-    
+
     /**
      * Attempt to load from the output buffer and exit if it succeeds
      */
@@ -91,7 +91,7 @@ class Output extends Model\Base\Entity
         ob_clean();
         self::$obj = new Output();
     }
-    
+
     /**
      * Used to set values of the output object.
      *
@@ -108,7 +108,7 @@ class Output extends Model\Base\Entity
 
         self::$obj->$name = $args[0];
     }
-    
+
     /**
      * Returns the Output object
      *
@@ -118,7 +118,7 @@ class Output extends Model\Base\Entity
     {
         return self::$obj;
     }
-    
+
     /**
      * Safely cleans the output buffer
      */
@@ -129,30 +129,30 @@ class Output extends Model\Base\Entity
             ob_clean();
         }
     }
-    
+
     /// }}}
-    
-    
+
+
         ////////////////////////////////////////////////////////
-    
-    
+
+
     /// {{{ instance
-    
+
     /**
      * The plain text version of this output (ie, the output)
      */
     protected $plain;
-    
+
     /**
      * The gzip compressed version of this output
      */
     protected $gzip;
-    
+
     /**
      * The calculated path to storage files for this output
      */
     private $path;
-    
+
     /**
      * Sets the mime value of the array to text/html, which is Spaark's
      * default content type.
@@ -161,17 +161,17 @@ class Output extends Model\Base\Entity
     {
         $this->attrs['mime']   = 'text/html';
         $this->attrs['status'] = OK;
-        
+
         parent::__construct();
     }
-    
+
     /**
      * Sets the given data as this object's data
      */
     private function loadData($data)
     {
         $this->plain         = $data;
-        
+
         if ($this->attrs['status'] == OK)
         {
             $this->attrs['etag'] = md5($data);
@@ -204,7 +204,7 @@ class Output extends Model\Base\Entity
 
         return parent::serialize();
     }
-    
+
     /**
      * Creates the object from the serialized string by calling
      * CacheEntry::unserialize(), it then calculates the path for the
@@ -220,7 +220,7 @@ class Output extends Model\Base\Entity
               $this->config->cachePath
             . $this->attrs['etag'] . '.output';
     }
-    
+
     /**
      * Returns the specified data type by attempting to load it from
      * its file.
@@ -242,7 +242,7 @@ class Output extends Model\Base\Entity
 
         return $this->$data;
     }
-    
+
     /**
      * Send the output to the user, either via 304 response or by
      * sending the full output.
@@ -260,7 +260,7 @@ class Output extends Model\Base\Entity
             return false;
         }
     }
-    
+
     /**
      * Checks to see if the client sent a If-None-Match request header,
      * and if it is equal to the etag entry in $this->attrs. If it is,
@@ -295,7 +295,7 @@ class Output extends Model\Base\Entity
             return false;
         }
     }
-    
+
     /**
      * Tries to find content to send back to the client. If the client
      * has said it supports gzip, the content will be sent in that
@@ -313,12 +313,12 @@ class Output extends Model\Base\Entity
             extension_loaded('zlib') &&
             isset($_SERVER['HTTP_ACCEPT_ENCODING']) &&
             strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false
-        ) 
+        )
         {
             $content = $this->gzip =
                 $this->getData('gzip', '.gz')
                   ?: gzencode($this->getData('plain'));
-            
+
             header('Content-Encoding: gzip');
         }
         else
@@ -342,20 +342,20 @@ class Output extends Model\Base\Entity
         header('Content-Type: ' . $this->attrs['mime']);
         header('Content-Length: ' . strlen($content));
         header('X-Powered-By: spaark/' . VERSION . ' php/' . PHP_VERSION);
-        
+
         if (isset($this->attrs['etag']))
         {
             header('Etag: '         . $this->attrs['etag']);
         }
-        
+
         $this->setCacheControl();
-        
+
         echo $content;
         flush();
 
         return true;
     }
-    
+
     /**
      * Sets the Cache-Control response header.
      */
@@ -370,7 +370,7 @@ class Output extends Model\Base\Entity
             );
         }
     }
-    
+
     /**
      * Checks the validity of this cache by calling CacheEntry::valid().
      * If it fails, it deletes its files.
@@ -402,7 +402,7 @@ class Output extends Model\Base\Entity
             return true;
         }
     }
-    
+
     // }}}
 }
 

@@ -14,12 +14,12 @@
 class LazyCollection extends Collection
 {
     private $built = array( );
-    
+
     private $collection;
-    
+
     public function next()
     {
         $this->pointer++;
-       
+
     }
 }

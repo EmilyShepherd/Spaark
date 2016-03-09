@@ -11,17 +11,17 @@ class SystemException extends Exception
      * The full stack trace
      */
     protected $trace;
-    
+
     /**
      * The full message that describes the error
      */
     protected $debug_message;
-    
+
     /**
      *
      */
     protected $full;
-    
+
     /**
      *
      */
@@ -29,7 +29,7 @@ class SystemException extends Exception
     (
         'Router', 'LoadedClass', 'Request'
     );
-    
+
     /**
      * __construct
      *
@@ -37,15 +37,15 @@ class SystemException extends Exception
     public function __construct($debug_message, $message = 'An internal error occured', $previous = NULL)
     {
         parent::__construct($debug_message, 0);
-        
+
         $this->debug_message = $debug_message;
     }
-    
+
     public function getDebugMessage()
     {
         return $this->debug_message;
     }
-    
+
     /**
      * Builds the stack trace, removing irrelvent information, to
      * make debugging easier
@@ -53,7 +53,7 @@ class SystemException extends Exception
     protected function genStackTrace()
     {
         $trace     = $this->getTrace();
-        
+
         foreach ($trace as $i => $part)
         {
             if
@@ -89,10 +89,10 @@ class SystemException extends Exception
                 $trace[$i] = $part;
             }
         }
-        
+
         $this->trace = array_values($trace);
     }
-    
+
     /**
      * getStackTrace
      *
@@ -105,7 +105,7 @@ class SystemException extends Exception
         $this->genStackTrace();
         $trace = $this->trace;
         $textTrace = array( );
-        
+
         foreach ($trace as $part)
         {
             if ($part['function'] == '__construct')
@@ -125,7 +125,7 @@ class SystemException extends Exception
                 );
             }
         }
-            
+
         return
               $this->drawDiv
               (
@@ -136,16 +136,16 @@ class SystemException extends Exception
                   .   $this->file . ':' . $this->line
                   . '</span>'
               )
-              
+
             . '<br />'
-            
+
             . '<b style="font-size: 18px;">'
             .   'Stack Trace:'
             . '</b>'
-            
+
             . $this->drawDiv(implode('<hr />', $textTrace));
     }
-    
+
     /**
      * getErrorMessage
      *
@@ -162,7 +162,7 @@ class SystemException extends Exception
             . '</center>'
         );
     }
-    
+
     /**
      * drawDiv
      *
@@ -186,7 +186,7 @@ class SystemException extends Exception
             .   $content
             . '</div>';
     }
-    
+
     /**
      * traceStep
      *
@@ -228,7 +228,7 @@ class SystemException extends Exception
                     $part['args'][$j] = get_class($arg);
                 }
             }
-            
+
             $text = '<b>'
                   .   $text . ' ('
                   . '</b> '
@@ -239,7 +239,7 @@ class SystemException extends Exception
         {
             $text = '<b>' . $text . '</b>';
         }
-        
+
         return
               $text
             . '<br />'

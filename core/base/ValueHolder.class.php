@@ -20,7 +20,7 @@ class ValueHolder
      * class has a public member variable with the same name)
      */
     protected $array = array( );
-    
+
     /**
      * Returns the value of that item, if it exists in the array.
      *
@@ -42,7 +42,7 @@ class ValueHolder
             return NULL;
         }
     }
-    
+
     /**
      * Allows array items to be read as if member variables of the class
      *
@@ -54,7 +54,7 @@ class ValueHolder
     {
         return $this->getValue($var);
     }
-    
+
     /**
      * Returns the entire array
      *

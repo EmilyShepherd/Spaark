@@ -4,9 +4,9 @@ Framework.AJAXRequest = (function(action, oncomplete, GET, POST)
     {
         return;
     }
-    
+
     var xmlhttp = null;
-    
+
     var ajax_action = (function()
     {
         if (xmlhttp.readyState == 4)
@@ -23,7 +23,7 @@ Framework.AJAXRequest = (function(action, oncomplete, GET, POST)
             //}
         }
     });
-        
+
     if (window.XMLHttpRequest)
     {
         xmlhttp = new XMLHttpRequest();
@@ -32,9 +32,9 @@ Framework.AJAXRequest = (function(action, oncomplete, GET, POST)
     {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    
+
     var url;
-  
+
     if (!GET)
     {
         GET  = 'ajax' + Framework.template;
@@ -45,13 +45,13 @@ Framework.AJAXRequest = (function(action, oncomplete, GET, POST)
     }
 
     url = action + '?' + GET;
-    
+
     xmlhttp.onreadystatechange = ajax_action;
-    
+
     if (POST)
     {
         xmlhttp.open('POST', url, true);
-        
+
         xmlhttp.setRequestHeader('Content-type',   'application/x-www-form-urlencoded');
         xmlhttp.setRequestHeader('Content-length', POST.length);
         xmlhttp.setRequestHeader('Connection',     'close');
@@ -59,10 +59,10 @@ Framework.AJAXRequest = (function(action, oncomplete, GET, POST)
     else
     {
         xmlhttp.open('GET', url, true);
-        
+
         POST = '';
     }
-    
+
     document.body.style.cursor = 'progress';
     xmlhttp.send(POST);
 });

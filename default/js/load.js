@@ -4,6 +4,6 @@ Framework.ajaxLoad = (function(action, element)
     {
         document.getElementById(element).innerHTML = response.content;
     });
-    
+
     new Framework.AJAXRequest(action, onLoad);
 });

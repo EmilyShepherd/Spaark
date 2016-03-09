@@ -425,7 +425,7 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
         $query = '';
         $var   = true;
         $args  = func_get_args();
-        
+
         for ($i = 0; $i < count($args); $i++)
         {
             $var = !$var;
@@ -442,7 +442,7 @@ abstract class Database extends \Spaark\Core\Model\Sources\BaseSource
                 $query .= $args[$i];
             }
         }
-        
+
         return $this->execute($query);
     }
 }

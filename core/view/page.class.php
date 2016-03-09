@@ -41,7 +41,7 @@ define('CODE_INCLUDE', 2);
 class Page extends \Spaark\Core\Model\Base\Entity
 {
     // {{{ static
-    
+
     /**
      * Attempts to load a Page from the cache. If none exist, it will
      * build a new one
@@ -56,9 +56,9 @@ class Page extends \Spaark\Core\Model\Base\Entity
         {
             $name .= 'home';
         }
-        
+
         $name = trim($name, '/');
-        
+
      // try
      // {
      //     $page = Cache::load('page:' . $name);
@@ -68,10 +68,10 @@ class Page extends \Spaark\Core\Model\Base\Entity
      // {
             $page = new Page($name);
      // }
-        
+
         $page->run($varsIn);
     }
-    
+
     /**
      * Shortcut to load. Allows pages to be loaded using the syntax:
      *   Page::pagename(args);
@@ -84,31 +84,31 @@ class Page extends \Spaark\Core\Model\Base\Entity
     {
         self::load($name, $args);
     }
-    
+
     // }}}
-    
-    
+
+
         ////////////////////////////////////////////////////////
-    
-    
+
+
     // {{{ instance
-    
+
     /**
      * This is the page code
      */
     private $code;
-    
+
     /**
      * The variables to be passed to the page code
      */
     private $varsIn;
-    
+
     /**
      * The JavaScript used by the page. Note: This is set when the page
      * code is run.
      */
     private $script;
-    
+
     /**
      * If the page was not cached, it will need to be built using a
      * PageBuilder, an instance of which will be stored here
@@ -116,7 +116,7 @@ class Page extends \Spaark\Core\Model\Base\Entity
     private $builder;
 
     private $array;
-    
+
     /**
      * Uses a PageBuilder to create the output from the given file
      *
@@ -125,14 +125,14 @@ class Page extends \Spaark\Core\Model\Base\Entity
     public function __construct($file)
     {
         $this->builder = new PageBuilder($file);
-        
+
         $this->array            = $this->builder->getInfo();
         $this->array['parents'] = $this->builder->getParents();
         $this->code             = $this->builder->getCode();
-        
+
      // $this->cache();
     }
-    
+
     /**
      * Echos the response, either as a full HTML document, or as JSON,
      * depending on whether this is an AJAX request or not
@@ -142,7 +142,7 @@ class Page extends \Spaark\Core\Model\Base\Entity
     private function run($varsIn)
     {
         $this->varsIn = $varsIn;
-        
+
         if (!Vars::checkFlag(GET, 'ajax'))
         {
             echo $this->getFullHTML();
@@ -150,11 +150,11 @@ class Page extends \Spaark\Core\Model\Base\Entity
         else
         {
             Output::mime('application/json');
-            
+
             echo $this->getJSONResponse();
         }
     }
-    
+
     /**
      * Returns the full HTML for this page
      *
@@ -162,7 +162,7 @@ class Page extends \Spaark\Core\Model\Base\Entity
      */
     private function getFullHTML()
     {
-        return 
+        return
               '<!DOCTYPE html>'
             . OutputType::getHeader('<!--', '-->', '<!--', '-->')
             . '<html lang="en">'
@@ -181,7 +181,7 @@ class Page extends \Spaark\Core\Model\Base\Entity
             .   '</body>'
             . '</html>';
     }
-    
+
     /**
      * If this was an ajax call, we need to return the appropriate
      * information in an AJAX call
@@ -239,20 +239,20 @@ class Page extends \Spaark\Core\Model\Base\Entity
              'statics'  => $this->array['statics']
         ));
     }
-    
+
     /**
      * Runs the page code, returning it's HTML
      *
      * @param int $i The template level to use
-     * @return string The HTML 
+     * @return string The HTML
      * @see getJSONResponse() for the calculation of $i
      */
     private function runFile($__i = 0)
     {
         Output::ob_clean();
-        
+
         extract($this->varsIn);
-        
+
         if ($this->code)
         {
             eval($this->code);
@@ -261,14 +261,14 @@ class Page extends \Spaark\Core\Model\Base\Entity
         {
             include $this->array['path'];
         }
-        
+
         $html = ob_get_contents();
-        
+
         Output::ob_clean();
-        
+
         return $html;
     }
-    
+
     /**
      * Caches this Page for this request, if the page is set as cachable
      */
@@ -278,22 +278,22 @@ class Page extends \Spaark\Core\Model\Base\Entity
         {
             return;
         }
-        
+
         $this->setTTL($this->array['ttl']);
         $this->array['path'] =
               $this->config->config['cache']['path']
             . str_replace('/', '_', $this->builder->getName())
             . '.page';
-        
+
         file_put_contents
         (
             $this->array['path'],
             '<?php ' . $this->code
         );
-        
+
         Cache::save('page:' . $this->builder->getName(), $this);
     }
-    
+
     /**
      * Returns true if this cache is valid
      *
@@ -315,7 +315,7 @@ class Page extends \Spaark\Core\Model\Base\Entity
             {
                 unlink($this->array['path']);
             }
-            
+
             return false;
         }
         else
@@ -323,7 +323,7 @@ class Page extends \Spaark\Core\Model\Base\Entity
             return true;
         }
     }
-    
+
     // }}}
 }
 

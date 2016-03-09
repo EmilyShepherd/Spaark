@@ -20,14 +20,14 @@ abstract class Encoding implements \Spaark\Core\Util\Stream\Stream
      * @return array The decoded data
      */
     abstract public function decode($data);
-    
+
     protected $stream;
-    
+
     public function __construct(\Spaark\Core\Util\Stream\Stream $stream)
     {
         $this->steam = $stream;
     }
-    
+
     public function close()
     {
         $this->stream->close();

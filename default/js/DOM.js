@@ -18,7 +18,7 @@ window.s = (function(base, template, js, css)
     Framework.origin      =
           window.location.protocol + '/' + '/'
         + window.location.host;
-    
+
     for (var i in css)
     {
         Framework.include.css[css[i]] =
@@ -28,12 +28,12 @@ window.s = (function(base, template, js, css)
     {
         Framework.include.js[js[i]] = true;
     }
-    
+
     if (window.location.hash.substr(0, 2) == '#!')
     {
         document.getElementById('spaark_page').innerHTML = '';
         Framework.forgetPage();
-        
+
         Framework.loadPage
         (
               Framework.origin
@@ -44,6 +44,6 @@ window.s = (function(base, template, js, css)
     {
         replaceState(new State());
     }
-    
+
     window.s = null;
 });

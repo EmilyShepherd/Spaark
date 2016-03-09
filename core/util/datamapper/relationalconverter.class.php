@@ -16,35 +16,35 @@ use \Spaark\Core\Model\Base\Composite;
 class RelationalConverter extends BaseMapper
 {
     private $prefix = '';
-    
+
     public $subTables  = array( );
     public $deletedIds = array( );
-    
+
     protected $id;
-    
+
     public function __construct($onlyDirty, Composite $object)
     {
         parent::__construct($onlyDirty, $object);
-        
+
         $this->id = $object->id ?: new IdRef($object);
     }
-    
+
     protected function canProcess($key, $original)
     {
         return
             $this->obj->reflect->hasProperty($key) &&
             parent::canProcess($key, $original);
     }
-    
+
     protected function makeNewConverter($value)
     {
         $converter             = parent::makeNewConverter($value);
         $converter->subTables  = &$this->subTables;
         $converter->deletedIds = &$this->deletedIds;
-        
+
         return $converter;
     }
-    
+
     protected function set($key, $value)
     {
         $this->data[$this->prefix . $key] = $value;
@@ -55,20 +55,20 @@ class RelationalConverter extends BaseMapper
         return
             $this->obj->reflect->getProperty($key)->getValue($this->obj);
     }
-    
+
     protected function processComposite($converter, $prop)
     {
         $converter->prefix   = $prop->getName() . '_';
         $converter->data     = &$this->data;
-        
+
         $converter->_toArray();
     }
-    
+
     protected function processArray($prop)
     {
         $key   = $prop->getName();
         $value = (array)$prop->getValue($this->obj);
-        
+
         if ($prop->type->key && $prop->type->key !== $key)
         {
             $this->external = array_merge($this->external, $value);
@@ -79,7 +79,7 @@ class RelationalConverter extends BaseMapper
             $table                   = $name . '_' . $key;
             $loop                    = $value;
             $this->subTables[$table] = array( );
-            
+
             if ($this->onlyDirty)
             {
                 $properties               =
@@ -88,7 +88,7 @@ class RelationalConverter extends BaseMapper
                 $loop                     = array_diff($original, $value);
                 $this->deletedIds[$table] = array( );
             }
-            
+
             foreach ($loop as $item)
             {
                 // Added
@@ -110,7 +110,7 @@ class RelationalConverter extends BaseMapper
                             $name . '_id' => $this->id
                         );
                         $this->subTables[$table][] = $converter;
-                        
+
                         $converter->_toArray();
                     }
                 }

@@ -11,25 +11,25 @@ use \Spaark\Core\Config\Config;
 
 
         ////////////////////////////////////////////////////////
-        
+
 
 // {{{ exceptions
 
 /**
  * Thrown when a non-existant static method is called, that begins with
  * "from"
- */ 
+ */
 class NoSuchFromException extends NoSuchMethodException
 {
     private $obj;
-    
+
     public function __construct($method, $obj)
     {
         parent::__construct($obj, $method);
-        
+
         $this->obj = $obj;
     }
-    
+
     public function getObj()
     {
         return $this->obj;
@@ -48,21 +48,21 @@ class NoSuchFromException extends NoSuchMethodException
 class CannotCreateModelException extends \Exception
 {
     private $obj;
-    
+
     public function __construct($model, $from, $val)
     {
         $modelName = is_object($model) ? get_class($model) : $model;
         $val       = is_array($val)    ? implode($val)     : $val;
-        
+
         parent::__construct
         (
               'Failed to create ' . $modelName . ' from '
             . $from . ': ' . $val
         );
-        
+
         $this->obj = $model;
     }
-    
+
     public function getObj()
     {
         return $this->obj;
@@ -81,20 +81,20 @@ class CannotCreateModelException extends \Exception
 class CannotCreateCollectionException extends \Exception
 {
     private $obj;
-    
+
     public function __construct($model, $from, $val)
     {
         $modelName = is_object($model) ? get_class($model) : $model;
-        
+
         parent::__construct
         (
               'Failed to create ' . $modelName . ' from '
             . $from . ': ' . $val
         );
-        
+
         $this->obj = $model;
     }
-    
+
     public function getObj()
     {
         return $this->obj;
@@ -112,13 +112,13 @@ class CannotCreateCollectionException extends \Exception
 abstract class Model extends \Spaark\Core\Base\Object
 {
     const INPUT_TYPE     = 'text';
-    
+
     const FROM           = 'Model';
-    
+
     const DB_HELPER      = 'Database\MySQLi';
 
     const REFLECT_HELPER = 'Reflection\Model';
-    
+
 // {{{ static
 
     /**
@@ -147,17 +147,17 @@ abstract class Model extends \Spaark\Core\Base\Object
     public static function modelName()
     {
         $class = get_called_class();
-        
+
         if (defined($class . '::NAME'))
         {
             return constant($class . '::NAME');
         }
         else
-        { 
+        {
             return substr($class, strrpos($class, '\\') + 1);
         }
     }
-    
+
     /**
      * Creates an instance of the class, without calling the constructor
      * @return object The created instance
@@ -167,10 +167,10 @@ abstract class Model extends \Spaark\Core\Base\Object
         $reflect      = static::getHelper('reflect');
         $obj          = $reflect->newInstanceWithoutConstructor();
         //$obj->reflect = $reflect;
-        
+
         return $obj;
     }
-    
+
     /**
      * Called to test if the given string is valid to be turned into
      * this Model
@@ -186,7 +186,7 @@ abstract class Model extends \Spaark\Core\Base\Object
     {
         return true;
     }
-    
+
     /**
      * Handles static method calls, by attempting to load use an
      * auto-factory method
@@ -214,7 +214,7 @@ abstract class Model extends \Spaark\Core\Base\Object
             return static::from(substr($name, 4), $args);
         }
     }
-    
+
     /**
      * Attempts to run an auto-factory method
      *
@@ -230,16 +230,16 @@ abstract class Model extends \Spaark\Core\Base\Object
     public static function from($id, $args)
     {
         $ret = self::call($id, $args, 'from', 'NoSuchFromException');
-            
+
         return $ret[1] ?: $ret[0];
     }
-    
+
     protected static function call($id, $args, $type)
     {
         $class = get_called_class();
         $cb    = array($class, '__' . $type . $id);
         $throw = '\Spaark\Core\Model\Base\NoSuch' . $type . 'Exception';
-        
+
         if (method_exists($cb[0], $cb[1]))
         {
             $obj                 = $class::blankInstance();
@@ -247,7 +247,7 @@ abstract class Model extends \Spaark\Core\Base\Object
             $cb[0]               = $obj;
 
             $ret                 = call_user_func_array($cb, $args);
-            
+
             return array($obj, $ret);
         }
         else
@@ -255,29 +255,29 @@ abstract class Model extends \Spaark\Core\Base\Object
             throw new $throw($id, $class);
         }
     }
-    
+
     public static function load($name, $localScope = NULL)
     {
         return \Spaark\Core\ClassLoader::loadModel($name, $localScope);
-        
+
         //Local Scope
         if ($localScope)
         {
             $fullName = '\\' . $localScope. '\\' . $name;
-                
+
             if (class_exists($fullName))
             {
                 return $fullName;
             }
         }
-        
+
         //App Model Scope
         $fullName = Config::getConf('namespace') . 'Model\\' . $name;
         if (class_exists($fullName))
         {
             return $fullName;
         }
-        
+
         //Spaark Model Scope
         $fullName = '\\Spaark\\Core\\Model\\' . $name;
         if (class_exists($fullName))
@@ -295,7 +295,7 @@ abstract class Model extends \Spaark\Core\Base\Object
     {
         return static::fromParent($model);
     }
-    
+
     /**
      * Auto-factory creator for fromController calls
      *
@@ -305,24 +305,24 @@ abstract class Model extends \Spaark\Core\Base\Object
     {
         return static::fromParent($controller);
     }
-    
+
     // }}}
-    
-    
+
+
         ////////////////////////////////////////////////////////
 
 // {{{ object
-    
+
     /**
      * The Model to auto-instantiate when $this->json is used
      */
     protected $jsonClass    = 'JSON';
-    
+
     /**
      * The value of this model (if applicable)
      */
     protected $value;
-    
+
     /**
      * If an argument is passed, __default($arg) will be called
      *
@@ -336,7 +336,7 @@ abstract class Model extends \Spaark\Core\Base\Object
             $this->__default($val);
         }
     }
-    
+
     /**
      * Default constructor action if a value is present
      *
@@ -353,7 +353,7 @@ abstract class Model extends \Spaark\Core\Base\Object
             $this->value = $val;
         }
     }
-    
+
     /**
      * Creates model from a GET value
      *
@@ -364,7 +364,7 @@ abstract class Model extends \Spaark\Core\Base\Object
     {
         $this->__fromGlobal('_GET',  $id);
     }
-    
+
     /**
      * Creates model from a POST value
      *
@@ -375,7 +375,7 @@ abstract class Model extends \Spaark\Core\Base\Object
     {
         $this->__fromGlobal('_POST', $id);
     }
-    
+
     /**
      * Creates model from a GLOBAL array's value
      *
@@ -393,7 +393,7 @@ abstract class Model extends \Spaark\Core\Base\Object
         {
             throw new CannotCreateModelException(get_class(), $global, $id);
         }
-        
+
         $this->__default($_GLOBALS[$global][$id]);
     }
 
@@ -440,7 +440,7 @@ abstract class Model extends \Spaark\Core\Base\Object
             return parent::__get($var);
         }
     }
-    
+
     /**
      * Returns this Model's name
      *
@@ -454,6 +454,6 @@ abstract class Model extends \Spaark\Core\Base\Object
     {
         return static::modelName();
     }
-    
+
     // }}}
 }

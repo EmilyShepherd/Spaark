@@ -26,7 +26,7 @@ class URL extends String
         {
             $url = Config::HREF_ROOT();
         }
-        
+
         parent::__construct($url);
     }
 }

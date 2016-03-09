@@ -8,9 +8,9 @@ define('SERVER', 3);
 class Vars extends \Spaark\Core\Base\StaticClass
 {
     protected static $initialized = false;
-    
+
     protected static $saved = array( );
-    
+
     public static function init()
     {
         self::grabVar(GET,    '_GET');
@@ -18,44 +18,44 @@ class Vars extends \Spaark\Core\Base\StaticClass
         self::grabVar(COOKIE, '_COOKIE');
         self::grabVar(SERVER, '_SERVER');
     }
-    
+
     private static function grabVar($varName, $var)
     {
         self::$saved[$varName] = $GLOBALS[$var];
         $GLOBALS[$varName]     = array( );
     }
-    
+
     public static function checkFlag($type, $name)
     {
         return isset(self::$saved[$type][$name]);
     }
-    
+
     public static function checkValue($type, $name, $value)
     {
         return
             self::checkFlag($type, $name) &&
             self::$saved[$type][$name] == $value;
     }
-    
+
     public static function sanitize($val, $checker)
     {
         $class = Main::getClassLoader()->load($checker);
-        
+
         if (!call_user_func($class['class'] . '::' . $class['method'], $val))
         {
             throw new InvalidInputException();
         }
     }
-    
+
     public static function getValue($type, $name, $checker)
     {
         $val = self::$saved[$type][$name];
-        
+
         //self::sanitize($val, $checker);
-        
+
         return $val;
     }
-    
+
     public static function box($type, $name, $box)
     {
         if (!class_exists($box))
@@ -78,12 +78,12 @@ class Vars extends \Spaark\Core\Base\StaticClass
                 }
             }
         }
-            
+
         $value =
             self::checkFlag($type, $name)
               ? self::$saved[$type][$name]
               : '';
-        
+
         return new $box($value);
     }
 }

@@ -22,12 +22,12 @@ class NoIdException extends \Exception
 class IdRef
 {
     private $object;
-    
+
     public function __construct($object)
     {
         $this->object = $object;
     }
-    
+
     public function __toString()
     {
         if ($this->object->id)
@@ -39,12 +39,12 @@ class IdRef
             return "0";
         }
     }
-    
+
     public static function __throwException()
     {
         throw new NoIdException();
     }
-    
+
     public function __debugInfo()
     {
         return array

@@ -14,15 +14,15 @@
 class DimensionalConverter extends BaseMapper
 {
     private $attrs;
-    
+
     public function __construct($onlyDirty, \Spaark\Core\Model\Base\Composite $object)
     {
       parent::__construct($onlyDirty, $object);
-      
+
       $this->attrs =
             $this->obj->reflect->getProperty('attrs')->getValue($this->obj);
     }
-    
+
     protected function propertyValue($key)
     {
         if ($this->obj->reflect->hasProperty($key))
@@ -35,7 +35,7 @@ class DimensionalConverter extends BaseMapper
             return $this->attrs[$key];
         }
     }
-    
+
     protected function processProperty($key)
     {
         if ($this->obj->reflect->hasProperty($key))
@@ -47,21 +47,21 @@ class DimensionalConverter extends BaseMapper
             $this->data[$key] = $this->attrs[$key];
         }
     }
-    
+
     protected function processComposite($converter, $prop)
     {
         $key              = $prop->getName();
         $this->data[$key] = array( );
         $converter->data  = &$this->data[$key];
-                
+
         $converter->_toArray();
     }
-    
+
     protected function processArray($prop)
     {
         $value = (array)$prop->getValue($this->obj);
         $key   = $prop->getName();
-        
+
         if ($prop->type->key && $prop->type->key !== $key)
         {
             $this->external += $value;
@@ -69,7 +69,7 @@ class DimensionalConverter extends BaseMapper
         elseif (!$prop->standalone)
         {
             $this->data[$key] = array( );
-            
+
             foreach ($value as $k => $v)
             {
                 //TODO: Less shit

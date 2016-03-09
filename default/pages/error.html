@@ -17,18 +17,18 @@ $skipping = false;
 
 <h2>Stack Trace</h2>
 
-<?foreach ($error as $i => $step): extract($step) ?>  
+<?foreach ($error as $i => $step): extract($step) ?>
   <? if (!$first) : ?>
     <hr style="margin-bottom: 10px;" />
   <? else : $first = false; ?>
   <? endif ?>
-  
+
   <? if (true || $function != 'invokeArgs') : ?>
-    
+
     <? if (isset($step['class'])) : ?>
       {class} ->
     <? endif ?>
-    
+
     {function}
     (
       <? if (isset($step['args'])) : ?>
@@ -43,13 +43,13 @@ $skipping = false;
             <b>NULL</b>,
           <? else : ?>
             {arg},
-          <? endif ?> 
+          <? endif ?>
         <? endforeach ?>
       <? endif ?>
     )
     <br />
   <? endif ?>
-  
+
   <? if (isset($step['file'])) : ?>
     {file}:{line}
   <? endif ?>

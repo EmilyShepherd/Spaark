@@ -21,7 +21,7 @@ class Instance
      * This is the URI we are handling, minus the HREF_ROOT of the site.
      */
     private static $uri;
-    
+
     /**
      * The Router object for this Request
      */
@@ -32,7 +32,7 @@ class Instance
         ClassLoader :: init();
         $n = new Instance($site, $uri);
     }
-    
+
     /**
      * Sets up Spaark's environment and attempts to handle the request.
      *
@@ -57,7 +57,7 @@ class Instance
         self   :: handleFragment();
         self   :: buildURI($uri);
         self   :: handleSlashes();
-        
+
      // self   :: loadFromCache();
         ClassLoader :: appInit();
         self   :: init();
@@ -120,14 +120,14 @@ class Instance
         header('X-Powered-By: spaark/' . VERSION);
         exit;
     }
-    
+
     private static function buildURI($uri)
     {
         if (!$uri)
         {
             $uri = self::findURI();
         }
-        
+
         $pos = strpos($uri, '?');
         $uri =
               '/'
@@ -141,10 +141,10 @@ class Instance
         {
             $uri = substr($uri, 0, $pos);
         }
-        
+
         self::$uri = $uri;
     }
-    
+
     /**
      * Trys to calculate the current URI.
      *
@@ -182,7 +182,7 @@ class Instance
             return $uri;
         }
     }
-    
+
     /**
      * Returns the Request object
      *
@@ -192,7 +192,7 @@ class Instance
     {
         return self::$uri;
     }
-    
+
     /**
      * Initializes Spaark for use with third party code.
      *
@@ -208,13 +208,13 @@ class Instance
         {
             date_default_timezone_set($ts);
         }
-        
+
         Error\Error :: init();
         Vars\Vars   :: init();
         register_shutdown_function('\Spaark\Core\Instance::shutdown');
     //  Cache       :: init(self::$uri);
     }
-    
+
     /**
      * Attempts to load an Output object from this Request's cache.
      *
@@ -237,7 +237,7 @@ class Instance
         }
         catch (CacheMiss $cm) {}
     }
-    
+
     /**
      * Handles the request, by running it through the Router.
      *
@@ -253,7 +253,7 @@ class Instance
         self::$router = new Router(self::$uri);
         self::$router->route();
     }
-    
+
     /**
      * Handles the shutdown of Spaark.
      *
@@ -266,7 +266,7 @@ class Instance
     public static function shutdown()
     {
         Output::fromOutput();
-        
+
         $output = Output::getObj();
         $router = self::$router;
 
@@ -274,7 +274,7 @@ class Instance
         {
             Error::unexpectedEnd();
         }
-        
+
         Cache::output($output);
 
         $router->shutdown();

@@ -22,7 +22,7 @@ class Router extends \Spaark\Core\Base\Controller
      */
     protected $route;
     protected $obj;
-    
+
     protected $cache = false;
 
     public function __construct($request)
@@ -46,13 +46,13 @@ class Router extends \Spaark\Core\Base\Controller
             array('\Spaark\Core\Output\Router', 'args'),
             array('\Spaark\Core\Output\StdOutput', 'error404')
         );
-        
+
         try
         {
             //$this->runRoute(Cache::route()->route);
         }
         catch (CacheMiss $cm) {}
-        
+
         try
         {
             if (!$this->config->ignoreRouteTree && false)
@@ -61,18 +61,18 @@ class Router extends \Spaark\Core\Base\Controller
             }
         }
         catch (CacheMiss $cm) {}
-        
+
         header('X-Spaark-Route-Debug: Route Tree Fail');
-        
+
         $this->cache = true;
         $this->_route($routes);
-        
+
         throw new \Exception
         (
             'Incomplete routing table'
         );
     }
-    
+
     private function traceRouteTree()
     {
         $croutes         = Cache::load('routes', 'global');
@@ -80,13 +80,13 @@ class Router extends \Spaark\Core\Base\Controller
         $this->routeNode =& $this->routeTree;
         $this->parts     = explode('/', trim($this->request, '/'));
         $this->stack     = array( );
-        
+
         for ($i = 0; $i < count($this->parts); $i++)
         {
             if (isset($this->routeNode[$this->parts[$i]]))
             {
                 array_push($this->stack, $this->routeNode);
-                
+
                 $this->routeNode = &$this->routeNode[$this->parts[$i]];
             }
             else
@@ -95,16 +95,16 @@ class Router extends \Spaark\Core\Base\Controller
                 break;
             }
         }
-        
+
         //Fail, let's go up and see what we can do
         while (!empty($this->stack))
         {
             $this->routeNode = array_pop($this->stack);
-            
+
             $this->tryRouteNode(--$i);
         }
     }
-    
+
     private function tryRouteNode($i)
     {
         if (isset($this->routeNode['/' . $_SERVER['REQUEST_METHOD']]))
@@ -115,20 +115,20 @@ class Router extends \Spaark\Core\Base\Controller
                 $this->routeNode['/' . $_SERVER['REQUEST_METHOD']]
             );
         }
-        
+
         if (isset($this->routeNode['/*']))
         {
             $this->runRouteNode($i, $this->routeNode['/*']);
         }
     }
-    
+
     private function runRouteNode($i, $node)
     {
         $argCount  = count($this->parts) - $i;
         $castCount = count($node['casts']);
         $max       = $castCount + count($node['optcasts']);
         $args      = array( );
-        
+
         if
         (
             $argCount >= $castCount &&
@@ -145,7 +145,7 @@ class Router extends \Spaark\Core\Base\Controller
                 {
                     $cast = $node['casts'][$j];
                 }
-                
+
                 if (!$cast)
                 {
                     $args[] = $this->parts[$j];
@@ -153,11 +153,11 @@ class Router extends \Spaark\Core\Base\Controller
                 else
                 {
                     if (!$cast::validate($this->parts[$j])) return;
-                    
+
                     $args[] = new $cast($this->parts[$j]);
                 }
             }
-            
+
             $this->runRoute
             (
                 array($node['class'], $node['method']),
@@ -190,9 +190,9 @@ class Router extends \Spaark\Core\Base\Controller
                 {
                     $route[3] = 'i';
                 }
-                
+
                 $preg = '#' . $route[2] . '#' . $route[3];
-                
+
                 if (preg_match($preg, $this->request))
                 {
                     $this->runRoute($route);
@@ -206,14 +206,14 @@ class Router extends \Spaark\Core\Base\Controller
         try
         {
             Output::init();
-            
+
             ClassLoader::load($route[0]);
-            
+
             if (!is_callable(array($route[0], $route[1]))) return;
-            
+
             $this->obj   = new $route[0]();
             $this->route = $route;
-            
+
             call_user_func_array
             (
                 array($this->obj, $route[1]),
@@ -243,14 +243,14 @@ class Router extends \Spaark\Core\Base\Controller
         $obj->exception($e);
 
         $this->obj = $obj;
-        
+
         Output::attemptEnd();
     }
 
     public function shutdown()
     {
         $ttl = $this->obj->getRouteCacheTTL();
-        
+
         if (!$this->cache || $ttl < 0)
         {
             $this->obj->shutdown();

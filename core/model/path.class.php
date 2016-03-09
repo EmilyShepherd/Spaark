@@ -21,7 +21,7 @@ class Path extends Base\Model
     {
         $this->value = is_array($arr) ? implode('/', $arr) : $arr;
     }
-    
+
     /**
      * Returns the path
      *

@@ -29,7 +29,7 @@ final class Error extends \Spaark\Core\Base\StaticClass
             E_ALL ^ E_STRICT
         );
         register_shutdown_function('\Spaark\Core\Error\Error::fatal');
-        
+
         \Spaark\Core\ClassLoader::load('\Spaark\Core\Error\CaughtException');
     }
 
@@ -55,7 +55,7 @@ final class Error extends \Spaark\Core\Base\StaticClass
             throw new CaughtException($msg, $file, $line);
         }
     }
-    
+
     /**
      * Displays an error message
      *
@@ -67,9 +67,9 @@ final class Error extends \Spaark\Core\Base\StaticClass
      */
     public static function unexpectedEnd()
     {
-        
+
     }
-    
+
     /**
      * Handles fatal errors
      *
@@ -84,7 +84,7 @@ final class Error extends \Spaark\Core\Base\StaticClass
         $errors = array(E_ERROR, E_USER_ERROR, E_COMPILE_ERROR);
 
         if (!$error || !in_array($error['type'], $errors)) return;
-        
+
         @ob_clean();
         @ob_clean();
 
@@ -100,7 +100,7 @@ final class Error extends \Spaark\Core\Base\StaticClass
                 'line'      => $error['line']
             )
         );
-        
+
         exit;
     }
 }

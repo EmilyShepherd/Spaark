@@ -27,22 +27,22 @@ class JSON extends Encoding
      * The parsed json, as an array
      */
     private $data;
-    
+
     private $i;
-    
+
     private $line;
-    
+
     private $char;
-    
+
     private $clever;
-    
+
     private $array;
-    
+
     public static function blankInstance()
     {
         return new static(NULL);
     }
-    
+
     public function __construct()
     {
         //
@@ -57,7 +57,7 @@ class JSON extends Encoding
     {
         return json_encode($data);
     }
-    
+
     /**
      * Parses the gievn data and returns the array representing it
      *
@@ -72,13 +72,13 @@ class JSON extends Encoding
         $this->clever = $clever;
         $this->line   = 1;
         $this->char   = 1;
-        
+
         try
         {
             if ($this->nextNiceChar() == '{')
             {
                 $return = $this->parse_bracket();
-                
+
                 if ($this->nextNiceChar(true) !== NULL)
                 {
                     throw new InvalidJSONException
@@ -94,31 +94,31 @@ class JSON extends Encoding
         }
         catch (\Exception $e)
         {var_dump($e->getMessage());var_dump($e->getLine());}
-        
+
         return $return;
     }
-    
+
     private function skipTo()
     {
         while(!in_array($c = $this->nextChar(), func_get_args()));
-        
+
         return $c;
     }
-    
+
     private function end()
     {
         return $this->i == strlen($this->data);
     }
-    
+
     public function nextChar()
     {
         $char = $this->data{$this->i++};
-        
+
         if
         (
             ($char == "\n") ||
             (
-                ($char == "\r")                                 && 
+                ($char == "\r")                                 &&
                 ($this->end() || $this->data{$this->i} != "\n")
             )
         )
@@ -133,13 +133,13 @@ class JSON extends Encoding
 
         return $char;
     }
-    
+
     private function nextNiceChar($endOk = false)
     {
         while (!$this->end())
         {
             $c = $this->nextChar();
-            
+
             switch ($c)
             {
                 case ' ':
@@ -147,33 +147,33 @@ class JSON extends Encoding
                 case "\r":
                 case "\n":
                     break;
-                
+
                 case '#':
                     $this->parse_linecomment();
                     break;
-                    
+
                 case '/':
                     $this->parse_comment();
                     break;
-                
+
                 default:
                     return $c;
             }
         }
-        
+
         if (!$endOk)
         {
             throw new InvalidJSONException('Unexpected End of Input');
         }
-        
+
         return NULL;
     }
-    
+
     private function parse_linecomment()
     {
         $this->skipTo("\n", "\r");
     }
-    
+
     private function parse_comment()
     {
         while (!$this->end())
@@ -183,7 +183,7 @@ class JSON extends Encoding
                 case '/':
                     $this->parse_linecomment();
                     return;
-                    
+
                 case '*':
                     do
                     {
@@ -194,18 +194,18 @@ class JSON extends Encoding
             }
         }
     }
-    
+
     private function parse_bracket()
     {
         $arr = array( );
-        
+
         while ($char = $this->nextNiceChar() OR true)
         {
             if ($char == '}') return $arr;
-            
+
             //Be nice
             if ($char == ',') continue;
-                
+
             if ($char == '"' || $char == '\'')
             {
                 $label = $this->parse_string($char);
@@ -221,7 +221,7 @@ class JSON extends Encoding
                     'Unexpected "' . $char . '"'
                 );
             }
-            
+
             if ($this->nextNiceChar() != ':')
             {
                 throw new InvalidJSONException
@@ -229,32 +229,32 @@ class JSON extends Encoding
                     'Unexpected "' . $char . '"'
                 );
             }
-            
+
             if ($this->clever)
             {
                 $parts = explode('.', $label);
-                
+
                 $cleverArr = &$arr;
-                
+
                 foreach ($parts as $i => $part)
                 {
                     if (!isset($cleverArr[$part]))
                     {
                         $cleverArr[$part] = array( );
                     }
-                    
+
                     $cleverArr =& $cleverArr[$part];
                 }
-                
+
                 $cleverArr = $this->parse_value();
             }
             else
             {
                 $arr[$label] = $this->parse_value();
             }
-            
+
             $char = $this->nextNiceChar();
-            
+
             if ($char == '}')
             {
                 return $arr;
@@ -272,20 +272,20 @@ class JSON extends Encoding
             }
         }
     }
-    
+
     private function parse_array()
     {
         $arr = array( );
-        
+
         while ($char = $this->nextNiceChar() OR true)
         {
             if ($char == ']') return $arr;
-            
+
             $this->i--;
             $arr[] = $this->parse_value();
-            
+
             $char = $this->nextNiceChar();
-            
+
             if ($char == ']')
             {
                 return $arr;
@@ -303,11 +303,11 @@ class JSON extends Encoding
             }
         }
     }
-    
+
     private function parse_alpha($mask = array('.', '_'))
     {
         $alpha = '';
-        
+
         while ($char = $this->nextChar() OR true)
         {
             if (in_array($char, $mask) || ctype_alnum($char))
@@ -321,28 +321,28 @@ class JSON extends Encoding
             }
         }
     }
-    
+
     private function parse_string($type)
     {
         $string = '';
-        
+
         while (!$this->end())
         {
             switch($c = $this->nextChar())
             {
                 case $type:
                     return $string;
-            
+
                 case '\\':
                     $string .= $this->nextChar();
                     break;
-                
+
                 default:
                     $string .= $c;
             }
         }
     }
-    
+
     private function parse_value()
     {
         $char = $this->nextNiceChar();
@@ -358,7 +358,7 @@ class JSON extends Encoding
                   $char
                 . $this->parse_alpha(array('.', '+', '-', '_'))
             );
-            
+
             // true
             if ($alpha == 'true')
             {
@@ -427,7 +427,7 @@ class JSON extends Encoding
             );
         }
     }
-    
+
     public function parseFile($file, $important = true)
     {
         if (file_exists($file . '.json'))
@@ -446,11 +446,11 @@ class JSON extends Encoding
 
     public function read($bytes)
     {
-        
+
     }
 
   public function seek($pos) {
-    
+
   }
 
     public function next(){}

@@ -13,11 +13,11 @@ const FROM      = 2;
 class Form extends Vars implements \Spaark\Core\Cache\Cacheable
 {
     private $vars = array( );
-    
+
     private $dirty = false;
-    
+
     private $output;
-    
+
     public static function get($name)
     {
         try
@@ -25,50 +25,50 @@ class Form extends Vars implements \Spaark\Core\Cache\Cacheable
             return Cache::load($name);
         }
         catch (CacheMiss $cm)
-        { 
+        {
             $form = new FormGetter($name);
             return $form->getForm();
         }
     }
-    
+
     public static function create($name, $action)
     {
         $form = new Form($name);
-        
+
         Cache::save($name, $form, URLParser::normalizeURL($action));
-        
+
         return $form;
     }
-    
+
     public static function form()
     {
         if (empty(Vars::$saved[POST]))         return false;
         if (!isset(Vars::$saved[POST]['_f']))  return false;
-        
+
         $form = self::get(Vars::$saved[POST]['_f']);
-        
+
         $_POST = $form->validate(Vars::$saved[POST]);
-        
+
         return true;
     }
-        
+
     public static function getValidationJs($class)
     {
         $class  = new ReflectionClass($class);
-        
+
         $method = $class->getMethod('validate');
-        
+
         $tokens = token_get_all('<?'.implode('', array_slice
         (
             file($method->getFileName()),
             $method->getStartLine(),
             $method->getEndLine() - $method->getStartLine()
         )) . '?>');
-        
+
         $code   = '';
         $vars   = array( );
         $params = array( );
-        
+
         foreach ($tokens as $token)
         {
             if (!is_array($token))
@@ -97,24 +97,24 @@ class Form extends Vars implements \Spaark\Core\Cache\Cacheable
                 $code .= $token[1];
             }
         }
-        
+
         $code = preg_replace
         (
             '/substr([\s\t\n\r]*?)\(([\s\t\n\r]*?)([a-zA-Z0-9]*)([\s\t\n\r]*?),/',
             '$3.substr(',
             $code
         );
-        
+
         foreach ($method->getParameters() as $param)
         {
             if (isset($vars[$param->getName()]))
             {
                 unset($vars[$param->getName()]);
             }
-            
+
             $params[] = $param->getName();
         }
-        
+
         if (!empty($vars))
         {
             $code = preg_replace
@@ -125,29 +125,29 @@ class Form extends Vars implements \Spaark\Core\Cache\Cacheable
                 1
             );
         }
-        
+
         $code =
               'function(' . implode(',', $params) . ')'
             . $code;
-        
+
         return $code;
     }
-    
+
     public function __construct($name)
     {
         //
     }
-    
+
     public function addInput($name, $validate, $required, $from)
     {
         $this->vars[$name] = array($validate, (bool)$required, $from);
         $this->dirty       = true;
     }
-    
+
     public function validate($vars)
     {
         $output = array( );
-        
+
         foreach ($this->vars as $name => $settings)
         {
             if (!isset($vars[$name]))
@@ -167,7 +167,7 @@ class Form extends Vars implements \Spaark\Core\Cache\Cacheable
                 {
                     throw new SystemException('Failed to Validate: ' . $name);
                 }
-                
+
                 if (isset($settings[FROM]))
                 {
                     $class         = $settings[VALIDATOR];
@@ -178,29 +178,29 @@ class Form extends Vars implements \Spaark\Core\Cache\Cacheable
                 {
                     $output[$name] = new $settings[VALIDATOR]($vars[$name]);
                 }
-                
+
                 unset($vars[$name]);
             }
         }
-        
+
         return $output + $vars;
     }
-    
+
     public function serialize()
     {
         return serialize($this->vars);
     }
-    
+
     public function unserialize($str)
     {
         $this->vars = unserialize($str);
     }
-    
+
     public function valid()
     {
         return true;
     }
-    
+
     public function dirty()
     {
         return $this->dirty;

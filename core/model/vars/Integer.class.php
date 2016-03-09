@@ -19,7 +19,7 @@ class Integer extends Variable
      * Eg: with padding = 3, the integer 7 would be "007"
      */
     private $padding;
-    
+
     /**
      * Sets the value of this Integer
      *
@@ -32,11 +32,11 @@ class Integer extends Variable
         {
             throw new SystemException($num . ' is not an int');
         }
-        
+
         $this->value       = (int)$num;
         $this->stringValue = $num;
     }
-    
+
     /**
      * Sets the padding for this Integer
      *
@@ -46,7 +46,7 @@ class Integer extends Variable
     {
         $this->padding = $padding;
     }
-    
+
     /**
      * Returns this as a string, with padding "0"s if required
      *
@@ -55,17 +55,17 @@ class Integer extends Variable
     public function __toString()
     {
         $string = (string)$this->value;
-        
+
         if ($this->padding && strlen($string) < $this->padding)
         {
             return
                   str_repeat('0', $this->padding - strlen($string))
                 . $string;
         }
-        
+
         return $string;
     }
-    
+
     /**
      * Return a cloned version of this Integer but with its value
      * incremented by the given amount
@@ -77,7 +77,7 @@ class Integer extends Variable
     {
         $new         = clone $this;
         $new->value += $val;
-        
+
         return $new;
     }
 }

@@ -28,17 +28,17 @@ abstract class Templateable extends HTMLSegment
      * Leading or trailing semi-colons are ignored
      */
     protected $templates    = array( );
-    
+
     /**
      * The top sections of this document
      */
     protected $top;
-    
+
     /**
      * the bottom sections of this document
      */
     protected $bottom;
-    
+
     /**
      * Loads the document, adding any templates or widgets
      * as defined
@@ -46,18 +46,18 @@ abstract class Templateable extends HTMLSegment
      * @param string $rawHTML The rawHTML to parse
      */
     protected function init($rawHTML = NULL)
-    {        
+    {
         //buildHTML() loads the HTML and parses it, loading in
         //document headers and replacing XML placeholders
         //with their appropriate templates / widgets
         $this->buildHTML($rawHTML);
-        
+
         //Load the templateable specific aspects of the
         //document
         $this->loadTemplate();
         $this->addIncludes();
     }
-    
+
     /**
      * Adds includes specificed by @js and @css in the
      * document header to the list of head includes,
@@ -73,13 +73,13 @@ abstract class Templateable extends HTMLSegment
                 //Create list of includes and loop through them
                 $list = explode(' ', $this->response[$type]);
                 $this->response[$type] = array( );
-                
+
                 foreach ($list as $item)
                 {
                     if (!$item) continue;
-                    
+
                     $item .= '.' . $type;
-                    
+
                     //If this isn't an empty string or already included,
                     //include it
                     if (!isset($this->response[$type][$item]))
@@ -91,7 +91,7 @@ abstract class Templateable extends HTMLSegment
             }
         }
     }
-    
+
     /**
      * If a template can be found for this document,
      * it will load it.
@@ -114,7 +114,7 @@ abstract class Templateable extends HTMLSegment
         {
             $template = dirname('/' . $this->name) . '/template';
         }
-        
+
         //We should only get the template if the JavaScript end
         //doesn't already have it, or the calculated template
         //is itself (to stop infinate loops)
@@ -125,12 +125,12 @@ abstract class Templateable extends HTMLSegment
                 $template,
                 $this->response + $this->varsIn
             );
-            
+
             $this->templates    = $templateObj->getTemplates();
             $this->templates[]  = $templateObj;
         }
     }
-    
+
     /**
      * Returns the template list, as a string
      *
@@ -140,10 +140,10 @@ abstract class Templateable extends HTMLSegment
     {
         return $this->templates;
     }
-    
+
     /**
      * Returns the document's info
-     * 
+     *
      * @return array The document's info
      * @see $info
      */
@@ -151,7 +151,7 @@ abstract class Templateable extends HTMLSegment
     {
         return $this->response;
     }
-    
+
     /**
      * Retuns this template's inline JavaScript
      *

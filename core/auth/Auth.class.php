@@ -16,17 +16,17 @@ class Auth
      * Does this auth require a user to be logged on? Default is yes
      */
     private $requireUser = true;
-    
+
     /**
      * If the user is one of these people, it will pass
      */
     private $userList    = array( );
-    
+
     /**
      * If the user is a memeber of one of these people, it will pass
      */
     private $groupList   = array( );
-    
+
     /**
      * Takes a string and calculates its parts
      */
@@ -39,7 +39,7 @@ class Auth
         else
         {
             $auth    = explode(' ', strtolower($string));
-            
+
             foreach ($auth as $part)
             {
                 if ($part == 'g' || $part == 'group')
@@ -64,7 +64,7 @@ class Auth
             }
         }
     }
-    
+
     /**
      * Returns true if the given user meets the requirements
      *
@@ -74,9 +74,9 @@ class Auth
     public function check($user = RUN_AS)
     {
         if (!$this->requireUser) return true;
-        
+
         if (!Login::hasUser()) return false;
-        
+
         if ($user === RUN_AS)
         {
             $user = Login::getUser();
@@ -93,7 +93,7 @@ class Auth
                 . 'or an instance of an AbstractUser'
             );
         }
-        
+
         if
         (
             (empty($this->userList) && empty($this->groupList)) ||
@@ -103,10 +103,10 @@ class Auth
         {
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Checks for each member of the given $arr, if $user->$method($i)
      * evaluates to true. If any of them do, it returns true, otherwise
@@ -129,10 +129,10 @@ class Auth
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Uses check() to see if the user passes, throws an
      * UnauthorisedException.

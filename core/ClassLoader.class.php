@@ -29,12 +29,12 @@ use \Spaark\Core\Model\Config;
             (
                 $class . ' not declared in its file'
             );
-            
+
             $this->line = 'ClassLoader';
             $this->file = '{Spaark}';
         }
     }
-    
+
     class DeprecatedClassException extends \Exception
     {
         public function __construct($class)
@@ -59,7 +59,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
     private static $starts = array( );
 
     private static $models = array( );
-    
+
     /**
      * Used when loading classes to prevent infinate loops
      */
@@ -72,7 +72,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
     {
         self::$starts['spaark'] = SPAARK_PATH;
         self::$models[]         = 'Spaark\Core\Model\\';
-        
+
         spl_autoload_register('Spaark\Core\ClassLoader::autoload');
     }
 
@@ -85,7 +85,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         self::$starts[$ns] = ROOT;
         self::$models[]    = $ns . '\Model\\';
     }
-    
+
     /**
      * This is the autoload function. DO NOT CALL THIS. Call load()
      * instead!
@@ -99,10 +99,10 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
     public static function autoload($class, $tryModel = true)
     {
         self::$triedModel = false;
-        
+
         return self::_load($class, $tryModel);
     }
-    
+
     /**
      * Internal function to load a class
      *
@@ -136,12 +136,12 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
             $path =
                 ROOT. strtolower(implode(DS, $parts)) . '.class.php';
         }
-        
+
         if (self::getFile($path, $class))
         {
             return $class;
         }
-        
+
         $newClass = implode('\\', array_slice($parts, 0, -1));
         $newPath  = dirname($path) . '.class.php';
 
@@ -149,22 +149,22 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         {
             return $class;
         }
-        
+
         if ($tryModel && !self::$triedModel)
         {
             $model = $parts[count($parts) - 1];
-            
+
             if ($model = self::loadModel($model))
             {
                 class_alias($model, $class);
-                
+
                 return $model;
             }
         }
 
         return false;
     }
-    
+
     /**
      * Loads a class safely (if it is already loaded, it won't load it
      * again)
@@ -179,7 +179,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
             class_exists($name, false) || interface_exists($name, false)
             ?: self::autoLoad($name, $tryModel);
     }
-    
+
     /**
      * Attempts to load a model from different namespaces.
      *
@@ -196,12 +196,12 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
     public static function loadModel($name, $localScope = NULL)
     {
         self::$triedModel = true;
-        
+
         //Local Scope
         if ($localScope)
         {
             $fullName = $localScope. '\\' . $name;
-                
+
             if (self::_load($fullName))
             {
                 return $fullName;
@@ -220,7 +220,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
 
         return false;
     }
-    
+
     /**
      * Attempts to load a class from the given file
      *
@@ -239,7 +239,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         else
         {
             require_once($file);
-            
+
             if (!self::exists($class))
             {
                 throw new NoClassInFileException($class);
@@ -248,15 +248,15 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
             {
                 throw new DeprecatedClassException($class);
             }
-            
+
             $name =
                 substr($class, strrpos($class, '\\') + 1) . '_onload';
-            
+
             if (method_exists($class, $name))
             {
                 $class::$name();
             }
-            
+
             return true;
         }
     }
@@ -267,7 +267,7 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
             class_exists($class, false) ||
             interface_exists($class, false);
     }
-    
+
     /*
      * @deprecated
      *
@@ -276,19 +276,19 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         $alias    = array_pop($parts);
         $ns       = implode('\\', $parts);
         $class    = end($parts);
-        
+
         if (class_exists($ns))
         {
             $table = defined($ns . '::NAME') ? ''
                 : 'const NAME=\'' . strtolower($class) . '\';';
-            
+
             eval
             (
                   'namespace ' . $ns . ';'
                 . 'class ' . $alias . ' extends \\' . $ns
                 . '{'
                 .     $table
-                .     (!$construct ? '' : 
+                .     (!$construct ? '' :
                          'public function __construct()'
                 .        '{'
                 .            'self::build'

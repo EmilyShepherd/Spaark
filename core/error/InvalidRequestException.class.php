@@ -27,14 +27,14 @@ class InvalidRequestException extends SystemException
         $msg =
               'Invalid Request'                           . "\r\n"
             . 'Expected request type: ' . $expectedType   . '.';
-        
+
         if ($responseType)
         {
             $msg .=
                                                             "\r\n"
                 . 'Normal response type: ' . $responseType . '.';
         }
-        
+
         parent::__construct($msg);
     }
 }

@@ -27,38 +27,38 @@ class Router extends \Spaark\Core\Base\Controller
      * assumed to be the successful one in the shutdown phase
      */
     private $obj;
-    
+
     /**
      * The exploded parts of the request
      */
     private $parts;
-    
+
     /**
      * The path the router is currently inspecting
      */
     private $path;
-    
+
     private $triedPath;
-    
+
     private $routeTree = array( );
-    
+
     private $routeNode;
-    
+
     /**
      * The array of arguments the router is attempting to use
      */
     private $args = array( );
-    
+
     private $class;
-    
+
     private $method;
-    
+
     /**
      * This is the pointer in $this->parts that we are currently looking
      * at
      */
     private $i;
-    
+
     /**
      * Trys to load the controller, assuming the request has no
      * arguments
@@ -80,22 +80,22 @@ class Router extends \Spaark\Core\Base\Controller
     public function method()
     {
         $req   = trim(Instance::getRequest(), '/');
-        
+
         //Takes care of "/"
         if (!$req)
         {
             $this->tryDefault();
             return;
         }
-        
+
         $this->path = $req;
         $parts      = explode('/', $req);
-        
+
         //For /some/sample/path, this trys
         //  /some/sample/path/path:home()
         //  /some/sample/path::home()
         $this->includeAndTryClass();
-        
+
         if (count($parts) == 1)
         {
             if ($parts[0] != 'home')
@@ -113,7 +113,7 @@ class Router extends \Spaark\Core\Base\Controller
             $this->includeAndTryClass();
         }
     }
-    
+
     /**
      * Trys to run Index::$method() with no arguments
      *
@@ -124,13 +124,13 @@ class Router extends \Spaark\Core\Base\Controller
         $this->full_class =
               $this->config->app['namespace']
             . 'Controller\Index';
-        
+
         if (class_exists($this->full_class))
         {
             $this->tryRoute($method);
         }
     }
-    
+
     /**
      * Trys to load the controller, assuming part of the request is
      * arguments
@@ -145,10 +145,10 @@ class Router extends \Spaark\Core\Base\Controller
     {
         //This is an empty request, it cannot have arguments
         if (Instance::getRequest() == '/') return;
-        
+
         $req        = trim(Instance::getRequest(), '/');
         $this->path = $req;
-        
+
         $i = 0;
         //Now that we have found the last existing directory, we can
         //bubble up again running tests
@@ -156,7 +156,7 @@ class Router extends \Spaark\Core\Base\Controller
         {
             $this->includeAndTryClass();
         }
-        
+
         $this->full_class = $this->config->app['namespace'] . 'Controller\Index';
 
         //It failed the other tests, try to call the method in the
@@ -167,16 +167,16 @@ class Router extends \Spaark\Core\Base\Controller
             {
                 $this->tryRoute($this->method, $this->args);
             }
-            
+
             if ($this->method)
             {
                 array_unshift($this->args, $this->method);
             }
-            
+
             $this->tryRoute('home', $this->args);
         }
     }
-    
+
     /**
      * This will try to include the class file before attempting to run
      * it.
@@ -194,25 +194,25 @@ class Router extends \Spaark\Core\Base\Controller
             . strtolower(str_replace('/', '\\', $this->path));
         $this->class      =
             strtolower(pathinfo($this->path, PATHINFO_BASENAME));
-        
+
         if (ctype_alnum(str_replace('\\', '', $this->full_class)))
         {
             if (ClassLoader::load($this->full_class . '\\' . $this->class, false))
             {
                 $this->full_class .= '\\' . $this->class;
-                
+
                 $this->tryClass();
             }
-            
+
             if (ClassLoader::load($this->full_class, false))
             {
                 $this->tryClass();
             }
         }
-        
+
         $this->goUp();
     }
-    
+
     /**
      * Try to run the method / home from the class
      */
@@ -236,17 +236,17 @@ class Router extends \Spaark\Core\Base\Controller
                 //Try ClassName::methodName(args)
                 $this->tryRoute($this->method, $this->args);
             }
-            
+
             //ClassName::methodName(args) doesn't exist, so push
             //"methodName" into the arguments array
             array_unshift($this->args, $this->method);
             $this->method = NULL;
-            
+
             //Try ClassName::home(methodName, args)
             $this->tryRoute('home', $this->args);
         }
     }
-    
+
     /**
      * Goes up
      *
@@ -256,25 +256,25 @@ class Router extends \Spaark\Core\Base\Controller
     private function goUp()
     {
         $this->path   = dirname($this->path);
-        
+
         if ($this->method)
         {
             array_unshift($this->args, $this->method);
         }
-        
+
         $this->method = $this->class;
     }
-    
+
     private function tryRoute($method, $args = array( ))
     {
         //$class = Controller::from($this->full_class);
-        
+
         if (!ctype_alnum($method)) return;
-        
+
         $parts           = explode('/', trim(Instance::getRequest(), '/'));
         //$this->routeTree = array( );
         $this->routeNode =& $this->routeTree;
-        
+
         for ($i = 0; $i < count($parts) - count($args); $i++)
         {
             if (!$this->routeNode)
@@ -287,9 +287,9 @@ class Router extends \Spaark\Core\Base\Controller
             }
             $this->routeNode =& $this->routeNode[$parts[$i]];
         }
-        
+
         $args = array_values($args);
-        
+
         $this->tryMethod
         (
             strtolower($_SERVER['REQUEST_METHOD']) . '_' . $method,
@@ -298,7 +298,7 @@ class Router extends \Spaark\Core\Base\Controller
         );
         $this->tryMethod($method, $args, '*');
     }
-    
+
     /**
      * Attempt to run a certain route
      *
@@ -315,7 +315,7 @@ class Router extends \Spaark\Core\Base\Controller
         $className   = $this->full_class;
         $class       = Controller::fromController($className);
         $count       = count($args);
-        
+
         foreach ($class->getMethod($methodName, $count) as $method)
         {
             if ($method->isPublic())
@@ -323,15 +323,15 @@ class Router extends \Spaark\Core\Base\Controller
                 $params  = $method->getParameters();
                 $newArgs = array( );
                 $j       = -1;
-                
+
                 foreach ($params as $i => $param)
                 {
                     if (!isset($args[++$j])) break;
-                    
+
                     $arg         = $args[$j];
                     $cast        = $param->cast;
                     $newArgs[$i] = urldecode($arg);
-                    
+
                     if ($cast)
                     {
                         try
@@ -339,12 +339,12 @@ class Router extends \Spaark\Core\Base\Controller
                             if ($param->args > 1)
                             {
                                 $newArgs[$i] = array( );
-                                
+
                                 for ($k = $j; $k < $j + $param->args; $k++)
                                 {
                                     $newArgs[$i][] = urldecode($args[$k]);
                                 }
-                                
+
                                 $j           = $k - 1;
                                 $newArgs[$i] = new $cast
                                 (
@@ -361,9 +361,9 @@ class Router extends \Spaark\Core\Base\Controller
                                         $newArgs[$i]
                                     );
                                 }
-                                
+
                                 $fromMethod = 'from' . ucfirst($param->from);
-                                
+
                                 $newArgs[$i] = $cast::$fromMethod($newArgs[$i]);
                             }
                             else
@@ -388,7 +388,7 @@ class Router extends \Spaark\Core\Base\Controller
                         }
                     }
                 }
-                    
+
                 try
                 {
                     $this->obj = new $className();
@@ -399,7 +399,7 @@ class Router extends \Spaark\Core\Base\Controller
             }
         }
     }
-    
+
     public function getRouteCacheTTL()
     {
         if ($this->routeNode)
@@ -411,13 +411,13 @@ class Router extends \Spaark\Core\Base\Controller
             return 0;
         }
     }
-    
+
     public function shutdown()
     {
         try
         {
             $routes = Cache::load('routes', 'global');
-            
+
             $routes->routes = tree_merge_recursive
             (
                 $routes->routes,
@@ -430,7 +430,7 @@ class Router extends \Spaark\Core\Base\Controller
             $routes->setTTL(INDEFINITE);
             $routes->routes = $this->routeTree;
         }
-        
+
         Cache::save('routes', $routes, 'global');
     }
 }

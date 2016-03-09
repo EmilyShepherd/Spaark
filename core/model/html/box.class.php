@@ -16,9 +16,9 @@ class Box extends Fragment
      * The file extension for Boxes is .htmb
      */
     protected $extension = '.htmb';
-    
+
     protected $output;
-    
+
     /**
      * Parses the document, using the ContentHandler
      *
@@ -27,16 +27,16 @@ class Box extends Fragment
      */
     public function __construct($name, $replace = array( ))
     {
-        $this->setName($name); 
+        $this->setName($name);
 
         $this->buildHTML($this->loadFromFile());
-        
+
         $this->response  = $replace;
         $this->output    = explode('{content}', $this->html);
         $this->output[0] = $this->replaceVars($this->output[0]);
         $this->output[1] = $this->replaceVars($this->output[1]);
     }
-    
+
     /**
      * Returns the top part of this box
      *
@@ -46,7 +46,7 @@ class Box extends Fragment
     {
         return $this->output[0];
     }
-    
+
     /**
      * Returns the bottom part of this box
      *
@@ -56,7 +56,7 @@ class Box extends Fragment
     {
         return $this->output[1];
     }
-    
+
     /**
      * Runs a part of the output array
      *
@@ -66,10 +66,10 @@ class Box extends Fragment
     private function run($i)
     {
         extract($this->varsIn);
-        
+
         ob_clean();
         eval('?>' . $this->output[$i]);
-        
+
         return ob_get_contents();
     }
 }

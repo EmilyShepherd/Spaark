@@ -14,9 +14,9 @@ interface iSource extends \Iterator, \Countable, \ArrayAccess
     /* public function read([$where [, $value]]) */
 
     /* public function update([$where [, $value]]) */
-    
+
     /* public function delete([$where [, $value]]) */
-     
+
     /* public function where($where [, $value]) */
 
     /* public function order($by [, $order = "ASC"]) */

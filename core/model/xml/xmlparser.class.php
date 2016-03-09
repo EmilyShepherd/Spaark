@@ -17,29 +17,29 @@ class XMLParser
      * Namespace for the handlers
      */
     private $ns          = '';
-    
+
     /**
      * Handlers for element types
      */
     private $handlers    = array( );
-    
+
     /**
      * Instances of the handlers specified in the $handler array
      */
     private $handlerObjs = array( );
-    
+
     /**
      * The xml file
      */
     private $xml;
-    
+
     /**
      * Objects can return other information as well as the updated xml.
      * This array holds any variables set by the handlers, and can be
      * accessed via the calling code
      */
     private $return   = array( );
-    
+
     /**
      * Sets the xml
      *
@@ -49,7 +49,7 @@ class XMLParser
     {
         $this->xml  = $xml;
     }
-    
+
     /**
      * Sets the namespace to be used for the handlers
      */
@@ -57,7 +57,7 @@ class XMLParser
     {
         $this->ns = $ns;
     }
-    
+
     /**
      * Sets a handler for a given element. Handlers will be called in
      * the order they are set.
@@ -73,7 +73,7 @@ class XMLParser
             $recurse
         );
     }
-    
+
     /**
      * parses the XML document with the set handlers
      *
@@ -82,12 +82,12 @@ class XMLParser
     public function parse()
     {
         $xml = $this->xml;
-        
+
         foreach (array_keys($this->handlers) as $tag)
         {
             $xml = $this->runParse($tag, $xml);
         }
-        
+
         return $xml;
     }
 
@@ -106,7 +106,7 @@ class XMLParser
               $xml
         );
     }
-    
+
     /**
      * Called when an element is found
      *
@@ -126,13 +126,13 @@ class XMLParser
         $handler = $this->currentTag;
 
        //var_dump($this->handlers[$handler]);exit;
-        
+
         if (!isset($this->handlerObjs[$handler]))
         {
             $this->handlerObjs[$handler] =
                 new $this->handlers[$handler][0]($this);
         }
-        
+
         if ($matches[3])
         {
             $tag = substr($matches[3], 1);
@@ -143,17 +143,17 @@ class XMLParser
         {
             $content = $this->runParse($handler, $content);
         }
-        
+
         $element = $this->handlerObjs[$handler]->parse
         (
             $tag,
             $matches[5],
             $content
         );
-        
+
         return $element === true ? $matches[0] : $element;
     }
-    
+
     /**
      * Adds a return
      *
@@ -164,7 +164,7 @@ class XMLParser
     {
         $this->__set($return, $value);
     }
-    
+
     /**
      * Sets a return variable. Values are saved in $this->return
      *
@@ -175,7 +175,7 @@ class XMLParser
     {
         $this->return[$var] = $val;
     }
-    
+
     /**
      * Gets a return variable from the $this->return array
      *

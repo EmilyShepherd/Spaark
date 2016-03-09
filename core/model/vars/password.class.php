@@ -14,7 +14,7 @@ use \Spaark\Core\Config\Config;
 class Password extends HashedValue
 {
     const INPUT_TYPE = 'password';
-    
+
     /**
      * Sets the HashedValue's application salt as Config::PASSWORD_HASH
      *
@@ -23,7 +23,7 @@ class Password extends HashedValue
     public function __construct($password)
     {
         parent::__construct($password);
-        
+
         $this->appSalt = Config::PASSWORD_HASH() ?: $this->appSalt;
     }
 }

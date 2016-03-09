@@ -32,14 +32,14 @@ class Collection extends Model implements \ArrayAccess, \Iterator
      * @var array
      */
     protected $data = array( );
-    
+
     /**
      * The current position of the array pointer
      *
      * @var int
      */
     protected $pointer = 0;
-    
+
     /**
      * Returns the current element
      *
@@ -66,7 +66,7 @@ class Collection extends Model implements \ArrayAccess, \Iterator
     public function next()
     {
         $this->pointer++;
-        
+
         return next($this->data);
     }
 
@@ -122,7 +122,7 @@ class Collection extends Model implements \ArrayAccess, \Iterator
     public function rewind()
     {
         $this->pointer = 0;
-        
+
         return reset($this->data);
     }
 

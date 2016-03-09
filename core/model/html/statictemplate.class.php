@@ -16,7 +16,7 @@ class StaticTemplate extends Templateable
      * The file extension for Templates is .htmt
      */
     protected $extension = '.htmt';
-    
+
     /**
      * Parses the document, using the ContentHandler
      *
@@ -28,7 +28,7 @@ class StaticTemplate extends Templateable
         $originalName = $name;
         $this->varsIn = $staticVars;
         $this->setName($name);
-        
+
         while (true)
         {
             try
@@ -55,7 +55,7 @@ class StaticTemplate extends Templateable
                 }
             }
         }
-        
+
         $this->init
         (
             str_replace
@@ -65,9 +65,9 @@ class StaticTemplate extends Templateable
                 $content
             )
         );
-        
+
         $output = explode('<content />', $this->html);
-        
+
         $this->top    =
               $output[0]
             . '<div id="template_' . $this->name . '" class="spaark_template">';
@@ -75,7 +75,7 @@ class StaticTemplate extends Templateable
               '</div>'
             . $output[1];
     }
-    
+
     /**
      * Returns the top parts of this template
      *
@@ -85,7 +85,7 @@ class StaticTemplate extends Templateable
     {
         return $this->top;
     }
-    
+
     /**
      * Returns the bottom parts of this template
      *

@@ -16,7 +16,7 @@ class Fragment extends HTMLSegment
      * The file extension for Fragments is .htmbf
      */
     protected $extension = '.htmf';
-    
+
     /**
      * Parses the document
      *
@@ -26,22 +26,22 @@ class Fragment extends HTMLSegment
     public function __construct($name, $replace = array( ))
     {
         $this->setName($name);
-        
+
         if (isset($replace['CLASS']))
         {
             require_once Config::CONTROLLER_PATH() . $replace['CLASS'] . '.class.php';
-            
+
             $class = pathinfo($replace['CLASS'], PATHINFO_BASENAME);
             $obj   = new $class();
-            
+
             ob_clean();
-            
+
             $obj->$name($replace);
-            
+
             $rawHTML = ob_get_contents();
-            
+
             ob_clean();
-            
+
             $this->static = true;
         }
         else
@@ -49,17 +49,17 @@ class Fragment extends HTMLSegment
             $rawHTML = $this->loadFromFile();
             $this->varsIn = $replace;
         }
-        
+
         $this->buildHTML($rawHTML);
-        
+
         $this->response = $replace;
         $this->html     = $this->replaceVars($this->html);
     }
-    
+
     protected function replaceVarsCB($matches)
     {
         $name = $matches[3];
-        
+
         if ($matches[1] == '\\')
         {
             return $matches[0];
@@ -76,7 +76,7 @@ class Fragment extends HTMLSegment
             return $matches[0];
         }
     }
-    
+
     /**
      * Returns the generated HTML
      *
@@ -91,13 +91,13 @@ class Fragment extends HTMLSegment
         else
         {
             extract($this->varsIn);
-            
+
             ob_clean();
-            
+
             eval('?>' . $this->html);
-            
+
             $html = ob_get_contents();
-            
+
             ob_clean();
             return $html;
         }

@@ -35,7 +35,7 @@ if (typeof JSON == 'undefined')
 document.write = document.writeln = (function(str)
 {
     console.error('Spaark document.write not supported');
-    
+
     var el       = document.createElement('div');
     el.innerHTML = str;
     document.body.appendChild(el);

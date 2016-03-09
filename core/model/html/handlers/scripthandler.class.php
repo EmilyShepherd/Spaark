@@ -38,7 +38,7 @@ class ScriptHandler extends \Spaark\Core\Model\XML\ElementHandler
                 $this->handler->script . $content
             );
         }
-        
+
         return '';
     }
 }

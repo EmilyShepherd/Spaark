@@ -22,12 +22,12 @@ class InputHandler extends \Spaark\Core\Model\XML\ElementHandler
     public function parse($tag, $attrs, $content)
     {
         $name     = $this->getAttr($attrs, 'name',     false);
-        
+
         if (!$name)
         {
             return true;
         }
-        
+
         $type     = $this->getAttr($attrs, 'type',     true);
         $rule     = $this->getAttr($attrs, 'rule',     true);
         $required = $this->getAttr($attrs, 'required', true);
@@ -38,18 +38,18 @@ class InputHandler extends \Spaark\Core\Model\XML\ElementHandler
         $type     = explode('.', $type);
         $from     = isset($type[1]) ? $type[1] : NULL;
         $type     = $type[0];
-        
+
         $arr = array
         (
             'type'  => $type,
             'id'    => $id ?: $this->handler->form . '_' . $i,
             'value' => $value ?: '<?=\'\'?>'
         );
-        
+
         $this->handler->i = $i + 1;
-        
-        
-        
+
+
+
         if
         (
             ($fullType = Model::load($type)) ||
@@ -59,7 +59,7 @@ class InputHandler extends \Spaark\Core\Model\XML\ElementHandler
             $validate             = $fullType;
             $arr['data-validate'] = $fullType;
             $arr['type']          = $fullType::INPUT_TYPE;
-            
+
             $validators = $this->handler->validators;
             if (!isset($validators[$fullType]))
             {
@@ -71,9 +71,9 @@ class InputHandler extends \Spaark\Core\Model\XML\ElementHandler
         {
             $arr['data-required'] = true;
         }
-        
+
         $this->handler->formObj->addInput($name, $validate, $required, $from);
-              
+
         return $this->build($tag, $attrs, $arr, false);
     }
 }

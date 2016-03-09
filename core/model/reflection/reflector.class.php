@@ -142,15 +142,15 @@ class Reflector extends \Spaark\Core\Model\Base\Wrapper
             );
         }
     }
-    
+
     /**
      * Returns a new Reflector Instance
-     * 
+     *
      * When blankInstance is called, this normally uses a reflector to create
      * a new instance without invoking the constructor. But this would lead
      * to an infinate loop in this case, as this is the reflector, so we
      * override it to do nothing.
-     * 
+     *
      * @return static
      */
     public static function blankInstance()
@@ -163,15 +163,15 @@ class Reflector extends \Spaark\Core\Model\Base\Wrapper
         ////////////////////////////////////////////////////////
 
 // {{{ instance
-    
+
     /**
      * Does nothing
-     * 
+     *
      * @see self::blankInstance()
      */
     public function __construct()
     {
-        
+
     }
 
     /**

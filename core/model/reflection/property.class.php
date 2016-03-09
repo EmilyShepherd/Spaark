@@ -54,7 +54,7 @@ class Property extends Reflector
     protected $key;
 
     /**
-     * 
+     *
      */
     protected $link;
 
@@ -69,7 +69,7 @@ class Property extends Reflector
     protected $many = false;
 
     /**
-     * 
+     *
      */
     protected $from;
 
@@ -89,10 +89,10 @@ class Property extends Reflector
     protected $linktable;
 
     /**
-     * 
+     *
      */
     protected $direction;
-    
+
     protected $standalone;
 
     /**
@@ -104,11 +104,11 @@ class Property extends Reflector
     public function parse()
     {
         parent::parse();
-        
+
         $this->object->setAccessible(true);
-        
+
         if (!$this->type) return;
-        
+
         if ($this->standalone === NULL)
         {
             $this->standalone = $this->type->isStandalone;
@@ -140,7 +140,7 @@ class Property extends Reflector
     protected function setType($name, $value)
     {
         $key = NULL;
-        
+
         if (!preg_match('/^array\((.*?)\)$/', $value, $match))
         {
             $type = $value;
@@ -151,13 +151,13 @@ class Property extends Reflector
             $type = $match[1];
             $many = true;
         }
-        
+
         if (preg_match('/^(.*?)\:(.*?)$/', $type, $match))
         {
             $type = $match[1];
             $key  = $match[2];
         }
-        
+
         $this->type = new Type($type, $many, $key);
     }
 

@@ -25,7 +25,7 @@ class CSS extends OutputType
     public function __construct($css)
     {
         $this->output = $css;
-        
+
         //$this->removeComments('@', ';');
         $this->removeComments('\/\*', '\*\/');
         $this->compress();
@@ -34,12 +34,12 @@ class CSS extends OutputType
         $this->parseLinks();
         $this->addRoot();
         $this->addIeClasses();
-        
+
         $this->output = trim($this->output);
-        
+
         $this->addHeader('/*', '*/', ' ', '');
     }
-    
+
     /**
      * Removed whitespace from the CSS
      */
@@ -51,7 +51,7 @@ class CSS extends OutputType
             $this->output
         );
     }
-    
+
     /**
      * Replaces colors in the form rgb(255, 255, 255) with their hex
      * eqivalent (eg #FFFFFF)
@@ -72,7 +72,7 @@ class CSS extends OutputType
             $this->output
         );
     }
-    
+
     /**
      * Shortens 6 diget hex codes to three where possible.
      *
@@ -104,7 +104,7 @@ class CSS extends OutputType
             $this->output
         );
     }
-    
+
     /**
      * Grabs the links from the css document (normally background
      * images) and replaces them with their cached link, where possible
@@ -129,7 +129,7 @@ class CSS extends OutputType
             $this->output
         );
     }
-    
+
     /**
      * Replaces {HREF_ROOT} placeholders with the HREF_ROOT value in
      * config.

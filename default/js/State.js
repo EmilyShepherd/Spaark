@@ -20,7 +20,7 @@ var loadState = (function(state)
         + '<html>'
         +   state.content
         + '</html>';
-    
+
     //Figure out the lowest template in common between the
     //two documents.
     for (var i in targetTemplate)
@@ -37,11 +37,11 @@ var loadState = (function(state)
             }
         }
     }
-    
+
 	XMLDocument = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', null);
 	XMLDocument.documentElement.appendChild(XMLDocument.createElement('body'));
 	XMLDocument.body.innerHTML = state.content;
-	
+
     //Use the calculated common template to grab the content
     if (last)
     {
@@ -53,7 +53,7 @@ var loadState = (function(state)
         to   = document.body;
         from = XMLDocument.body;
     }
-    
+
     //Clear the reciving content area and fill it with the
     //children
     to.innerHTML = '';
@@ -64,16 +64,16 @@ var loadState = (function(state)
         //var child = document.adoptNode(from.childNodes.item(0));
         to.appendChild(from.childNodes.item(0));
     }
-    
+
     //Force Opera to treat the elements as HTML, simply adding
     //them doesn't work
     if (navigator.appName == 'Opera')
     {
         to.innerHTML = to.innerHTML;
     }
-    
+
     fadeIn(to);
-    
+
     document.title     = state.title;
     Framework.template = state.template;
 });

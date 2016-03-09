@@ -17,17 +17,17 @@ use \Spaark\Core\Config\Config;
 abstract class Controller extends Object
 {
     const FROM = 'Controller';
-    
+
     /**
      * The model performs application logic
      */
     protected $model;
-    
+
     /**
      * The view is used to echo non-HTML outputs (eg, json / XML)
      */
     protected $view;
-    
+
     /**
      * The Time To Live for this route.
      *
@@ -36,7 +36,7 @@ abstract class Controller extends Object
      * 0 (indefinite cache)
      */
     protected $routeCacheTTL = -1;
-    
+
     /**
      * Creates page / model / view objects for this class
      */
@@ -49,21 +49,21 @@ abstract class Controller extends Object
             strlen(Config::NAME_SPACE()) + 9
         );
         $model = Config::NAME_SPACE() . 'Model' . $model;
-        
-        
-        
+
+
+
         if (class_exists($model))
         {
             $this->model = new $model();
         }
-        
+
         $view       = get_class($this) . 'View';
         if (class_exists($view))
         {
             $this->view = new $view($this->page);
         }
     }*/
-    
+
     /**
      * Used by inheriting classes to indicate that it is only capable of
      * responding via AJAX
@@ -73,10 +73,10 @@ abstract class Controller extends Object
     protected function ajax()
     {
         if (Vars::checkFlag(GET, 'ajax')) return;
-        
+
         throw new InvalidRequestException('AJAX', 'application/json');
     }
-    
+
     /**
      * Returns the route cache TTL
      *
@@ -86,7 +86,7 @@ abstract class Controller extends Object
     {
         return $this->routeCacheTTL;
     }
-    
+
     /**
      * Shuts down the Controller
      *

@@ -24,37 +24,37 @@ Copyright (C) 2013 Emily Shepherd
     <td><b>Version</b></td>
     <td>spaark/<?=VERSION?></td>
   </tr>
-  
+
   <tr>
     <td><b>PHP</b></td>
     <td>php/<?=PHP_VERSION?></td>
   </tr>
-  
+
   <tr>
     <td><b>Server</b></td>
     <td><?=$_SERVER['SERVER_SOFTWARE']?></td>
   </tr>
-  
+
   <tr>
     <td><b>Site</b></td>
     <td><?=Config::APP()?></td>
   </tr>
-  
+
   <tr>
     <td><b>Admin</b></td>
     <td><a href="mailto:<?=Config::ADMIN()?>"><?=Config::ADMIN()?></a></td>
   </tr>
-  
+
   <tr>
     <td><b>Caching</b></td>
     <td><?=config::NO_CACHE() ? 'Disabled' : 'Enabled'?></td>
   </tr>
-  
+
   <tr>
     <td><b>Using APC</b></td>
     <td><?=USE_APC ? 'Yes' : 'No'?></td>
   </tr>
-  
+
   <tr>
     <td><b>Using 304 Response Codes</b></td>
     <td><?=config::DISABLE_304() ? 'No' : 'Yes'?></td>

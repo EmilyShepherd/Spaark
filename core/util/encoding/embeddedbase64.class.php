@@ -79,7 +79,7 @@ class EmeddedBase64 extends Base64
 
         $this->header = substr($data, 0, $offset);
         $this->footer = substr($data, $offset + strlen($output));
-        
+
         return parent::decode($output);
     }
 

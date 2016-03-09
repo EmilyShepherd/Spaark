@@ -83,7 +83,7 @@
 class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
 {
 // {{{ static
-    
+
     /**
      * Passes through to $this->reflector->export()
      *
@@ -95,28 +95,28 @@ class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
     {
         return $this->reflector->export();
     }
-    
+
     // }}}
-    
+
         ////////////////////////////////////////////////////////
 
 // {{{ instance
-    
+
     /**
      * The ReflectionClass for this ReflectionController
      */
     private $reflector;
-    
+
     /**
      * Methods
      */
     private $methods = array( );
-    
+
     /**
      * The routes this controller has
      */
     private $routes = array( );
-    
+
     /**
      * Reads the Controller
      *
@@ -125,24 +125,24 @@ class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
     protected function __fromController($class)
     {
         $this->reflector = new \ReflectionClass($class);
-        
+
         preg_match_all
         (
             '/@route (.*?)\(([0-9])\) (.*?)(\r|\n)/',
             $this->reflector->getDocComment(),
             $arr
         );
-        
+
         foreach ($arr[0] as $i => $val)
         {
             $method = $arr[1][$i];
             $args   = $arr[2][$i];
             $mapto  = $arr[3][$i];
-            
+
             $this->addMethodToRoutes($method, $args, $mapto);
         }
     }
-    
+
     /**
      * Passes through to $this->reflector->__toString()
      *
@@ -154,7 +154,7 @@ class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
     {
         return $this->reflector->__toString();
     }
-    
+
     /**
      * Returns the ReflectionClass
      *
@@ -164,7 +164,7 @@ class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
     {
         return $this->reflector;
     }
-    
+
     public function getMethod($method, $args)
     {
         try
@@ -172,14 +172,14 @@ class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
             $this->addMethodToRoutes($method, $args);
         }
         catch (MethodLoadException $e) {}
-        
+
         return $this->routes[$method][$args];
     }
-    
+
     private function addMethodToRoutes($method, $args, $mapto = NULL)
     {
         if (!$mapto) $mapto = $method;
-        
+
         if (!isset($this->routes[$method]))
         {
             $this->routes[$method] = array( );
@@ -188,14 +188,14 @@ class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
         {
             $this->routes[$method][$args] = array( );
         }
-        
+
         if (!$this->reflector->hasMethod($mapto))
         {
             throw new MissingMethodException($method, $args, $mapto);
         }
-        
+
         $methodObj = new Method($this->reflector->getMethod($mapto));
-        
+
         if
         (
             $args <= $methodObj->getMaxParamCount() &&
@@ -212,7 +212,7 @@ class Controller extends \Spaark\Core\Model\Base\Entity implements \Reflector
             );
         }
     }
-    
+
     // }}}
 }
 

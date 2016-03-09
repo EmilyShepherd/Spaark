@@ -32,7 +32,7 @@ class FragmentHandler extends \Spaark\Core\Model\XML\ElementHandler
         {
             $conf = array( );
         }
-        
+
         $fragment = new Fragment($tag, $conf);
         return $fragment->getHTML();
     }

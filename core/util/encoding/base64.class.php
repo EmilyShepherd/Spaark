@@ -9,9 +9,9 @@ class Base64 extends Encoding
      * @type int
      */
     protected $linelength;
-    
+
     protected $buffer = '';
-    
+
     /**
      * Decodes the given string
      *
@@ -56,7 +56,7 @@ class Base64 extends Encoding
 
     public function nextChar()
     {
-        
+
     }
 
     public function read($bytes)
@@ -66,23 +66,23 @@ class Base64 extends Encoding
             $sBytes        = static::dec2enc($bytes - strlen($this->buffer));
             $this->buffer .= base64_decode($this->stream->read($sBytes));
         }
-        
+
         $ret           = substr($this->buffer, 0, $bytes);
         $this->buffer  = substr($this->buffer, $bytes);
 
         return $ret;
     }
-    
+
     public function seek($pos)
     {
         $this->stream->seek(static::dec2enc($pos));
     }
-    
+
     public static function dec2enc($bytes)
     {
         return 4 * ceil($bytes / 3);
     }
-    
+
     public static function enc2dec($bytes)
     {
         return 3 * floor($bytes / 4);

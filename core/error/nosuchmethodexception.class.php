@@ -8,7 +8,7 @@ class NoSuchMethodException extends \Exception
         {
             $class = get_class($class);
         }
-        
+
         parent::__construct
         (
             'Method "' . $method . '" does not exist for ' . $class

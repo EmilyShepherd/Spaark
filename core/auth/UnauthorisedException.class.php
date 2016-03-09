@@ -18,7 +18,7 @@ class UnauthorisedException extends SystemException
      * Config::DEFAULT_LOGIN if unset
      */
     private $loginMethod;
-    
+
     /**
      * calls SystemException::__construct() with a generic message. If
      * a $loginMethod is passed, the Spaark authorisation system will
@@ -34,10 +34,10 @@ class UnauthorisedException extends SystemException
             'Unauthorised',
             'You need to login to perform this action'
         );
-        
+
         $this->loginMethod = $loginMethod;
     }
-    
+
     /**
      * Returns the loginMethod required to gain authorisation. If none
      * is set in $loginMethod, Config::DEFAULT_LOGIN is returned.

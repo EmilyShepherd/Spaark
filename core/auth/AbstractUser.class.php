@@ -20,9 +20,9 @@ interface AbstractUser
      * @return Permission The Permission
      */
     public function getPermission($pid, $throw);
-    
+
     /**
-     * 
+     *
      */
     public function isInGroup($gid, $throw);
 }

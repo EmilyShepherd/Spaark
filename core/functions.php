@@ -53,9 +53,9 @@ function tree_merge_recursive(array $t1, array $t2, array $e = array( ))
 
 /**
  * Shortcut for isset($_GET[key])
- * 
+ *
  * Useful to make code look neater
- * 
+ *
  * @param mixed $key The array to check
  */
 function get_isset($key)
@@ -65,7 +65,7 @@ function get_isset($key)
 
 /**
  * Shortcut for isset($_GET[key]) && is_array($_GET[key])
- * 
+ *
  * This is useful to make code look neater, and to help keep line length
  * short (especially in if / ternary statements)
  *

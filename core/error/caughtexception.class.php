@@ -23,7 +23,7 @@ class CaughtException extends \Exception
     public function __construct($msg, $file, $line)
     {
         parent::__construct($msg);
-        
+
         $this->file = $file;
         $this->line = $line;
     }

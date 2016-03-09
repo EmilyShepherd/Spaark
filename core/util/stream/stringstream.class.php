@@ -14,14 +14,14 @@
 class StringStream implements Stream
 {
     private $string;
-    
+
     private $pos = 0;
-    
+
     public function __construct($string)
     {
         $this->string = $string;
     }
-    
+
     public function next()
     {
         $value = $this->peek();
@@ -46,7 +46,7 @@ class StringStream implements Stream
     {
         $str        = substr($this->string, $this->pos, $bytes);
         $this->pos += $bytes;
-        
+
         return $str;
     }
 

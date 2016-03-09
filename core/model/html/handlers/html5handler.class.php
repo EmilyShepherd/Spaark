@@ -5,7 +5,7 @@
  * Copyright (C) 2012 Emily Shepherd
  * emily@emilyshepherd.me
  */
- 
+
 
 /**
  * Handles html5 tags

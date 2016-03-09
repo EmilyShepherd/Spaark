@@ -9,13 +9,13 @@
         "href_root" : "/",
         "htmlpath"  : "html/"
     },
-    
+
     "pagebuilder.path"  : "pages/",
     "htmlsegment.path"  : "templates/",
     "stdoutput.csspath" : "css/",
     "stdoutput.imagepath" : "images/",
-    
-    
+
+
     "controller.path"  : "controller/",
     "model.path"       : "model/",
     "html.path"        : "html/",
@@ -28,13 +28,13 @@
         "path"    : "cache/",
         "enabled" : true
     },
-    
+
     "login.controller" : "\\Spaark\\Controller\\HTTPLogin\\form",
 
     "configPath"       : "config/",
 
     "defaultSource"    : "Sources\\database\\MySQLi",
-    
+
     "database"         :
     {
         "host"     : "localhost",

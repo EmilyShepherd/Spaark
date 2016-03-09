@@ -60,7 +60,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
 
         echo $css;
     }
-    
+
     /**
      * @mime application/javascript
      * @ttl 0
@@ -69,15 +69,15 @@ class StdOutput extends \Spaark\Core\Base\Controller
     {
         $path = urldecode(Config::JS_PATH() . Instance::getRequest());
         if (!file_exists($path)) return;
-        
+
         Output::mime('application/javascript');
         Output::ttl(0);
-        
+
         $js = new \Spaark\Core\View\JavaScript(file_get_contents($path));
-        
+
         echo $js;
     }
-    
+
     /**
      * Outputs an image and sets the appropriate Content-Type response
      * header
@@ -86,7 +86,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
     {
         $path = urldecode($this->config->imagepath . Instance::getRequest());
         if (!file_exists($path)) return;
-        
+
         $ext = pathinfo(Instance::getRequest(), PATHINFO_EXTENSION);
 
         Output::mime('image/' . ($ext == 'jpg' ? 'jpeg' : $ext));
@@ -94,11 +94,11 @@ class StdOutput extends \Spaark\Core\Base\Controller
 
         echo file_get_contents($path);
     }
-    
+
     public function favicon()
     {
         Output::mime('image/x-icon');
-        
+
         echo file_get_contents(SPAARK_PATH . 'default/images/icon.ico');
     }
 
@@ -112,7 +112,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
         $req   = pathinfo(rtrim($req['dirname'], '/') . '/' . $req['filename']);
         $url   = rtrim($req['dirname'], '/') . '/' . $req['filename'];
         $etag  = $req['extension'];
-        
+
         try
         {
             $cache = Cache::load('output', $url);
@@ -122,13 +122,13 @@ class StdOutput extends \Spaark\Core\Base\Controller
             header('location: ' . $url);
             exit;
         }
-        
+
         if ($cache->etag != $etag)
         {
             header('location: ' . $url . '.' . $cache->etag . '.cache');
             exit;
         }
-        
+
         header('cache-control: public, max-age=320000000');
         $cache->send();
         exit;
@@ -189,9 +189,9 @@ class StdOutput extends \Spaark\Core\Base\Controller
     {
         //Cache::ignoreBucket();
         Output::status(NOT_FOUND);
-        
+
         //$this->page->fullPage();
-        
+
         Page::load
         (
             '404',
@@ -201,7 +201,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
             )
         );
     }
-    
+
     /**
      * Displays the SystemException stack trace in a neat format, and
      * within your site's template.
@@ -209,11 +209,11 @@ class StdOutput extends \Spaark\Core\Base\Controller
     public function exception($e)
     {
         //Cache::ignoreBucket();
-        
+
         Output::status(ERROR);
 
         $err = new \Spaark\Core\Model\Reflection\Exception($e);
-        
+
         Page::load
         (
             'error',

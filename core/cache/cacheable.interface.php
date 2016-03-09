@@ -20,7 +20,7 @@ interface Cacheable extends \serializable
      * @return bool True if this Cachable object is valid
      */
     public function valid();
-    
+
     /**
      * Returns whether or not this Cacheable object has been changed
      * since being loaded. The Cache calls this when a Cacheable object

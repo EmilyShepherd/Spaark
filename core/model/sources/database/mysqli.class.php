@@ -46,7 +46,7 @@ class MySQLi extends Database
     const MYSQLI_HELPER = 'MySQLiConnection';
 
     private $cols;
-    
+
     /**
      * Escapes the given value
      *
@@ -57,7 +57,7 @@ class MySQLi extends Database
     {
         return '\'' . $this->mysqli->real_escape_string($string) . '\'';
     }
-    
+
     /**
      * Executes the given SQL and returns the result
      *
@@ -68,7 +68,7 @@ class MySQLi extends Database
     public function execute($sql)
     {
         $ret = $this->mysqli->query((string)$sql);
-        
+
         if (is_object($ret))
         {
             $table      = NULL;
@@ -104,10 +104,10 @@ class MySQLi extends Database
                 );
             }
         }
-        
+
         return $ret;
     }
-    
+
     /**
      * Returns the insert id of the last INSERT
      *
@@ -138,7 +138,7 @@ class MySQLi extends Database
     public function _get($pos)
     {
         $this->res->data_seek($pos);
-        
+
         $ret    = $this->res->fetch_array(\MYSQLI_NUM);
         $result = array( );
         $i      = 0;

@@ -29,31 +29,31 @@ class Session extends Base\Singleton
             }
         }
     }
-    
+
     public static function get($var)
     {
         return self::getInstance()->getValue($var);
     }
-    
+
     public function __fromId($sid)
     {
         $this->cache->loadVal('session:' . $sid, $this);
     }
-    
+
     protected function __default($val)
     {
         $this->id      = $val;
         $this->cacheid = 'session:' . $val;
         $this->register();
-        
+
         return $this;
     }
-    
+
     public function register()
     {
         setcookie('Spaark_SID', $this->id);
     }
-    
+
     public function save()
     {
         $this->cache->cacheVal($this->cacheid, $this);

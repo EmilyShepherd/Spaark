@@ -16,12 +16,12 @@ abstract class OutputType extends \Spaark\Core\Model\Base\Model
      * The raw input
      */
     protected $raw;
-    
+
     /**
      * The output. This will be compressed / improved for output
      */
     protected $output;
-    
+
     /**
      * Abstract function to remove comments from $this->output. Needs to
      * be told how comments start and end
@@ -38,7 +38,7 @@ abstract class OutputType extends \Spaark\Core\Model\Base\Model
             $this->output
         );
     }
-    
+
     /**
      * Returns the header, surrounded by whatever comment tags this
      * document requires
@@ -74,7 +74,7 @@ abstract class OutputType extends \Spaark\Core\Model\Base\Model
               )
             . '*' . $end . "\r\n";
     }
-    
+
     /**
      * Adds the header to the output
      *
@@ -90,7 +90,7 @@ abstract class OutputType extends \Spaark\Core\Model\Base\Model
               self::getHeader($start, $end, $ls, $le)
             . $this->output;
     }
-    
+
     /**
      * Returns the output of this OutputType
      *

@@ -35,30 +35,30 @@ class NoSuchClassException extends \Exception
 class Method
 {
     private $reflector;
-    
+
     private $vars     = array( );
-    
+
     private $requiredCount = 0;
     private $optionalCount = 0;
-    
+
     public function __construct(\ReflectionMethod $reflector)
     {
         $this->reflector = $reflector;
-        
+
         $this->parseDoc();
         $this->generateParameters();
     }
-    
+
     public function isPublic()
     {
         return $this->reflector->isPublic();
     }
-    
+
     public function invokeArgs($obj, $args)
     {
         return $this->reflector->invokeArgs($obj, $args);
     }
-    
+
     protected function parseDoc()
     {
         //@param <ClassName | scalar>             $var
@@ -80,17 +80,17 @@ class Method
               $this->reflector->getDocComment(),
               $arr
         );
-        
+
         $star = false;
-        
+
         foreach ($arr[0] as $i => $val)
         {
             $param = new Param($arr[1][$i]);
-            
+
             if ($arr[3][$i])
             {
                 $param->from = $arr[4][$i];
-                
+
                 if ($arr[6][$i])
                 {
                     $param->fromArg = $arr[4][$i];
@@ -100,10 +100,10 @@ class Method
             {
                 $param->args = $arr[7][$i];
             }
-            
+
             $var              = $arr[8][$i];
             $this->vars[$var] = $param;
-            
+
             if ($param->args == '*')
             {
                 if (!$star)
@@ -118,7 +118,7 @@ class Method
                     );
                 }
             }
-            
+
             if
             (
                 $param->cast{0} == '\\'                      ||
@@ -128,44 +128,44 @@ class Method
             {
                 continue;
             }
-            
+
             $localScope =
                   '\\'
                 . $this->reflector->getDeclaringClass()->getNamespaceName()
                 . '\\'
                 . $param->cast;
-                
+
             if (class_exists($localScope))
             {
                 $this->vars[$var]->cast = $localScope;
-                
+
                 continue;
             }
-            
+
             $appModelScope = Config::NAME_SPACE() . 'Model\\' . $param->cast;
             if (class_exists($appModelScope))
             {
                 $this->vars[$var]->cast = $appModelScope;
-                
+
                 continue;
             }
-            
+
             $spaarkModelScope = '\\Spaark\\Core\\Model\\' . $param->cast;
             if (class_exists($spaarkModelScope))
             {
                 $this->vars[$var]->cast = $spaarkModelScope;
-                
+
                 continue;
             }
-            
+
             throw new NoSuchClassException($param->cast);
         }
     }
-    
+
     protected function generateParameters()
     {
         $params   = $this->reflector->getParameters();
-        
+
         foreach ($params as $i => $param)
         {
             if (isset($this->vars[$param->getName()]))
@@ -176,10 +176,10 @@ class Method
             {
                 $cast = $param->getClass();
                 $cast = $cast ? $cast->getName() : NULL;
-                
+
                 $var = new Param($cast);
             }
-            
+
             if (!$param->isOptional())
             {
                 $this->requiredCount += $var->args;
@@ -188,24 +188,24 @@ class Method
             {
                 $var->optional = true;
                 $var->default  = $param->getDefaultValue();
-                
+
                 $this->optionalCount += $var->args;
             }
-            
+
             $this->vars[] = $var;
         }
     }
-    
+
     public function getParameters()
     {
         return array_values($this->vars);
     }
-    
+
     public function getMaxParamCount()
     {
         return $this->requiredCount + $this->optionalCount;
     }
-    
+
     public function getMinParamCount()
     {
         return $this->requiredCount;

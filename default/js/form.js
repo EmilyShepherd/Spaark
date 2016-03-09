@@ -13,11 +13,11 @@ Framework.submitForm = (function(form)
     {
         if (i == 'length' || i == 'item') continue;
         var input = inputs[i];
-        
+
         if (typeof input.dataset == 'undefined') input.dataset = { };
-        
+
         alert(input.name);
-        
+
         if
         (
             (input.name)                                &&
@@ -45,16 +45,16 @@ Framework.submitForm = (function(form)
             }
         }
     }
-    
+
     inputs = form.getElementsByTagName('textarea');
-    
+
     for (var i in inputs)
     {
         if (i == 'length' || i == 'item') continue;
         var input = inputs[i];
-        
+
         if (typeof input.dataset == 'undefined') input.dataset = { };
-        
+
         if
         (
             (input.name)                                &&
@@ -81,9 +81,9 @@ Framework.submitForm = (function(form)
             }
         }
     }
-    
+
     if (error) return;
-    
+
     if (form.method == 'get')
     {
         GET = STRING;
@@ -92,9 +92,9 @@ Framework.submitForm = (function(form)
     {
         POST = STRING;
     }
-    
+
     console.log(Framework.getPage(form.action));
-    
+
     new Framework.AJAXRequest
     (
         Framework.getPage(form.action),

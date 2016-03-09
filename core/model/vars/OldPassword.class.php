@@ -23,12 +23,12 @@ class OldPassword extends Variable
         {
             $hash = uniqid();
         }
-        
+
         $salt = substr($hash, 0, 9);
-        
+
         return $salt . sha1($salt . $this->value . Config::PASSWORD_SALT());
     }
-    
+
     /**
      * Checks to see if the given hash came from this password
      *

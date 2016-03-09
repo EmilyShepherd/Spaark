@@ -18,12 +18,12 @@ class CacheEntry extends ValueHolder implements Cacheable
      * True if this CacheEntry has been changed since being loaded
      */
     protected $dirty = true;
-    
+
     public function __construct()
     {
         $this->array['expires'] = time() - 100;
     }
-    
+
     /**
      * Sets the given index in the $this->array array with the given
      * value
@@ -43,7 +43,7 @@ class CacheEntry extends ValueHolder implements Cacheable
             $this->dirty       = true;
         }
     }
-    
+
     /**
      * Sets the TTL for this CacheEntry. If less than or equal to zero
      * this will last forever. Otherwise an expires time will be
@@ -68,7 +68,7 @@ class CacheEntry extends ValueHolder implements Cacheable
             $this->array['expires'] = time() - 100;
         }
     }
-    
+
     /**
      * Returns true if this CacheEntry is valid. This occurs when:
      *   + There is no expires time
@@ -90,12 +90,12 @@ class CacheEntry extends ValueHolder implements Cacheable
             )
         );
     }
-    
+
     public function dirty()
     {
         return $this->dirty;
     }
-    
+
     /**
      * Returns the serialized $this->array
      *
@@ -105,7 +105,7 @@ class CacheEntry extends ValueHolder implements Cacheable
     {
         return serialize($this->array);
     }
-    
+
     /**
      * Populates $this->array from the given serialized array
      *

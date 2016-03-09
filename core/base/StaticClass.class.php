@@ -7,9 +7,9 @@
  */
 
 // {{{ Exceptions
-    
+
     /**
-     * This exception is thrown whenever a static class is instantiated 
+     * This exception is thrown whenever a static class is instantiated
      */
     class CannotInvokeStaticClassException extends \Exception
     {
@@ -21,9 +21,9 @@
             );
         }
     }
-    
+
     // }}}
-    
+
         ////////////////////////////////////////////////////////
 
 /**

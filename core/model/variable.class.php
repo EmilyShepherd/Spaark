@@ -16,7 +16,7 @@ interface Variable
      * The regular expression that deems a string valid
      */
     const REGEX = '*';
-    
+
     /**
      * The form input type this variable corresponds to
      *

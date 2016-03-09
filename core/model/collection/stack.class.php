@@ -45,7 +45,7 @@ class Stack extends Collection
     public function popMultiple($i = 1)
     {
         if ($i < 1) return NULL;
-        
+
         $ret = array_slice($this->data, -1 * $i);
         $this->data = array_slice($this->data, 0, -1 * $i);
         return $ret;

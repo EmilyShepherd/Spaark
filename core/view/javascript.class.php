@@ -23,10 +23,10 @@ class JavaScript extends OutputType
     public function __construct($script)
     {
         $this->output = $script;
-        
+
         $this->removeComments('\/\*', '\*\/');
         $this->removeComments('(^|[^:])\/\/', '(\r|\n)');
-        
+
         $this->output = URLParser::compressWhitespace
         (
             array
@@ -37,14 +37,14 @@ class JavaScript extends OutputType
             ),
             $this->output
         );
-        
+
         $this->output = trim(str_replace
         (
             array('\'+\'', '"+"'),
             array(''    , ''),
             $this->output
         ));
-        
+
         $this->addHeader('/*', '*/', ' ', '');
     }
 }

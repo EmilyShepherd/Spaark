@@ -38,7 +38,7 @@ class ConfigReader extends \Spaark\Core\Cache\CacheEntry
      * If the file has data at the bottom of it, it will be stored here
      */
     protected $data   = NULL;
-    
+
     /**
      * Parses config options out of the given raw data
      *
@@ -55,15 +55,15 @@ class ConfigReader extends \Spaark\Core\Cache\CacheEntry
             array(  ROOT  ),
             $data
         ));
-        
+
         while (true)
         {
             $lineNum++;
-            
+
             if (strlen($data) == 0)        break;
-            
+
             $pos    = strpos($data, "\n");
-            
+
             if (!$pos)
             {
                 $line = trim($data);
@@ -74,7 +74,7 @@ class ConfigReader extends \Spaark\Core\Cache\CacheEntry
                 $line   = trim(substr($data, 0, $pos));
                 $data   = trim(substr($data, $pos));
             }
-            
+
             if ($lineNum >= 100)           exit;
             if (!$line || $line[0] == '#') continue;
             if ($mode == FILE_HEAD)
@@ -89,7 +89,7 @@ class ConfigReader extends \Spaark\Core\Cache\CacheEntry
                     $line = substr($line, 1);
                 }
             }
-            
+
             $pos    = strpos($line, ' ');
             if ($pos === false)
             {
@@ -100,7 +100,7 @@ class ConfigReader extends \Spaark\Core\Cache\CacheEntry
             {
                 $item   = substr($line, 0, $pos);
                 $value  = ltrim(substr($line, $pos));
-                
+
                 if ($mode == FILE_HEAD)
                 {
                     $item = strtolower($item);
@@ -110,9 +110,9 @@ class ConfigReader extends \Spaark\Core\Cache\CacheEntry
                     $item = strtoupper($item);
                 }
             }
-            
+
             $this->array[$item] = $value;
-            
+
             if ($replace)
             {
                 $data = str_replace
@@ -123,10 +123,10 @@ class ConfigReader extends \Spaark\Core\Cache\CacheEntry
                 );
             }
         }
-        
+
         $this->data = $data;
     }
-    
+
     /**
      * Returns the data at the bottom of the config file.
      *

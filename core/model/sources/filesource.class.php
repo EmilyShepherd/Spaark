@@ -7,7 +7,7 @@ class FileSource extends BaseSource
     {
         $encoding    = static::load($this->config->encoding);
         $encodingObj = new $encoding();
-        
+
         file_put_contents($this->config->path, $encodingObj->encode($data));
     }
 
@@ -41,10 +41,10 @@ class FileSource extends BaseSource
         $encodingObj = new $encoding();
         $result      =
             $encodingObj->decode(file_get_contents($this->config->path));
-        
+
         foreach ($result as $key => $value)
         {
-            
+
         }
     }
 }
@@ -60,7 +60,7 @@ class Config extends Spaark\Core\Model\Config
      * @writable
      */
     protected $path;
-    
+
     /**
      *
      * @type ClassName
@@ -68,7 +68,7 @@ class Config extends Spaark\Core\Model\Config
      * @writable
      */
     protected $encoding;
-    
+
     /**
      *
      * @type string
@@ -82,6 +82,6 @@ class Path extends Spaark\Core\Model\Base\Model
 {
     public function __construct($string)
     {
-        
+
     }
 }

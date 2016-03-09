@@ -49,18 +49,18 @@ use \Spaark\Core\Error\NoSuchMethodException;
     /**
      * Thrown when a non-existant static method is called, that begins
      * with "from"
-     */ 
+     */
     class NoSuchFindByException extends NoSuchMethodException
     {
         private $obj;
-        
+
         public function __construct($method, $obj)
         {
             parent::__construct($obj, $method);
-            
+
             $this->obj = $obj;
         }
-        
+
         public function getObj()
         {
             return $this->obj;
@@ -142,9 +142,9 @@ class Entity extends Composite
     public static $_cache = array( );
 
     protected static $source;
-    
+
     private static $visited = array( );
-    
+
     // TODO: Cache is broken
     /**
      * Returns the given class from cache given it's $id = $val
@@ -157,13 +157,13 @@ class Entity extends Composite
     {
         //var_dump(static::$_cache);
         $class = get_called_class();
-        
+
         if (isset(static::$_cache[$class]))
         {
             return static::$_cache[$class]->searchFor($key, $val);
         }
     }
-    
+
     /**
      * Caches the given object
      *
@@ -174,7 +174,7 @@ class Entity extends Composite
     public static function cache(Entity $obj)
     {
         $class = get_called_class();
-        
+
         if (strpos($class, 'Spaark\Core\Model\Reflection') !== 0)
         {
             if (!isset(static::$_cache[$class]))
@@ -185,7 +185,7 @@ class Entity extends Composite
             static::$_cache[$class]->cache($obj);
         }
     }
-    
+
     /**
      * Attempts to return an object
      *
@@ -214,7 +214,7 @@ class Entity extends Composite
             : (is_array($args[0])   ? implode($args[0])
             : (!is_scalar($args[0]) ? (string)$args[0]
             :                         $args[0])));
-        
+
         switch ($startAt)
         {
             // Try Local Cache
@@ -277,13 +277,13 @@ class Entity extends Composite
         }
 
         static::cache($obj, $id, $val);
-        
+
         $obj->dirty = false;
         $obj->new   = false;
-        
+
         return $obj;
     }
-    
+
     /**
      * Attempts to return an iterable collection of objects
      *
@@ -332,19 +332,19 @@ class Entity extends Composite
                 return $source;
             }
         }
-        
+
         throw $nsfbe;
     }
-    
+
     public static function newSource()
     {
         $class  = get_called_class();
         $config = static::getHelper('config');
         $source = static::load($config->source);
-        
+
         return new $source($source);
     }
-    
+
     /**
      * Handles magic static functions - used for fromX() and findByX()
      *
@@ -385,7 +385,7 @@ class Entity extends Composite
         $obj = static::findFromData($data) ?: static::blankInstance();
 
         $obj->loadArray($data);
-        
+
         static::cache($obj);
 
         return $obj;
@@ -402,7 +402,7 @@ class Entity extends Composite
     private static function findFromData($data)
     {
         $class = get_called_class();
-        
+
         if (isset(static::$_cache[$class]))
         {
             foreach ($data as $key => $value)
@@ -414,17 +414,17 @@ class Entity extends Composite
             }
         }
     }
-    
+
     public static function flush()
     {
-        
+
     }
-    
+
     public static function getInstance($id)
     {
         return static::instanceFromData(array('id' => $id), true);
     }
-    
+
     /**
      * ID
      *
@@ -432,14 +432,14 @@ class Entity extends Composite
      * @readable
      */
     protected $id;
-    
+
     /**
      * If true, this is a new object
-     * 
+     *
      * @readable
      */
     protected $new      = true;
-    
+
     /**
      * If true, this will attempt to save on destruction
      */
@@ -449,7 +449,7 @@ class Entity extends Composite
      * Records which source this object was loaded from
      */
     protected $loadedSource;
-    
+
     /**
      * Saves this to a data source
      */
@@ -463,10 +463,10 @@ class Entity extends Composite
             :                        NULL));
 
         if (!$source) return false;
-        
+
         $source = new $source(get_called_class());
         $data   = $this->__toArray($source::CAN_SAVE_DIRTY, $source::RELATIONAL);
-        
+
         if ($this->new)
         {
             $this->id = $source->create($data);
@@ -475,11 +475,11 @@ class Entity extends Composite
         {
             $source->update($this->id, $data);
         }
-        
+
         $this->new        = false;
         $this->properties = array_merge($this->properties, $data);
     }
-    
+
     /**
      * Deletes this entity from the data source
      */
@@ -491,7 +491,7 @@ class Entity extends Composite
             $this->new = true;
         }
     }
-    
+
     /**
      * If autoSave is enabled, this will save the object at destruct
      * time
@@ -503,7 +503,7 @@ class Entity extends Composite
             $this->save();
         }
     }
-    
+
     /**
      * Sets autoSave to false to prevent this object from being saved
      * when destroyed
@@ -512,9 +512,9 @@ class Entity extends Composite
     {
         $this->autoSave = false;
     }
-    
+
     public function close()
     {
-        
+
     }
 }

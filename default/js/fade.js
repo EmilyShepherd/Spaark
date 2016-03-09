@@ -8,12 +8,12 @@ window.Fader = (function(element)
 window.Fader.prototype.fadeIn = (function(mod)
 {
     if (!mod) mod = 1;
-    
+
     this.fadeLevel += mod * 0.04;
     this.setElFadeLevel();
-    
+
     var obj = this;
-    
+
     if
     (
         (mod >= 1 && this.fadeLevel < 1) ||

@@ -24,14 +24,14 @@ abstract class Composite extends Model
 
     /**
      * Saves the state of the objects properties since the last save
-     * 
+     *
      * This is used to check which properties are dirty and in need
      * of saving when save() is called
      *
      * @see static::save()
      */
     protected $properties = array( );
-    
+
     /**
      * If true, changes have been made that require this entity to be
      * resaved
@@ -73,7 +73,7 @@ abstract class Composite extends Model
     {
         $this->loadedSource = $source;
     }
-    
+
     /**
      * Sets the Entity's attributes based on the given array
      *
@@ -102,7 +102,7 @@ abstract class Composite extends Model
         foreach ($array as $key => $value)
         {
             $this->properties[$key] = $value;
-            
+
             if (!$this->reflect->hasProperty($key))
             {
                 $this->attrs[$key] = $value;
@@ -114,7 +114,7 @@ abstract class Composite extends Model
             }
         }
     }
-    
+
     /**
      * Gets a value
      *
@@ -126,7 +126,7 @@ abstract class Composite extends Model
     {
         return \iget($this->attrs, $var);
     }
-    
+
     /**
      * Gets an attribute
      *
@@ -176,11 +176,11 @@ abstract class Composite extends Model
             }
         }
     }
-    
+
     private function initialiseProperty($prop, $init = true)
     {
         $value = $prop->getValue($this);
-        
+
         if ($init && $value === NULL && $prop->writable)
         {
             if ($prop->type->isArray)
@@ -251,14 +251,14 @@ abstract class Composite extends Model
         else
         {
             $this->attrs[$var] = $val;
-        
+
             if (!isset($this->properties[$var]))
             {
                 $this->properties[$var] = ($val === NULL ? TRUE : NULL);
             }
         }
     }
-    
+
     /**
      * Sets the value of an attribute
      *
@@ -278,7 +278,7 @@ abstract class Composite extends Model
      * @return array The array of the object's properties
      */
     public function __toArray($onlyDirty = false, $relational = false)
-    {        
+    {
         $converter =
             $relational
             ? new RelationalConverter($onlyDirty, $this)
@@ -286,9 +286,9 @@ abstract class Composite extends Model
 
         return $converter->toArray();
     }
-    
+
     public function __call($method, $args)
-    { 
+    {
         if (substr(strtolower($method), 0, 5) === 'addto')
         {
             return $this->addTo(substr($method, 5), $args);
@@ -298,27 +298,27 @@ abstract class Composite extends Model
             throw new NoSuchMethodException(get_class(), $method);
         }
     }
-    
+
     public function addTo($name, $args)
     {
         $val = is_array($args[0]) ? $args[0] : array($args[0]);
         $var = lcfirst($name);
-        
+
         if ($this->reflect->hasProperty($var))
         {
             $prop = $this->reflect->getProperty($var);
-            
+
             if ($prop->type->isArray)
             {
                 $this->_addTo($prop, $var, $val);
             }
         }
     }
-    
+
     private function _addTo($prop, $var, $val)
     {
         $this->addValueToProperty($prop, $val);
-        
+
         if ($prop->type->key === $var)
         {
             foreach ($val as $obj)
@@ -327,7 +327,7 @@ abstract class Composite extends Model
             }
         }
     }
-    
+
     private function addValueToProperty($prop, $val)
     {
         $prop->setValue($this,

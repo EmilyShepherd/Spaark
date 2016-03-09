@@ -20,7 +20,7 @@ class BoxHandler extends \Spaark\Core\Model\XML\ElementHandler
     public function parse($tag, $attrs, $content)
     {
         $box = new Box($tag, $this->getAllAttrs($attrs));
-        
+
         return
               $box->getTop()
             .   $content

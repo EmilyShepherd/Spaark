@@ -14,9 +14,9 @@ use \Spaark\Core\Config\Config;
 class NiceURLPart extends String
 {
     private $plain;
-    
+
     private $url;
-    
+
     public function __construct($plain)
     {
         $this->plain = $plain;
@@ -27,7 +27,7 @@ class NiceURLPart extends String
             strtolower($plain)
         );
     }
-    
+
     public function __toString()
     {
         return $this->url;

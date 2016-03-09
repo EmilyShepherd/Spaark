@@ -142,7 +142,7 @@ abstract class BaseSource extends Model implements iSource
     public function __construct($class)
     {
         $this->class = $class;
-        
+
         $this->include($class::ModelName());
     }
 
@@ -329,12 +329,12 @@ abstract class BaseSource extends Model implements iSource
         {
             $class = $this->class;
             $obj   = $this->build($pos, $class);
-            
-            // 
+
+            //
             if (!$this->noCache || !is_object($obj))
             {
                 $this->objs[$pos] = $obj;
-                
+
                 // We are at the end of the resource. This means
                 // everything will already have been cached (or we will
                 // have explictly said we don't want it cached). Either
@@ -344,7 +344,7 @@ abstract class BaseSource extends Model implements iSource
                     $this->free();
                 }
             }
-            
+
             return $obj;
         }
     }
@@ -424,7 +424,7 @@ abstract class BaseSource extends Model implements iSource
         {
             $this->read();
 
-            return $this->_countRes(); 
+            return $this->_countRes();
         }
         else
         {
@@ -492,7 +492,7 @@ abstract class BaseSource extends Model implements iSource
             $data = (array)$data;
         }
     }
-    
+
     // </editor-fold>
 
         ////////////////////////////////////////////////////////
@@ -553,7 +553,7 @@ abstract class BaseSource extends Model implements iSource
     }
 
     // </editor-fold>
-        
+
         ////////////////////////////////////////////////////////
 
     // <editor-fold defaultstate="collapsed" desc="ArrayAccess">

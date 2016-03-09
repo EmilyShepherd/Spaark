@@ -36,16 +36,16 @@ class Cache extends Base\Singleton
         $string = $obj->serialize();
         apc_store($key, get_class($obj) . '#' . $string);
     }
-    
+
     public function loadVal($key, $obj = null)
     {
         if (!apc_exists($key)) throw new CacheMiss($obj, $key);
-        
+
         $val   = apc_fetch($key);
         $pos   = strpos($val, '#');
         $class = substr($val, 0, $pos);
         $data  = substr($val, $pos + 1);
-        
+
         if (!$obj)
         {
             $obj = new $class();
@@ -54,7 +54,7 @@ class Cache extends Base\Singleton
         {
             throw new CacheCorruptedException($key, $obj, $class);
         }
-        
+
         return $obj->unserialize($data);
     }
 }

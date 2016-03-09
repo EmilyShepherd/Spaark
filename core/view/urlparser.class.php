@@ -24,11 +24,11 @@ class URLParser
     public static function parseURL($url)
     {
         return $url;
-        
+
         if (strpos($url, '://') === false)
         {
             $url   = '/' . ltrim($url, '/');
-            
+
             try
             {
                 $cache = Cache::load('output', $url);
@@ -41,7 +41,7 @@ class URLParser
         }
         return $url;
     }
-    
+
     /**
      * Removes whitespace from the given string
      *
@@ -72,7 +72,7 @@ class URLParser
 
         return $data;
     }
-    
+
     public static function normalizeURL($url)
     {
         if (substr(Instance::getRequest(), -1) == '/')
@@ -86,7 +86,7 @@ class URLParser
                 . '/'
                 . ltrim($url, '/');
         }
-        
+
         return '/' . ltrim($url, '/');
     }
 }

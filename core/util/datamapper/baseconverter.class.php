@@ -9,7 +9,7 @@
 use Spaark\Core\Model\Base\Composite;
 
 /**
- * 
+ *
  *
  * @author Emily Shepherd
  */
@@ -18,35 +18,35 @@ abstract class BaseMapper
     abstract protected function processArray($property);
     abstract protected function propertyValue($property);
     abstract protected function processComposite($converter, $property);
-    
+
     protected $onlyDirty;
-    
+
     protected $data     = array( );
-    
+
     protected $external = array( );
-    
+
     protected $waitingFor = array( );
-    
+
     protected $obj;
-    
+
     public function __construct($onlyDirty, Composite $object)
     {
         $this->onlyDirty = $onlyDirty;
         $this->obj       = $object;
     }
-    
+
     public function toArray()
     {
         $this->_toArray();
-        
+
         return $this->data;
     }
-    
+
     protected function _toArray()
     {
         $properties =
             $this->obj->reflect->getProperty('properties')->getValue($this->obj);
-        
+
         foreach ($properties as $key => $original)
         {
             if ($this->canProcess($key, $original))
@@ -55,26 +55,26 @@ abstract class BaseMapper
             }
         }
     }
-    
+
     protected function canProcess($key, $original)
     {
         if (!$this->onlyDirty)
         {
             return true;
         }
-        
+
         $val = $this->propertyValue($key);
-        
+
         return
             ($val !== $original) ||
             (is_a($val, 'Spaark\Core\Model\Base\Composite') && $val->isDirty);
     }
-    
+
     protected function set($key, $value)
     {
         $this->data[$key] = $value;
     }
-    
+
     protected function saveExternal($value)
     {
         if (!is_object($value))
@@ -84,7 +84,7 @@ abstract class BaseMapper
         else
         {
             $this->external[] = $value;
-            
+
             if (!$value->id)
             {
                 try
@@ -96,7 +96,7 @@ abstract class BaseMapper
                     return new IdRef($value);
                 }
             }
-            
+
             return $value->id;
         }
     }
@@ -104,7 +104,7 @@ abstract class BaseMapper
     protected function processProperty($key)
     {
         $prop = $this->obj->reflect->getProperty($key);
-                
+
         if ($prop->type->isArray)
         {
             $this->processArray($prop);
@@ -118,12 +118,12 @@ abstract class BaseMapper
             $this->set($prop->getName(), $prop->getValue($this->obj));
         }
     }
-    
+
     protected function processObject($prop)
     {
         $value = $prop->getValue($this->obj);
         $key   = $prop->getName();
-        
+
         if ($prop->type->key)
         {
             $this->external[] = $value;
@@ -141,12 +141,12 @@ abstract class BaseMapper
             $this->processComposite($this->makeNewConverter($value), $prop);
         }
     }
-    
+
     protected function makeNewConverter($value)
     {
         $converter           = new static($this->onlyDirty, $value);
         $converter->external = &$this->external;
-        
+
         return $converter;
     }
 }

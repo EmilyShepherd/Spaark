@@ -10,19 +10,19 @@ use Spaark\Core\Model\Base\Composite;
 class EntityCache extends Composite
 {
     protected $class;
-    
+
     protected $cache = array( );
-    
+
     protected $entries = array( );
-    
+
     protected $objs = array( );
-    
+
     protected $ownedRegions = array( );
-    
+
     public function __construct($class)
     {
         $class   = is_object($class) ? get_class($class) : $class;
-        
+
         $reflect = $class::getHelper('reflect');
 
         foreach ($reflect->getProperties() as $prop)
@@ -33,7 +33,7 @@ class EntityCache extends Composite
             }
         }
     }
-    
+
     public function searchFor($key, $value)
     {
         if (!isset($this->cache[$key]))
@@ -51,27 +51,27 @@ class EntityCache extends Composite
                 if ($obj->propertyValue($key, false, false) === $value)
                 {
                     $this->cache($obj);
-                    
+
                     return $obj;
                 }
             }
         }
     }
-    
+
     public function cache(Composite $object)
     {
         $h = spl_object_hash($object);
-        
+
         if (isset($this->entries[$h]))
         {
             foreach ($this->entries[$h] as $key => $oldValue)
             {
                 $newValue = $object->propertyValue($key, false, false);
-                
+
                 if ($oldValue !== $newValue)
                 {
                     unset($this->cache[$key][$oldValue]);
-                    
+
                     $this->cache[$key][$newValue] = $object;
                     $this->entries[$h][$key]      = $newValue;
                 }
@@ -81,11 +81,11 @@ class EntityCache extends Composite
         {
             $this->entries[$h] = array( );
             $this->objs[]      = $object;
-            
+
             foreach ($this->cache as $key => $values)
             {
                 $value = $object->propertyValue($key, false, false);
-                
+
                 $this->entries[$h][$key]   = $value;
                 $this->cache[$key][$value] = $object;
             }

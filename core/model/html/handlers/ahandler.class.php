@@ -5,7 +5,7 @@
  * Copyright (C) 2012 Emily Shepherd
  * emily@emilyshepherd.me
  */
- 
+
 
 /**
  * Handles link (a) tags
@@ -31,7 +31,7 @@ class AHandler extends \Spaark\Core\Model\XML\ElementHandler
 
         if     ($id)   $newAttrs['id'] = $id;
         elseif ($name) $newAttrs['id'] = $name;
-        
+
         if
         (
             $href                                &&
@@ -42,7 +42,7 @@ class AHandler extends \Spaark\Core\Model\XML\ElementHandler
                 $target != '_blank'
             )
         )
-        {            
+        {
             if ($target)
             {
                 $newAttrs['onclick'] =
@@ -58,7 +58,7 @@ class AHandler extends \Spaark\Core\Model\XML\ElementHandler
                 $newAttrs['onclick'] = 'l(event,this);' . $onclick;
             }
         }
-        
+
         return $this->build('a', $attrs, $newAttrs, $content);
     }
 }

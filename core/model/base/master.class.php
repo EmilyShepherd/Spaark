@@ -81,7 +81,7 @@
      *           return $this->config->value;
      *       }
      *   }
-     *   
+     *
      *   //Config::init(); NOT called
      *   $this->config->doSomething();
      * </code>
@@ -145,11 +145,11 @@ abstract class Master extends Entity
         {
             throw new InvalidInitMasterException(get_called_class());
         }
-        
+
         $obj->model = get_class($obj);
-        
+
         static::cache($obj);
-        
+
         return $obj;
     }
 
@@ -209,10 +209,10 @@ abstract class Master extends Entity
     {
         return static::fromModel(get_called_class());
     }
-    
+
     /**
      *
-     * @var type 
+     * @var type
      * @type string
      * @key
      */

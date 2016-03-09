@@ -49,7 +49,7 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
             );
         }
     }
-    
+
     /**
      * Joins every javascript file in the SPAARK_PATH/default/js/
      * directory and outputs it with an almost 10 year max-age
@@ -64,7 +64,7 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
 
         $path  = SPAARK_PATH . 'default/js/';
         $files = glob($path . '*.js');
-        
+
         $js = file_get_contents($path . 'js.js');
 
         foreach ($files as $file)
@@ -74,12 +74,12 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
                 $js .= file_get_contents($file);
             }
         }
-        
+
         $js = new \Spaark\Core\View\JavaScript($js);
-        
+
         echo $js;
     }
-    
+
     /**
      * Outputs Spaark's logo (stored at
      * SPAARK_PATH/default/images/logo.png)
@@ -90,17 +90,17 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
     {
         Output::mime('image/png');
         Output::ttl(0);
-        
+
         echo file_get_contents(SPAARK_PATH . 'default/images/logo.png');
     }
-    
+
     /**
      * Outputs this instance's licence information
      */
     private function licence()
     {
         $licence = file_get_contents(SPAARK_PATH . 'licence.txt');
-        
+
         Page::load
         (
             'spaark_licence',
@@ -110,7 +110,7 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
             )
         );
     }
-    
+
     private function about()
     {
         Page::load('spaark_about');

@@ -22,7 +22,7 @@ class Model extends Reflector
      * @see Model::call()
      */
     protected $model;
-    
+
     /**
      * Creates the Model Reflector from the given model class name
      *
@@ -70,7 +70,7 @@ class Model extends Reflector
             return NULL;
         }
     }
-    
+
     /**
      * Gets the name of the parent class
      *
@@ -80,7 +80,7 @@ class Model extends Reflector
     {
         return $this->reflector->getParentClass()->getName();
     }
-    
+
     /**
      * Returns an array of each class in this model's parents
      *
@@ -93,13 +93,13 @@ class Model extends Reflector
             ? array($this->reflector->getName())
             : array();
         $class = $this->reflector;
-        
+
         while ($parent = $class->getParentClass())
         {
             $parents[] = $parent->getName();
             $class     = $parent;
         }
-        
+
         return $parents;
     }
 

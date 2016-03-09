@@ -22,7 +22,7 @@ class ImgHandler extends \Spaark\Core\Model\XML\ElementHandler
     public function parse($tag, $attrs, $content)
     {
         $src = $this->getAttr($attrs, 'src', true);
-        
+
         if (!$src || strpos($src, '://'))
         {
             return true;

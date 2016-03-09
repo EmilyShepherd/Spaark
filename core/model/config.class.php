@@ -11,7 +11,7 @@ class Config extends Base\Master
     {
         $obj  = static::blankInstance();
         $json = JSON::blankInstance();
-        
+
         $obj->loadArray
         (
             \tree_merge_recursive
@@ -29,7 +29,7 @@ class Config extends Base\Master
     {
         return static::getMaster()->app[$var];
     }
-    
+
     public function __fromModel($model)
     {
         $this->loadConfig($model);
@@ -39,7 +39,7 @@ class Config extends Base\Master
     {
         $this->loadConfig($controller);
     }
-    
+
     public function __fromParent($parent)
     {
         $this->loadConfig($parent);
@@ -53,7 +53,7 @@ class Config extends Base\Master
         $upConf  = $parent
             ? $parent::getHelper('config')->attrs
             : array( );
-        
+
         $name    = strtolower(substr($name, strrpos($name, '\\') + 1));
         $path    = $this->config->configPath . $name;
         $arr     = \tree_merge_recursive
@@ -64,7 +64,7 @@ class Config extends Base\Master
         );
 
         $arr['app'] = $this->config->app;
-        
+
         $this->loadArray($arr);
     }
 }

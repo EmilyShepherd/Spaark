@@ -25,7 +25,7 @@ else
 
         return false;
     });
-    
+
     window.onpopstate   = (function(e)
     {
         if (e.state)
@@ -37,7 +37,7 @@ else
             return false;
         }
     });
-    
+
     window.onhashchange = (function(e)
     {
         if (e.preventDefault) e.preventDefault();
@@ -49,21 +49,21 @@ else
 
         return false;
     });
-    
+
     var loadPage        = (function(page)
     {
         if (window._gaq)
         {
             window._gaq.push(['_trackPageview', page]);
         }
-        
+
         new Framework.AJAXRequest
         (
             page.split('#')[0],
             makeOnLoad(page)
         );
     });
-    
+
     Framework.loadPage  = (function(page)
     {
         if (window.history && window.history.pushState)
@@ -85,10 +85,10 @@ else
             window.location.href = '#!' + page.substr(Framework.origin.length);
             window.onhashchange  = savedFunc;
         }
-        
+
         loadPage(page);
     });
-    
+
     Framework.reload    = (function()
     {
         loadPage(window.location.href.substr(Framework.ROOT.length));
@@ -119,13 +119,13 @@ var makeOnLoad = (function(page)
     {
         page = Framework.getPage();
     }
-    
+
     return (function(response)
     {
         var el   = document.getElementById(response.element);
         var head = document.getElementsByTagName('head')[0];
         var fade = new Fader(el);
-        
+
         var waitingScripts = 1;
         var executeScript  = (function()
         {
@@ -136,23 +136,23 @@ var makeOnLoad = (function(page)
                 eval(response.script);
             }
         });
-        
+
         var addIncludes = (function(type, tag, attr)
         {
             for (var i in response[type])
             {
                 var path = response[type][i];
-                
+
                 if (!Framework.include[type][path])
                 {
                     waitingScripts++;
                     var inc    = document.createElement(tag);
-                    
+
                     if (type == 'css')
                     {
                         inc.rel = 'stylesheet';
                     }
-                    
+
                     inc[attr]  = path;
                     inc.onload = executeScript;
                     head.appendChild(inc);
@@ -160,27 +160,27 @@ var makeOnLoad = (function(page)
                 }
             }
         });
-        
+
         for (var path in Framework.include.css)
         {
             if (response.css.indexOf(path) == -1)
             {
                 document.head.removeChild(Framework.include.css[path]);
-                
+
                 delete Framework.include.css[path];
             }
         }
-        
+
         fade.hide();
-        
+
         el.innerHTML              = response.content;
         Framework.template        = response.template;
         document.title            = response.title;
-        
+
         for (var i in response.statics)
         {
             var val = document.getElementById('spaark_' + i);
-            
+
             if (val)
             {
                 val.innerHTML = response.statics[i];
@@ -189,9 +189,9 @@ var makeOnLoad = (function(page)
 
         addIncludes('css', 'link',   'href');
         addIncludes('js',  'script', 'src');
-        
+
         executeScript();
-        
+
         if (page.indexOf('#') != -1)
         {
             Spaark.scrollToAnchor(page.split('#')[1]);
@@ -201,7 +201,7 @@ var makeOnLoad = (function(page)
             scroll(Spaark.topOffset);
         }
         fade.fadeIn();
-        
+
         replaceState(new State());
     });
 });
@@ -268,13 +268,13 @@ var getScrollX = (function()
 var scroll = (function(target)
 {
     var lastScroll = getScrollY();
-    
+
     var doScroll   = (function()
     {
         if (lastScroll != getScrollY()) return;
-        
+
         lastScroll = getScrollY();
-        
+
         if (getScrollY() > target)
         {
             window.scrollTo(getScrollX(), getScrollY() - (getScrollY() - target) / 20);
@@ -287,13 +287,13 @@ var scroll = (function(target)
         {
             return;
         }
-        
+
         if (lastScroll != getScrollY())
         {
             lastScroll = getScrollY();
             window.setTimeout(doScroll, 1);
         }
     });
-    
+
     doScroll();
 });
