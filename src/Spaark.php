@@ -38,7 +38,7 @@ define('ROOT', dirname($_SERVER['SCRIPT_FILENAME']));
 /**
  * The path to the Spaark library
  */
-define('SPAARK_PATH', dirname(__FILE__));
+define('SPAARK_PATH', __DIR__);
 
 /**
  * Instance extends this because it is Static
