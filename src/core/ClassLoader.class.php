@@ -128,13 +128,13 @@ class ClassLoader extends \Spaark\Core\Base\StaticClass
         if (isset(self::$starts[$first]))
         {
             $path =
-                  self::$starts[$first]
-                . strtolower(implode(DS, array_slice($parts, 1))) . '.class.php';
+                  self::$starts[$first] . '/'
+                . strtolower(implode(DIRECTORY_SEPARATOR, array_slice($parts, 1))) . '.class.php';
         }
         else
         {
             $path =
-                ROOT. strtolower(implode(DS, $parts)) . '.class.php';
+                ROOT . '/' . strtolower(implode(DIRECTORY_SEPARATOR, $parts)) . '.class.php';
         }
 
         if (self::getFile($path, $class))

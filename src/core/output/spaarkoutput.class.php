@@ -62,7 +62,7 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
         Output::mime('text/javascript');
         Output::ttl(0);
 
-        $path  = SPAARK_PATH . 'default/js/';
+        $path  = SPAARK_PATH . '/default/js/';
         $files = glob($path . '*.js');
 
         $js = file_get_contents($path . 'js.js');
@@ -91,7 +91,7 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
         Output::mime('image/png');
         Output::ttl(0);
 
-        echo file_get_contents(SPAARK_PATH . 'default/images/logo.png');
+        echo file_get_contents(SPAARK_PATH . '/default/images/logo.png');
     }
 
     /**
@@ -99,7 +99,7 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
      */
     private function licence()
     {
-        $licence = file_get_contents(SPAARK_PATH . 'licence.txt');
+        $licence = file_get_contents(SPAARK_PATH . '/licence.txt');
 
         Page::load
         (

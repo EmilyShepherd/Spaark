@@ -99,7 +99,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
     {
         Output::mime('image/x-icon');
 
-        echo file_get_contents(SPAARK_PATH . 'default/images/icon.ico');
+        echo file_get_contents(SPAARK_PATH . '/default/images/icon.ico');
     }
 
     /**
@@ -138,11 +138,11 @@ class StdOutput extends \Spaark\Core\Base\Controller
     {
         Output::mime('text/plain');
 
-        if (file_exists($this->config->app['root'] . 'txt/humans.txt'))
+        if (file_exists($this->config->app['root'] . '/txt/humans.txt'))
         {
             echo file_get_contents
             (
-                Config::APP_ROOT() . 'txt/humans.txt'
+                Config::APP_ROOT() . '/txt/humans.txt'
             );
         }
         elseif ($this->config->humans)
@@ -170,7 +170,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
                 $this->config->app['admin'],
                 file_get_contents
                 (
-                    SPAARK_PATH . 'default/txt/humans.txt'
+                    SPAARK_PATH . '/default/txt/humans.txt'
                 )
             );
         }

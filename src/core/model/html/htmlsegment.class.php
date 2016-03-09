@@ -97,7 +97,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
             return $output;
         }
 
-        $output = $this->_load(SPAARK_PATH . 'default/' . $path);
+        $output = $this->_load(SPAARK_PATH . '/default/' . $path);
         if ($output)
         {
             return $output;
