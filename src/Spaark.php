@@ -64,7 +64,7 @@ require_once SPAARK_PATH . '/core/cache/cachemiss.class.php';
 /**
  * Required to because Config extends this
  */
-require_once SPAARK_PATH . '/core/config/ConfigReader.class.php';
+require_once SPAARK_PATH . '/core/config/configreader.class.php';
 
 /**
  * This class does the work
@@ -97,6 +97,6 @@ require_once SPAARK_PATH . '/core/base/object.class.php';
 require_once SPAARK_PATH . '/core/model/base/model.class.php';
 require_once SPAARK_PATH . '/core/model/base/composite.class.php';
 require_once SPAARK_PATH . '/core/model/base/entity.class.php';
-require_once SPAARK_PATH . '/core/model/base/master.class.php';
+require_once SPAARK_PATH . '/core/model/base/singleton.class.php';
 require_once SPAARK_PATH . '/core/model/config.class.php';
 require_once SPAARK_PATH . '/core/ClassLoader.class.php';

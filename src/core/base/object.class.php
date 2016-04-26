@@ -34,7 +34,7 @@ abstract class Object
     protected $userClass = 'Auth\User';
 
     const SESSION_HELPER = 'Session';
-    const CONFIG_HELPER  = 'Config';
+    const CONFIG_HELPER  = '{static}\Config';
     const CACHE_HELPER   = 'Cache';
     const USER_HELPER    = 'Auth\User';
 
@@ -85,7 +85,11 @@ abstract class Object
         }
         else
         {
-            $class = constant($const_name);
+            $class = str_replace
+            (
+                '{static}', '\\' . get_called_class(),
+                constant($const_name)
+            );
 
             if ($class{0} != '\\')
             {

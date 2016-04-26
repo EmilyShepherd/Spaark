@@ -27,11 +27,20 @@ class Instance
      */
     private static $router;
 
+    private static $instance;
+
     public static function bootstrap($site, $uri = NULL)
     {
         ClassLoader :: init();
-        $n = new Instance($site, $uri);
+        static::$instance = new Instance($site, $uri);
     }
+
+    public static function getConfig()
+    {
+        return static::$instance->config;
+    }
+
+    private $config;
 
     /**
      * Sets up Spaark's environment and attempts to handle the request.
@@ -51,7 +60,10 @@ class Instance
      */
     public function __construct($site, $uri = NULL)
     {
-        Config :: init($site);
+        // TODO: This is a temporary hack
+        static::$instance = $this;
+
+        $this->config = \Spaark\Core\Config::fromId($site);
 
         // TODO: This should run before the Config is loaded really
         self   :: handleFragment();

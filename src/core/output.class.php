@@ -6,7 +6,6 @@
  * emily@emilyshepherd.me
  */
 
-use \Spaark\Core\Config\Config;
 
 define('OK', 200);
 define('NOT_FOUND', 404);
@@ -107,16 +106,6 @@ class Output extends Model\Base\Entity
         if (!self::$obj) self::$obj = new Output();
 
         self::$obj->$name = $args[0];
-    }
-
-    /**
-     * Returns the Output object
-     *
-     * @return Output The output object
-     */
-    public static function getObj()
-    {
-        return self::$obj;
     }
 
     /**
