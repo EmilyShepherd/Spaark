@@ -61,11 +61,6 @@ class ClassLoader
     private static $models = array( );
 
     /**
-     * Used when loading classes to prevent infinate loops
-     */
-    private static $triedModel = false;
-
-    /**
      * Initialises the ClassLoader
      */
     public static function init()
@@ -91,33 +86,22 @@ class ClassLoader
      * instead!
      *
      * @param string $class    The class to load
-     * @param bool   $tryModel If true, it will try different namespaces
      * @return bool            Whether the class was loaded or not
      * @see load()
      * @see _load()
      */
-    public static function autoload($class, $tryModel = true)
+    public static function autoload($class)
     {
-        self::$triedModel = false;
-
-        return self::_load($class, $tryModel);
+        return self::_load($class);
     }
 
     /**
      * Internal function to load a class
      *
-     * If $tryModel is try, it will also try to load the class from
-     * other namespaces (useful if you cba to use "use" statements
-     * properly). If a model is loaded correctly, the class is
-     * aliased to ensure autoloads work. (Warning, this can lead to
-     * name collisions. If you have classes in different namespaces
-     * with the same name, always specify them properly!)
-     *
      * @param string $class    The class to load
-     * @param bool   $tryModel If true, it will try different namespaces
      * @return bool            Whether the class was loaded or not
      */
-    private static function _load($class, $tryModel = true)
+    private static function _load($class)
     {
         if (self::exists($class)) return true;
 
@@ -148,18 +132,6 @@ class ClassLoader
         if (self::getFile($newPath, $newClass) && self::exists($class))
         {
             return $class;
-        }
-
-        if ($tryModel && !self::$triedModel)
-        {
-            $model = $parts[count($parts) - 1];
-
-            if ($model = self::loadModel($model))
-            {
-                class_alias($model, $class);
-
-                return $model;
-            }
         }
 
         return false;
@@ -195,8 +167,6 @@ class ClassLoader
      */
     public static function loadModel($name, $localScope = NULL)
     {
-        self::$triedModel = true;
-
         //Local Scope
         if ($localScope)
         {
