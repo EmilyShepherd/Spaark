@@ -52,19 +52,19 @@ class Config extends Model\Config
      */
     private $configPath = 'config/';
 
+    /**
+     * The root of the system
+     *
+     * @var string
+     * @readable
+     */
+
     public function __fromId($id)
     {
-        $json = new JSON();
-        $this->loadArray
-        (
-            \tree_merge_recursive
-            (
-                $json->parseFile(ROOT . '/' . $id, false),
-                $json->parseFile(SPAARK_PATH . '/default/config'),
-                array('app' => array('root' => ROOT))
-            )
-        );
+        $json       = new JSON();
+        $this->root = ROOT;
+        $this->loadArray($json->parseFile(ROOT . '/' . $id, false));
 
-        $this->app = $this;
+        $this->app  = $this;
     }
 }
