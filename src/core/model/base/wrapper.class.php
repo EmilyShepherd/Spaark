@@ -25,10 +25,10 @@ class Wrapper extends Entity
      * @param string $var The name of the variable to get
      * @return mixed The variable's value
      */
-    public function ___get($var)
+    public function __get($var)
     {
-        return $this->object
+        return parent::__get($var) ?: ($this->object
             ? $this->object->$var
-            : NULL;
+            : NULL);
     }
 }

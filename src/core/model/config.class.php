@@ -4,66 +4,44 @@
  */
 
 use Spaark\Core\Util\Encoding\JSON;
+use Spaark\Core\Config as GlobalConfig;
+use Spaark\Core\Instance;
 
-class Config extends Base\Master
+class Config extends Base\Singleton
 {
-    protected static function initMaster($name)
-    {
-        $obj  = static::blankInstance();
-        $json = JSON::blankInstance();
-
-        $obj->loadArray
-        (
-            \tree_merge_recursive
-            (
-                $json->parseFile(ROOT . '/' . $name, false),
-                $json->parseFile(SPAARK_PATH . '/default/config'),
-                array('app' => array('root' => ROOT))
-            )
-        );
-
-        return $obj;
-    }
+    /**
+     * The global application config
+     *
+     * @readable
+     * @var Config
+     */
+    protected $app;
 
     public static function getConf($var)
     {
-        return static::getMaster()->app[$var];
+        return Instance::getConfig()->$var;
     }
 
-    public function __fromModel($model)
+    public static function _fromSingle()
     {
-        $this->loadConfig($model);
-    }
+        $ret = new static();
+        $ret->loadConfig(get_called_class());
 
-    public function __fromController($controller)
-    {
-        $this->loadConfig($controller);
-    }
-
-    public function __fromParent($parent)
-    {
-        $this->loadConfig($parent);
+        return $ret;
     }
 
     private function loadConfig($name)
     {
-        $json    = new JSON();
-        $reflect = $name::getHelper('reflect');
-        $parent  = $reflect ? $reflect->parent : NULL;
-        $upConf  = $parent
-            ? $parent::getHelper('config')->attrs
-            : array( );
-
-        $name    = strtolower(substr($name, strrpos($name, '\\') + 1));
-        $path    = $this->config->configPath . $name;
-        $arr     = \tree_merge_recursive
+        $this->app = Instance::getconfig();
+        $json      = new JSON();
+        $name      = explode('\\', $name);
+        $name      = strtolower($name[count($name) - 2]);
+        $path      = ROOT . '/' .  $this->app->configPath . $name;
+        $arr       = \tree_merge_recursive
         (
             $json->parseFile($path, false),
-            (array)$this->config->getValue($name),
-            $upConf
+            (array)$this->app->propertyValue($name)
         );
-
-        $arr['app'] = $this->config->app;
 
         $this->loadArray($arr);
     }

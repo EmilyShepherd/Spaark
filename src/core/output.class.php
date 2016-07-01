@@ -6,7 +6,6 @@
  * emily@emilyshepherd.me
  */
 
-use \Spaark\Core\Config\Config;
 
 define('OK', 200);
 define('NOT_FOUND', 404);
@@ -110,16 +109,6 @@ class Output extends Model\Base\Entity
     }
 
     /**
-     * Returns the Output object
-     *
-     * @return Output The output object
-     */
-    public static function getObj()
-    {
-        return self::$obj;
-    }
-
-    /**
      * Safely cleans the output buffer
      */
     public static function ob_clean()
@@ -128,6 +117,11 @@ class Output extends Model\Base\Entity
         {
             ob_clean();
         }
+    }
+
+    public static function _getObj()
+    {
+        return self::$obj;
     }
 
     /// }}}
@@ -406,4 +400,19 @@ class Output extends Model\Base\Entity
     // }}}
 }
 
-?>
+namespace Spaark\Core\Output;
+
+class Config extends \Spaark\Core\Model\Config
+{
+    /**
+     * @readable
+     * @var string
+     */
+    private $cachePath;
+
+    /**
+     * @readable
+     * @var boolean
+     */
+    private $use304 = true;
+}

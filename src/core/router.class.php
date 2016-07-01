@@ -2,7 +2,6 @@
 
 use \Spaark\Core\Cache\CacheMiss;
 use \Spaark\Core\Cache\Cache;
-use \Spaark\Core\Config\Config;
 use \Spaark\Core\Error\NotFoundException;
 use \Spaark\Core\Cache\CacheEntry;
 
@@ -267,4 +266,18 @@ class Router extends \Spaark\Core\Base\Controller
     }
 }
 
-?>
+namespace Spaark\Core\Router;
+
+class Config extends \Spaark\Core\Model\Config
+{
+    /**
+     * Should the router use the cached route table
+     *
+     * @readable
+     * @var boolean
+     */
+    private $ignoreRouteTree = false;
+}
+
+
+

@@ -258,7 +258,7 @@ class PageBuilder extends Templateable
             . '<script>'
             .   's'
             .   '('
-            .       '\'' . $this->config->app['href_root'] . '\','
+            .       '\'' . $this->config->app->hrefRoot . '\','
             .       '\'' . $templateStr        . '\','
             .       json_encode(array_reverse(array_values($this->response['js']))) . ','
             .       json_encode(array_values($this->response['css']))
@@ -341,4 +341,13 @@ class PageBuilder extends Templateable
     }
 }
 
-?>
+namespace Spaark\Core\Model\HTML\PageBuilder;
+
+class Config extends \Spaark\Core\Model\HTML\HTMLSegment\Config
+{
+    /**
+     * @readable
+     * @var string
+     */
+    private $path = 'pages/';
+}

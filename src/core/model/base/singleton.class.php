@@ -16,8 +16,9 @@ class Singleton extends Entity
      * more common name
      *
      * @return Singleton The instance of the singleton class
+     * @deprecated 
      */
-    public static function getInstance()
+    public static function _getInstance()
     {
         return static::fromSingle();
     }
