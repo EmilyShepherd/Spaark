@@ -2,7 +2,7 @@
 
 use Spaark\Core\Util\Encoding\JSON;
 
-class Config extends Model\Base\Entity
+class Config extends Model\Config
 {
     /**
      * The Namespace
@@ -64,5 +64,7 @@ class Config extends Model\Base\Entity
                 array('app' => array('root' => ROOT))
             )
         );
+
+        $this->app = $this;
     }
 }

@@ -34,7 +34,7 @@ abstract class Object
     protected $userClass = 'Auth\User';
 
     const SESSION_HELPER = 'Session';
-    const CONFIG_HELPER  = '{static}\Config';
+    const CONFIG_HELPER  = 'ConfigLoader';
     const CACHE_HELPER   = 'Cache';
     const USER_HELPER    = 'Auth\User';
 
@@ -81,15 +81,11 @@ abstract class Object
         $const_name = 'static::' . strtoupper($var) . '_HELPER';
         if (!defined($const_name))
         {
-            $class = ClassLoader::loadModel($var, $context);
+            return NULL;
         }
         else
         {
-            $class = str_replace
-            (
-                '{static}', '\\' . get_called_class(),
-                constant($const_name)
-            );
+            $class = constant($const_name);
 
             if ($class{0} != '\\')
             {
