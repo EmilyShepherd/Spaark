@@ -240,7 +240,7 @@ class Reflector extends \Spaark\Core\Model\Base\Wrapper
         }
         else
         {
-            return parent::__get($var);
+            return Base\Entity::__get($var);
         }
     }
 
