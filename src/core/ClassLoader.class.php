@@ -113,12 +113,19 @@ class ClassLoader
         {
             $path =
                   self::$starts[$first] . '/'
-                . strtolower(implode(DIRECTORY_SEPARATOR, array_slice($parts, 1))) . '.class.php';
+                . strtolower(implode
+                  (
+                     DIRECTORY_SEPARATOR,
+                     array_slice($parts, 1)
+                  )) 
+                . '.class.php';
         }
         else
         {
             $path =
-                ROOT . '/' . strtolower(implode(DIRECTORY_SEPARATOR, $parts)) . '.class.php';
+                ROOT . '/'
+              . strtolower(implode(DIRECTORY_SEPARATOR, $parts))
+              . '.class.php';
         }
 
         if (self::getFile($path, $class))
@@ -237,41 +244,4 @@ class ClassLoader
             class_exists($class, false) ||
             interface_exists($class, false);
     }
-
-    /*
-     * @deprecated
-     *
-    private static function makeClass($parts, $construct)
-    {
-        $alias    = array_pop($parts);
-        $ns       = implode('\\', $parts);
-        $class    = end($parts);
-
-        if (class_exists($ns))
-        {
-            $table = defined($ns . '::NAME') ? ''
-                : 'const NAME=\'' . strtolower($class) . '\';';
-
-            eval
-            (
-                  'namespace ' . $ns . ';'
-                . 'class ' . $alias . ' extends \\' . $ns
-                . '{'
-                .     $table
-                .     (!$construct ? '' :
-                         'public function __construct()'
-                .        '{'
-                .            'self::build'
-                .             '('
-                .                 '$this,'
-                .                '\'' . $alias . '\','
-                .                'func_get_args()'
-                .            ');'
-                .        '}'
-                      )
-                . '}'
-            );
-        }
-    }
-    */
 }
