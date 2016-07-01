@@ -11,7 +11,6 @@ use \Spaark\Core\Cache\Cache;
 use \Spaark\Core\Cache\CacheMiss;
 use \Spaark\Core\Instance;
 use \Spaark\Core\View\Page;
-use \Spaark\Core\Config\Config;
 use \Spaark\Core\Error\NotFoundException;
 
 /**
@@ -138,7 +137,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
     {
         Output::mime('text/plain');
 
-        if (file_exists($this->config->app['root'] . '/txt/humans.txt'))
+        if (file_exists($this->config->app->root . '/txt/humans.txt'))
         {
             echo file_get_contents
             (
@@ -167,7 +166,7 @@ class StdOutput extends \Spaark\Core\Base\Controller
             echo str_replace
             (
                 '{dev}',
-                $this->config->app['admin'],
+                $this->config->app->admin,
                 file_get_contents
                 (
                     SPAARK_PATH . '/default/txt/humans.txt'
@@ -225,4 +224,25 @@ class StdOutput extends \Spaark\Core\Base\Controller
     }
 }
 
-?>
+namespace Spaark\Core\Output\StdOutput;
+
+class Config extends \Spaark\Core\Model\Config
+{
+    /**
+     * @readable
+     * @var string
+     */
+    private $imagepath;
+
+    /**
+     * @readable
+     * @var string
+     */
+    private $humans;
+
+    /**
+     * @readable
+     * @var string
+     */
+    private $csspath;
+}

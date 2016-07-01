@@ -146,7 +146,7 @@ class Instance
             . substr
               (
                   $uri,
-                  strlen(Config::getConf('href_root'))
+                  strlen(static::getConfig()->hrefRoot)
               );
 
         if ($pos !== false)
@@ -279,7 +279,7 @@ class Instance
     {
         Output::fromOutput();
 
-        $output = Output::getObj();
+        $output = Output::_getObj();
         $router = self::$router;
 
         if (!$output->send())

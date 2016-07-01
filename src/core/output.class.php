@@ -119,6 +119,11 @@ class Output extends Model\Base\Entity
         }
     }
 
+    public static function _getObj()
+    {
+        return self::$obj;
+    }
+
     /// }}}
 
 
@@ -395,4 +400,19 @@ class Output extends Model\Base\Entity
     // }}}
 }
 
-?>
+namespace Spaark\Core\Output;
+
+class Config extends \Spaark\Core\Model\Config
+{
+    /**
+     * @readable
+     * @var string
+     */
+    private $cachePath;
+
+    /**
+     * @readable
+     * @var boolean
+     */
+    private $use304 = true;
+}

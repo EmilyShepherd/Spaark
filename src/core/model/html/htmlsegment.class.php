@@ -372,4 +372,13 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
     }
 }
 
-?>
+namespace Spaark\Core\Model\HTML\HTMLSegment;
+
+class Config extends \Spaark\Core\Model\Config
+{
+    /**
+     * @readable
+     * @var string
+     */
+    private $path = 'templates/';
+}
