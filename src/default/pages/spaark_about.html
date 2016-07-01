@@ -1,7 +1,7 @@
 @template spaark
 @title About Spaark
 
-<? use \Spaark\Core\Config\Config; ?>
+<? use \Spaark\Core\Model\Config; ?>
 
 Copyright (C) 2013 Emily Shepherd
 <br />
@@ -37,26 +37,21 @@ Copyright (C) 2013 Emily Shepherd
 
   <tr>
     <td><b>Site</b></td>
-    <td><?=Config::APP()?></td>
+    <td><?=Config::getConf('name')?></td>
   </tr>
 
   <tr>
     <td><b>Admin</b></td>
-    <td><a href="mailto:<?=Config::ADMIN()?>"><?=Config::ADMIN()?></a></td>
+    <td><a href="mailto:<?=Config::getConf('admin')?>"><?=Config::getConf('admin')?></a></td>
   </tr>
 
   <tr>
     <td><b>Caching</b></td>
-    <td><?=config::NO_CACHE() ? 'Disabled' : 'Enabled'?></td>
-  </tr>
-
-  <tr>
-    <td><b>Using APC</b></td>
-    <td><?=USE_APC ? 'Yes' : 'No'?></td>
+    <td><?=config::getConf('no_cache') ? 'Disabled' : 'Enabled'?></td>
   </tr>
 
   <tr>
     <td><b>Using 304 Response Codes</b></td>
-    <td><?=config::DISABLE_304() ? 'No' : 'Yes'?></td>
+    <td><?=Config::getConf('disable_304') ? 'No' : 'Yes'?></td>
   </tr>
 </table>
