@@ -8,4 +8,3 @@ class TextareaHandler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

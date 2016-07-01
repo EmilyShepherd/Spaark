@@ -99,4 +99,3 @@ abstract class Controller extends Object
     public function shutdown() {}
 }
 
-?>

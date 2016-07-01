@@ -297,4 +297,3 @@ class SQLUser extends model implements AbstractUser
     }
 }
 
-?>

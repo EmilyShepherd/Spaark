@@ -29,4 +29,3 @@ class Password extends HashedValue
 }
 
 
-?>

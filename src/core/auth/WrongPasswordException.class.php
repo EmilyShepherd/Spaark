@@ -17,4 +17,3 @@ class WrongPasswordException extends AuthenticationFailedException
 
 }
 
-?>

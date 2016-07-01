@@ -31,4 +31,3 @@ interface Cacheable extends \serializable
     public function dirty();
 }
 
-?>

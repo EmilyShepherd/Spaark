@@ -8,4 +8,3 @@ class Login extends \Spaark\Core\Base\Controller
     //
 }
 
-?>

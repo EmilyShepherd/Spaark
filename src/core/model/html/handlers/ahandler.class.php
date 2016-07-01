@@ -63,4 +63,3 @@ class AHandler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

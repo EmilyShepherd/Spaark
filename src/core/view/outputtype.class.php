@@ -102,4 +102,3 @@ abstract class OutputType extends \Spaark\Core\Model\Base\Model
     }
 }
 
-?>

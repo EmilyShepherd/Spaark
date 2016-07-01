@@ -117,4 +117,4 @@ class SpaarkOutput extends \Spaark\Core\Base\Controller
     }
 }
 
-?>
+

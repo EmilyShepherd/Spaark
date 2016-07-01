@@ -28,4 +28,3 @@ class User extends \Spaark\Core\Model\Base\DefaultModel
     }
 }
 
-?>

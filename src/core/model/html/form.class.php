@@ -127,4 +127,3 @@ class Form extends HTMLSegment implements \Spaark\Core\Cache\Cacheable
 }
 
 
-?>

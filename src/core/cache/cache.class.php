@@ -260,4 +260,3 @@ class Cache extends \Spaark\Core\Model\Base\Entity
 
 // }}}
 
-?>

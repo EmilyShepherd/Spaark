@@ -43,4 +43,3 @@ class ScriptHandler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

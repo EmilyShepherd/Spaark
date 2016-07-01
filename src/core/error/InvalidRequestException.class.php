@@ -39,4 +39,3 @@ class InvalidRequestException extends SystemException
     }
 }
 
-?>

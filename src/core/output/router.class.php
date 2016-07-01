@@ -434,4 +434,4 @@ class Router extends \Spaark\Core\Base\Controller
     }
 }
 
-?>
+

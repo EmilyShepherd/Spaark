@@ -8,4 +8,3 @@ class MissingStaticVar extends \Exception
     }
 }
 
-?>

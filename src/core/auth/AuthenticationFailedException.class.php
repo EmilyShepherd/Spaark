@@ -23,4 +23,3 @@ class AuthenticationFailedException extends SystemException
     }
 }
 
-?>

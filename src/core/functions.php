@@ -121,4 +121,3 @@ function is_public($obj, $method)
         is_callable(array($obj, $method));
 }
 
-?>

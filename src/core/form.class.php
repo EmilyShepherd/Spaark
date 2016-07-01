@@ -208,4 +208,3 @@ class Form extends Vars implements \Spaark\Core\Cache\Cacheable
 }
 
 
-?>

@@ -78,4 +78,3 @@ class InputHandler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

@@ -329,4 +329,3 @@ class Page extends \Spaark\Core\Model\Base\Entity
 
 // }}}
 
-?>

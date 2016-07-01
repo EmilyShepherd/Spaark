@@ -151,4 +151,3 @@ class ConfigReader extends \Spaark\Core\Cache\CacheEntry
 
 // }}}
 
-?>

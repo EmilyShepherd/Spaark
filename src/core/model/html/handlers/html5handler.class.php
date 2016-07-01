@@ -52,4 +52,3 @@ class HTML5Handler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

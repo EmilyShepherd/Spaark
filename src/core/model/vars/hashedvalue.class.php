@@ -172,4 +172,3 @@ class HashedValue extends String
     }
 }
 
-?>

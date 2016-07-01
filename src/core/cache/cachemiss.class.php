@@ -28,4 +28,3 @@ class CacheMiss extends \Exception
     }
 }
 
-?>

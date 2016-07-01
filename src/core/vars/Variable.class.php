@@ -30,4 +30,3 @@ class Variable implements AbstractVariable
     }
 }
 
-?>

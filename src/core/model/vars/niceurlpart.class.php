@@ -35,4 +35,3 @@ class NiceURLPart extends String
 }
 
 
-?>

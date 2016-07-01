@@ -67,4 +67,3 @@ class CacheFlag implements Cacheable, serializable
     }
 }
 
-?>

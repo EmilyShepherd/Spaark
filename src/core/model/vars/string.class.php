@@ -15,4 +15,3 @@ class String extends \Spaark\Core\Model\Model
 
 }
 
-?>

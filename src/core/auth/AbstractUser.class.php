@@ -27,4 +27,3 @@ interface AbstractUser
     public function isInGroup($gid, $throw);
 }
 
-?>

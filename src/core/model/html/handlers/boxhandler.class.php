@@ -28,4 +28,3 @@ class BoxHandler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

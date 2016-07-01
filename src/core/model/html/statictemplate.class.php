@@ -97,4 +97,3 @@ class StaticTemplate extends Templateable
     }
 }
 
-?>

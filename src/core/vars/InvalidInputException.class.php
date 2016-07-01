@@ -8,4 +8,3 @@ class InvalidInputException extends SystemException
     }
 }
 
-?>

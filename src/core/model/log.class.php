@@ -38,4 +38,3 @@ class Log extends Base\Entity
     }
 }
 
-?>

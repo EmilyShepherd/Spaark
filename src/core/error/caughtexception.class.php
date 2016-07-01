@@ -29,4 +29,3 @@ class CaughtException extends \Exception
     }
 }
 
-?>

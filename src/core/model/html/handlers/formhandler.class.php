@@ -71,4 +71,3 @@ class FormHandler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

@@ -28,4 +28,3 @@ class InvalidConfigException extends SystemException
     }
 }
 
-?>

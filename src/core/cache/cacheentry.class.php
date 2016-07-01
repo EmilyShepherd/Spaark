@@ -118,4 +118,3 @@ class CacheEntry extends ValueHolder implements Cacheable
     }
 }
 
-?>

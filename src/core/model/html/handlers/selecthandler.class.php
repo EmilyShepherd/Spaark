@@ -8,4 +8,3 @@ class SelectHandler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

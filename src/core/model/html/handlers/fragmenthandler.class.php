@@ -38,4 +38,3 @@ class FragmentHandler extends \Spaark\Core\Model\XML\ElementHandler
     }
 }
 
-?>

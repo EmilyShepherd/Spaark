@@ -33,4 +33,3 @@ class Path extends Base\Model
     }
 }
 
-?>

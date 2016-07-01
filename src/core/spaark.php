@@ -20,4 +20,3 @@ function Spaark($app = 'app', $uri = NULL)
     Instance::bootstrap($app, $uri);
 }
 
-?>
