@@ -345,7 +345,7 @@ abstract class HTMLSegment extends \Spaark\Core\Model\Base\Entity
             return
                   '<?php '
                 .   'echo $' . $name . ';'
-                . '?>';
+                . '?' . '>';
         }
     }
 
