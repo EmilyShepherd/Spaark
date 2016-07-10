@@ -35,6 +35,17 @@ use \Spaark\Core\Model\Config;
         }
     }
 
+    /**
+     * Throw when a class has been declared as deprecated
+     *
+     * Eg:
+     * <code>
+     *   class MyDeprecatedClass
+     *   {
+     *       const DEPRECATED = true;
+     *   }
+     * </code>
+     */
     class DeprecatedClassException extends \Exception
     {
         public function __construct($class)
@@ -71,6 +82,14 @@ class ClassLoader
         spl_autoload_register('Spaark\Core\ClassLoader::autoload');
     }
 
+    /**
+     * Initialise the ClassLoader again once the config has been loaded
+     *
+     * This method exists because the ClassLoader is initialised very
+     * early on in the bootstrap process. Once the config classes have
+     * completed loading, they may contain directives which change the
+     * ClassLoader's default behaviour.
+     */
     public static function appInit()
     {
         $ns                = strtolower(trim
@@ -206,38 +225,42 @@ class ClassLoader
      * @return bool         If the file was successfully loaded
      * @throws NoClassInFileException If the file existed, but the class
      *     was not specified inside it
+     * @throws DeprecatedClassException If the class loaded successfully
+     *     but has been declared deprecated
      */
     private static function getFile($file, $class)
     {
-        if (!file_exists($file))
+        if (!file_exists($file)) return false;
+
+        require_once($file);
+
+        if (!self::exists($class))
         {
-            return false;
+            throw new NoClassInFileException($class);
         }
-        else
+        elseif (defined($class . '::DEPRECATED'))
         {
-            require_once($file);
-
-            if (!self::exists($class))
-            {
-                throw new NoClassInFileException($class);
-            }
-            elseif (defined($class . '::DEPRECATED'))
-            {
-                throw new DeprecatedClassException($class);
-            }
-
-            $name =
-                substr($class, strrpos($class, '\\') + 1) . '_onload';
-
-            if (method_exists($class, $name))
-            {
-                $class::$name();
-            }
-
-            return true;
+            throw new DeprecatedClassException($class);
         }
+
+        $name =
+            substr($class, strrpos($class, '\\') + 1) . '_onload';
+
+        if (method_exists($class, $name))
+        {
+            $class::$name();
+        }
+
+        return true;
     }
 
+    /**
+     * Checks if a class or interface exists without attempting to load
+     * it
+     *
+     * @param string $class The name of the class / interface
+     * @return bool True if the class or interface exists
+     */
     public static function exists($class)
     {
         return
