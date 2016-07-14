@@ -80,3 +80,41 @@ class MySQLiConnection extends \Spaark\Core\Model\Base\Singleton
         }
     }
 }
+
+namespace Spaark\Core\Model\Sources\Database\MySQLiConnection;
+
+class Config extends \Spaark\Core\Model\Config
+{
+    /**
+     * Host
+     *
+     * @readable
+     * @var string
+     */
+    protected $host = 'localhost';
+
+    /**
+     * Username
+     *
+     * @readable
+     * @var string
+     */
+    protected $username;
+
+    /**
+     * Password
+     *
+     * @readable
+     * @var string
+     */
+    protected $password;
+
+    /**
+     * Database
+     *
+     * @readable
+     * @var string
+     */
+    protected $database;
+}
+
