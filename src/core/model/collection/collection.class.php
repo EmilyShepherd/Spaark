@@ -127,6 +127,19 @@ class Collection extends Model implements \ArrayAccess, \Iterator
     }
 
     /**
+     * Changes the position of the array pointer
+     *
+     * @param scalar $pos The position to seek to
+     * @return mixed The value at that new point
+     */
+    public function seek($pos)
+    {
+        $this->pointer = $pos;
+
+        return $this->offsetGet($pos);
+    }
+
+    /**
      * Checks if there are any more elements to be read from the
      * Collection
      *
