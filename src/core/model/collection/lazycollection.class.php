@@ -1,15 +1,17 @@
 <?php namespace Spaark\Core\Model\Collection;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Spaark Framework
+ *
+ * @author Emily Shepherd <emily@emilyshepherd.me>
+ * @copyright 2012-2016 Emily Shepherd
  */
 
+
 /**
- * Description of lazycollection
+ * Represents a collection of items which have yet to be built
  *
- * @author Emily Shepherd
+ * When items are queried these are either returned if they exist in the
+ * data structure, or generated on the fly.
  */
 abstract class LazyCollection extends Collection
 {
