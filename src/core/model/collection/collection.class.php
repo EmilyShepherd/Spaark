@@ -47,17 +47,17 @@ class Collection extends Model implements \ArrayAccess, \Iterator
      */
     public function current()
     {
-        return current($this->data);
+        return $this->offsetGet($this->pointer);
     }
 
     /**
      * Returns the current key
      *
-     * @return scalar The current key
+     * @return int The current key
      */
     public function key()
     {
-        return key($this->data);
+        return $this->pointer;
     }
 
     /**
@@ -67,7 +67,7 @@ class Collection extends Model implements \ArrayAccess, \Iterator
     {
         $this->pointer++;
 
-        return next($this->data);
+        return $this->offsetGet($this->pointer);
     }
 
     /**
@@ -123,7 +123,7 @@ class Collection extends Model implements \ArrayAccess, \Iterator
     {
         $this->pointer = 0;
 
-        return reset($this->data);
+        return $this->offsetGet(0);
     }
 
     /**
@@ -134,7 +134,7 @@ class Collection extends Model implements \ArrayAccess, \Iterator
      */
     public function valid()
     {
-        return $this->pointer < count($this->data);
+        return $this->pointer < $this->size();
     }
 
     /**
